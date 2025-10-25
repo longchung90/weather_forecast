@@ -1,0 +1,140 @@
+/* =========================
+   HERO SECTION (Optimized)
+   ========================= */
+
+.hero {
+    position: relative;
+    min-height: 92vh;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Gradient overlay to keep text readable */
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.45) 0%,
+            rgba(0, 0, 0, 0.55) 50%,
+            rgba(0, 0, 0, 0.65) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ✅ Only one moving layer (no duplicate image on body) */
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: scale(1);
+    animation: kenburns 18s ease-out forwards;
+    filter: brightness(0.85);
+    z-index: 0;
+    transition: opacity 1.2s ease-in-out;
+}
+
+/* Ken Burns motion (slower & lighter) */
+@keyframes kenburns {
+    from {
+        transform: scale(1) translate(0, 0);
+    }
+
+    to {
+        transform: scale(1.08) translate(0, -10px);
+    }
+}
+
+/* Content stays crisp */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    max-width: 900px;
+    padding: 0 20px;
+    display: grid;
+    gap: 22px;
+    justify-items: center;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    animation: fadeZoomIn 900ms ease both 150ms;
+}
+
+/* Fade zoom for text */
+@keyframes fadeZoomIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Title + Subtitle */
+.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: var(--h1);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.hero-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: var(--h2);
+    font-weight: 400;
+    color: var(--muted);
+    max-width: 900px;
+    text-wrap: balance;
+}
+
+/* =========================
+   CONTROLS BAR (Compact)
+   ========================= */
+.controls-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 8px 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.controls-bar select {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    min-width: 180px;
+    max-width: 220px;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.controls-bar select:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.controls-bar select:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px rgba(201, 164, 100, 0.3);
+}
+
+.controls-bar select option {
+    background: var(--bg);
+    color: var(--text);
+    padding: 8px;
+}
