@@ -128,26 +128,154 @@ main.show {
     position: relative;
 }
 
+/* Remove the heading from the separator */
 .forecast-separator::before {
-    content: "7-Day Weather Forecast for " attr(data-city) " - Temperature, Conditions & Wind";
-    position: absolute;
-    top: -0.7rem;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.8);
-    color: #ffffff;
-    padding: 0.5rem 1.4rem;
-    border-radius: 20px;
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    content: none;
+}
+
+/* =========================
+   FORECAST HEADING (Above Map)
+   ========================= */
+.forecast-heading-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 1.2rem;
+    margin-top: 0.5rem;
+}
+
+.forecast-heading {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 3.2rem;
+    font-weight: bold;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    text-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), 0 1px 0 #fff;
+    margin: 0;
     white-space: nowrap;
-    max-width: 90%;
+    max-width: 95vw;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7em;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: rgba(32, 38, 54, 0.60);
+    /* lighter than before */
+    border-radius: 1.5em;
+    padding: 0.45em 1.7em;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.forecast-city-icon {
+    font-size: 2.1rem;
+    margin: 0 0.2em 0 0.4em;
+    vertical-align: middle;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.18));
+    transition: transform 0.2s;
+    will-change: transform;
+}
+
+.forecast-city-name {
+    font-weight: 700;
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 2.1rem;
+    letter-spacing: 0.03em;
+    margin-left: 0.1em;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+@media (max-width: 768px) {
+    .forecast-heading {
+        font-size: 1.7rem;
+        gap: 0.4em;
+        padding: 0.3em 1em;
+    }
+
+    .forecast-city-icon,
+    .forecast-city-name {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .forecast-heading {
+        font-size: 1.1rem;
+        gap: 0.2em;
+        padding: 0.18em 0.5em;
+    }
+
+    .forecast-city-icon,
+    .forecast-city-name {
+        font-size: 0.95rem;
+    }
+}
+
+/* =========================
+   FORECAST OUTER CONTAINER
+   ========================= */
+.forecast-outer {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    border-radius: 20px;
+    background: rgba(32, 38, 54, 0.60);
+    /* lighter, semi-transparent */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    border: 1.5px solid rgba(255, 255, 255, 0.13);
+    padding: 36px 28px 36px 28px;
+    /* equal top/bottom padding */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+@media (max-width: 1024px) {
+    .forecast-outer {
+        max-width: 900px;
+        padding: 24px 10px 24px 10px;
+        /* equalize top/bottom */
+    }
+}
+
+@media (max-width: 600px) {
+    .forecast-outer {
+        max-width: 98vw;
+        padding: 12px 2vw 12px 2vw;
+        /* equalize top/bottom */
+        border-radius: 12px;
+    }
+}
+
+/* Remove background from map-container */
+.map-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: 500px;
+    border-radius: 20px;
+    background: none !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+    border: none;
+}
+
+@media (max-width: 600px) {
+    .map-container {
+        width: 98vw;
+        height: 98vw;
+        min-width: 0;
+        min-height: 0;
+        border-radius: 12px;
+    }
 }
 
 /* =========================
@@ -158,91 +286,48 @@ main.show {
     grid-template-columns: repeat(7, minmax(0, 1fr));
     gap: 20px;
     width: 100%;
-    max-width: 1600px;
+    max-width: 100%;
     background: transparent;
     border-radius: 12px;
     overflow: visible;
-    padding: 20px;
-}
-
-/* Date titles above weather cards */
-.forecast-day {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-    width: 100%;
-    min-width: 0;
-}
-
-.day-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    color: rgba(255, 255, 255, 0.9);
-    text-transform: uppercase;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-    padding: 0.5rem 0;
-    background: transparent;
-    border-radius: 0;
-    backdrop-filter: none;
-    border: none;
-    white-space: nowrap;
-    position: relative;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.day-title::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    padding: 0;
+    margin: 0;
 }
 
 @media (max-width: 1024px) {
     #forecast {
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        max-width: 900px;
         gap: 18px;
-        padding: 18px;
     }
 }
 
 @media (max-width: 768px) {
     #forecast {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        max-width: 600px;
         gap: 16px;
-        padding: 16px;
-    }
-    
-    .forecast-separator::before {
-        content: "7-Day Forecast - " attr(data-city);
-        font-size: 0.8rem;
-        padding: 0.3rem 1rem;
     }
 }
 
 @media (max-width: 480px) {
     #forecast {
         grid-template-columns: minmax(0, 1fr);
-        max-width: 400px;
         gap: 20px;
-        padding: 20px;
     }
-    
-    .forecast-separator::before {
-        content: attr(data-city) " Forecast";
-        font-size: 0.75rem;
-        padding: 0.3rem 0.8rem;
-    }
+}
+
+/* =========================
+   DATE TITLE (More Impact)
+   ========================= */
+.day-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    padding: 0.7rem 0;
+    text-align: center;
+    margin-bottom: 0.2em;
 }
 
 /* =========================
@@ -285,10 +370,12 @@ main.show {
         opacity: 0;
         transform: translateY(30px) scale(0.9);
     }
+
     60% {
         opacity: 0.8;
         transform: translateY(-5px) scale(1.02);
     }
+
     100% {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -583,60 +670,406 @@ main.show {
 }
 
 /* =========================
-   MAP CONTAINER (Optimized)
+   MAP FIX
    ========================= */
 .map-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 400px;
+    width: 500px;
+    height: 500px;
     border-radius: 20px;
-    background: var(--glass);
+    background: rgba(255, 255, 255, 0.05);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 2rem;
+    position: relative;
 }
 
-/* ✅ Loading overlay (separate, not blur) */
 .map-overlay {
     position: absolute;
     inset: 0;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    color: #fff;
     font-style: italic;
-    color: #eee;
     font-size: 1rem;
-    letter-spacing: 0.04em;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 3;
-    opacity: 1;
-    transition: opacity 0.5s ease;
+    letter-spacing: 0.05em;
+    transition: opacity .4s ease;
+    border-radius: 20px;
 }
 
-/* ✅ Fade out when map ready */
 .map-overlay.hidden {
     opacity: 0;
     pointer-events: none;
 }
 
-/* Map canvas only */
-#map {
+/* =========================
+   FORECAST WRAPPER (semi-transparent background)
+   ========================= */
+.forecast-wrapper {
     width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    z-index: 1;
+    max-width: 1500px;
+    margin: 2rem auto 3rem;
+    padding: 2rem;
+    border-radius: 18px;
+    background: rgba(32, 38, 54, 0.55);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
 }
 
-.fade-in {
+/* =========================
+   WEATHER GRID (horizontal)
+   ========================= */
+.weather-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: 24px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 0.5rem;
+}
+
+/* =========================
+   WEATHER CARD (enhanced)
+   ========================= */
+.weather-card {
+    flex: 0 0 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    padding: 1.2rem 1rem;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
     opacity: 0;
-    animation: fadeInMap 0.8s ease forwards;
+    transform: translateY(30px) scale(0.9);
+    animation: cardFadeIn 0.8s ease forwards;
 }
 
-@keyframes fadeInMap {
-    to {
+.weather-day {
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.weather-icon {
+    font-size: 3rem;
+    margin: 0.4rem 0;
+}
+
+.weather-temp {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0.4rem 0;
+}
+
+.weather-condition {
+    font-size: 1rem;
+    text-transform: capitalize;
+    margin-bottom: 0.6rem;
+}
+
+/* =========================
+   WIND COMPASS
+   ========================= */
+.wind-compass {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    margin: 0.5rem auto 0;
+}
+
+.wind-arrow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 28px;
+    background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
+    transform-origin: center bottom;
+    border-radius: 2px;
+}
+
+.wind-arrow::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: -4px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 10px solid #22c55e;
+}
+
+.wind-label {
+    position: absolute;
+    font-size: 0.7rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+.wind-label.n {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.wind-label.s {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.wind-label.e {
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.wind-label.w {
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@keyframes cardFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+    }
+
+    60% {
+        opacity: 0.85;
+        transform: translateY(-5px) scale(1.02);
+    }
+
+    100% {
         opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
 
+/* =========================
+   MAP DISPLAY FIX
+   ========================= */
+.map-container {
+    width: 520px;
+    height: 520px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.05);
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    position: relative;
+    overflow: hidden;
+    margin: 2rem auto;
+}
+
+.map-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-style: italic;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    border-radius: 20px;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.map-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* =========================
+   FORECAST WRAPPER (floating translucent container)
+   ========================= */
+.forecast-wrapper {
+    width: 100%;
+    max-width: 1500px;
+    margin: 2rem auto 4rem;
+    padding: 2rem;
+    border-radius: 20px;
+    background: rgba(20, 25, 35, 0.6);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+}
+
+/* =========================
+   WEATHER GRID (horizontal)
+   ========================= */
+.weather-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: 22px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 1rem;
+}
+
+/* =========================
+   WEATHER CARD (refined look)
+   ========================= */
+.weather-card {
+    flex: 0 0 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-radius: 18px;
+    padding: 1.5rem 1rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    transition: transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+    animation: cardFadeIn 0.9s ease forwards;
+}
+
+.weather-card:hover {
+    transform: scale(1.04);
+}
+
+/* Day label */
+.weather-day {
+    font-weight: 700;
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 0.4rem;
+    font-size: 1.1rem;
+}
+
+/* Icon and text spacing */
+.weather-icon {
+    font-size: 3rem;
+    margin: 0.6rem 0;
+}
+
+.weather-temp {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0.4rem 0;
+}
+
+.weather-condition {
+    text-transform: capitalize;
+    font-size: 1rem;
+}
+
+/* =========================
+   WIND COMPASS
+   ========================= */
+.wind-compass {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    margin: 0.6rem auto 0;
+}
+
+.wind-arrow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 28px;
+    background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
+    transform-origin: center bottom;
+    border-radius: 2px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.wind-arrow::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: -4px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 10px solid #22c55e;
+}
+
+.wind-label {
+    position: absolute;
+    font-size: 0.65rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+.wind-label.n {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.wind-label.s {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.wind-label.e {
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.wind-label.w {
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.wind-speed-text {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #fff;
+}
+
+/* =========================
+   PAGE TRANSITION EFFECT
+   ========================= */
+main {
+    opacity: 0;
+    transform: translateY(80px);
+    transition: opacity 1s ease, transform 1.2s ease;
+    pointer-events: none;
+}
+
+main.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Optional: Fade-up animation for weather cards */
+.weather-card {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: cardFade 0.8s ease forwards;
+}
+
+@keyframes cardFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

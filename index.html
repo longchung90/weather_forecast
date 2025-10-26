@@ -6,18 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>European 7-Day Weather Forecast</title>
 
-    <!-- CSS files -->
+    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/hero.css">
     <link rel="stylesheet" href="css/Button.css">
 
-
     <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&display=swap"
         rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
-
 
 <body>
     <!-- =========================
@@ -72,13 +70,23 @@
     </header>
 
     <!-- =========================
-       MAIN CONTENT
-       ========================= -->
+           MAIN CONTENT
+           ========================= -->
     <main>
         <div class="content-container">
-            <div id="mapContainer" class="map-container"></div>
-            <div class="forecast-separator"></div>
-            <section id="forecast" class="forecast-grid"></section>
+            <h2 class="forecast-heading" id="forecastHeading">
+                7-Day Weather Forecast for
+                <span id="forecastCityIcon" class="forecast-city-icon">🇫🇷</span>
+                <span id="forecastCityName" class="forecast-city-name">Paris</span>
+            </h2>
+
+            <div id="mapContainer" class="map-container">
+                <div id="mapOverlay" class="map-overlay">Loading map…</div>
+            </div>
+
+            <div class="forecast-wrapper">
+                <div id="weatherGrid" class="weather-grid"></div>
+            </div>
         </div>
     </main>
 
@@ -107,10 +115,11 @@
         </p>
     </footer>
 
-    <!-- Load main JavaScript file -->
+    <!-- Script with relative path -->
     <script src="script.js"></script>
-    <script async src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&callback=initMap"></script>
 
 </body>
 
 </html>
+
+</script>

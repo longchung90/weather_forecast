@@ -68,9 +68,9 @@ php -S localhost:8000
 ```
 
 ### Adding New Cities
-1. Add option to `#citySelect` in `index.html` with `value="lat,lon"` and `data-bg="citykey"`
-2. Add corresponding image to `images/citykey.jpg`
-3. Add entry to `cityBackgrounds` object in `script.js`
+1. Add option to #citySelect in index.html with value="lat,lon" and data-bg="citykey"
+2. Add corresponding image to images/citykey.jpg
+3. Add entry to cityBackgrounds object in script.js
 
 ### Weather Condition Styling
 Weather cards use both emoji icons (`iconMap`) and CSS gradients (`bgColors`). Always add both when supporting new weather conditions from 7timer API.
