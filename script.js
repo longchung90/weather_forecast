@@ -78,14 +78,19 @@ getForecastBtn.addEventListener("click", async () => {
 
     // 🌤️ Fetch forecast
     try {
-        const response = await fetch(
-            `https://corsproxy.io/?https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`
-        );
+        const apiUrl = `https://api.allorigins.win/raw?url=https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
+        console.log("Fetching weather from:", apiUrl);
+
+        const response = await fetch(apiUrl);
+
+        console.log("✅ Fetch status:", response.status);
+
         if (!response.ok) throw new Error("Weather API error");
 
         const data = await response.json();
-        const series = data.dataseries?.slice(0, 7) || [];
+        console.log("✅ Data received:", data);
 
+        const series = data.dataseries?.slice(0, 7) || [];
         if (series.length === 0) throw new Error("No data returned");
 
         // Clear old cards
@@ -107,37 +112,34 @@ getForecastBtn.addEventListener("click", async () => {
             const dateStr = date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
             card.innerHTML = `
-    <div class="weather-day">${weekday}</div>
-    <div class="weather-icon">${icon}</div>
-    <div class="weather-condition">${condition}</div>
-    <div class="weather-temp">${Math.round(day.temp2m)}°C</div>
-    <div class="weather-date">${dateStr}</div>
-    <div class="wind-compass">
-      <div class="wind-arrow" style="transform: rotate(${getWindRotation(windDir)}deg);"></div>
-      <span class="wind-label n">N</span>
-      <span class="wind-label s">S</span>
-      <span class="wind-label e">E</span>
-      <span class="wind-label w">W</span>
-    </div>
-    <div class="wind-speed-text">${windSpeed} m/s</div>
-  `;
+            <div class="weather-day">${weekday}</div>
+            <div class="weather-icon">${icon}</div>
+            <div class="weather-condition">${condition}</div>
+            <div class="weather-temp">${Math.round(day.temp2m)}°C</div>
+            <div class="weather-date">${dateStr}</div>
+            <div class="wind-compass">
+                <div class="wind-arrow" style="transform: rotate(${getWindRotation(windDir)}deg);"></div>
+                <span class="wind-label n">N</span>
+                <span class="wind-label s">S</span>
+                <span class="wind-label e">E</span>
+                <span class="wind-label w">W</span>
+            </div>
+            <div class="wind-speed-text">${windSpeed} m/s</div>
+        `;
             weatherGrid.appendChild(card);
         });
 
-        // ✅ Cinematic transition sequence
+        // Fade out hero → reveal forecast
         const hero = document.querySelector('.hero');
         hero.classList.add('fade-out');
-
-        // Wait briefly for hero fade-out to complete, then show forecast
         setTimeout(() => {
             mainContent.classList.add("show");
             weatherGrid.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 1000); // 1000ms = matches CSS transition timing
-
+        }, 1000);
 
     } catch (err) {
-        console.error("Weather fetch error:", err);
+        console.error("❌ Weather fetch error:", err);
         alert("Unable to load weather data. Please try again later.");
     }
-});
+
 
