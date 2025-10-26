@@ -79,8 +79,9 @@ getForecastBtn.addEventListener("click", async () => {
     // 🌤️ Fetch forecast
     try {
         const response = await fetch(
-            `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`
+            `https://corsproxy.io/?https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`
         );
+
         if (!response.ok) throw new Error("Weather API error");
 
         const data = await response.json();
