@@ -79,6 +79,9 @@ Now you can read a broken UI like a map.
 - Document all proxy-safe APIs in a `docs/` folder.
 
 ---
+> 2025-10-27 — Took a full day to debug the weather transitions and data flow.
+> Learned that understanding structure and flow matters more than finishing quickly.
+
 
 **Author:** Long Hoa Chung  
 **Portfolio:** [lcportfolio.org](https://lcportfolio.org)  

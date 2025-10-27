@@ -5,15 +5,15 @@
 .hero {
     position: relative;
     min-height: 100vh;
-    /* full height of screen */
     display: grid;
     place-items: center;
     text-align: center;
     overflow: hidden;
     isolation: isolate;
+    transition: opacity 1s ease, transform 1.2s ease;
 }
 
-/* ✅ Only one moving layer (no duplicate image on body) */
+/* Hero background layer */
 .hero::before {
     content: "";
     position: absolute;
@@ -25,8 +25,10 @@
     animation: kenburns 18s ease-out forwards;
 }
 
-.hero::before {
-    transition: opacity 0.8s ease, background-image 1.2s ease;
+/* Hide hero background when main content shows */
+main.show ~ .hero::before {
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 
 /* Gradient overlay to keep text readable */
@@ -42,8 +44,6 @@
     pointer-events: none;
 }
 
-
-
 /* Ken Burns motion (slower & lighter) */
 @keyframes kenburns {
     from {
@@ -55,7 +55,7 @@
     }
 }
 
-/* Content stays crisp */
+/* Hero content slides up instead of fade-out */
 .hero-content {
     position: relative;
     z-index: 2;
@@ -67,16 +67,21 @@
     justify-items: center;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
     animation: fadeZoomIn 900ms ease both 150ms;
+    transition: transform 0.8s ease, opacity 0.8s ease;
 }
 
-.bg-overlay {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
+/* When main content shows, completely hide hero content */
+main.show ~ .hero .hero-content {
+    transform: translateY(-100px);
     opacity: 0;
-    transition: opacity 1.5s ease;
-    z-index: 1;
+    pointer-events: none;
+}
+
+/* Hide hero section completely when main shows */
+main.show ~ .hero {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
 }
 
 /* Fade zoom for text */
@@ -92,25 +97,7 @@
     }
 }
 
-.hero.fade-out {
-    opacity: 0;
-    transform: scale(1.05);
-    transition: opacity 1s ease, transform 1.2s ease;
-    pointer-events: none;
-}
 
-main {
-    opacity: 0;
-    transform: translateY(80px);
-    transition: opacity 1s ease, transform 1.2s ease;
-    pointer-events: none;
-}
-
-main.show {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
 
 /* Title + Subtitle */
 .hero-title {
