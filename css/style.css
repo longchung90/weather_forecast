@@ -596,6 +596,7 @@ main {
 /* =========================
    Responsive
    ========================= */
+
 @media (max-width: 900px) {
     .controls-bar {
         flex-wrap: wrap;
@@ -611,16 +612,6 @@ main {
     .btn {
         width: 100%;
         justify-content: center;
-    }
-}
-
-@media (max-width: 560px) {
-    .hero-title {
-        letter-spacing: 0.05em;
-    }
-
-    .hero-subtitle {
-        font-size: clamp(1.1rem, 3.5vw, 1.3rem);
     }
 }
 
