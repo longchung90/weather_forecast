@@ -4,7 +4,8 @@
 
 .hero {
     position: relative;
-    min-height: 92vh;
+    min-height: 100vh;
+    /* full height of screen */
     display: grid;
     place-items: center;
     text-align: center;
