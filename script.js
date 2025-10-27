@@ -242,31 +242,80 @@ getForecastBtn.addEventListener("click", async () => {
         }, 100);
     }, 300); // Shorter delay for snappier transition
 
-    // ---- Map loading (Google Maps with domain-restricted API key) ----
-    setTimeout(() => {
+    // ---- Map loading (Multiple map services with fallback) ----
+    setTimeout(async () => {
         try {
-            // Using Google Maps Static API with domain-restricted key
-            // API key is configured in Google Cloud Console with HTTPS domain restrictions
-            const GOOGLE_MAPS_API_KEY = 'YOUR_DOMAIN_RESTRICTED_API_KEY'; // Replace with your actual domain-restricted key
-            const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=10&size=600x400&markers=color:red%7Clabel:📍%7C${lat},${lon}&key=${GOOGLE_MAPS_API_KEY}&style=feature:poi|visibility:simplified&style=feature:transit|visibility:off`;
-            
             mapOverlay.textContent = "Loading map…";
             mapOverlay.classList.remove("hidden");
             mapImage.style.opacity = 0;
 
-            mapImage.onload = () => {
-                mapOverlay.classList.add("hidden");
-                mapImage.style.opacity = 1;
-            };
-            mapImage.onerror = () => {
-                mapOverlay.textContent = "Map service unavailable";
-                mapOverlay.classList.remove("hidden");
-            };
-            mapImage.src = mapUrl;
+            // Try multiple map services in order of preference
+            const mapSources = [
+                // Google Maps (if API key is available)
+                () => {
+                    const GOOGLE_MAPS_API_KEY = 'YOUR_DOMAIN_RESTRICTED_API_KEY'; 
+                    if (GOOGLE_MAPS_API_KEY && GOOGLE_MAPS_API_KEY !== 'YOUR_DOMAIN_RESTRICTED_API_KEY') {
+                        return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=10&size=600x400&markers=color:red%7Clabel:📍%7C${lat},${lon}&key=${GOOGLE_MAPS_API_KEY}&style=feature:poi|visibility:simplified&style=feature:transit|visibility:off`;
+                    }
+                    return null;
+                },
+                // OpenStreetMap (free, reliable)
+                () => `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=10&size=600x400&markers=${lat},${lon},lightblue&maptype=mapnik`,
+                // Mapbox (alternative)
+                () => `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s-l+000(${lon},${lat})/${lon},${lat},10/600x400?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw`,
+                // Fallback: Static image with coordinates
+                () => `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"><rect width="600" height="400" fill="#e8f4f8"/><text x="300" y="180" text-anchor="middle" font-family="Arial" font-size="16" fill="#666">📍 ${cityName || 'Selected Location'}</text><text x="300" y="210" text-anchor="middle" font-family="Arial" font-size="14" fill="#888">Coordinates: ${lat}, ${lon}</text><text x="300" y="240" text-anchor="middle" font-family="Arial" font-size="12" fill="#aaa">Map service temporarily unavailable</text></svg>`)}`
+            ];
+
+            let mapLoaded = false;
+            for (let i = 0; i < mapSources.length && !mapLoaded; i++) {
+                try {
+                    const mapUrl = mapSources[i]();
+                    if (!mapUrl) continue;
+
+                    await new Promise((resolve, reject) => {
+                        const testImage = new Image();
+                        const timeout = setTimeout(() => reject(new Error('Timeout')), 5000);
+                        
+                        testImage.onload = () => {
+                            clearTimeout(timeout);
+                            mapImage.onload = () => {
+                                mapOverlay.classList.add("hidden");
+                                mapImage.style.opacity = 1;
+                                mapLoaded = true;
+                            };
+                            mapImage.src = mapUrl;
+                            resolve();
+                        };
+                        
+                        testImage.onerror = () => {
+                            clearTimeout(timeout);
+                            reject(new Error(`Map source ${i + 1} failed`));
+                        };
+                        
+                        testImage.src = mapUrl;
+                    });
+                    
+                    break;
+                } catch (error) {
+                    console.warn(`Map source ${i + 1} failed:`, error.message);
+                    if (i === mapSources.length - 1) {
+                        throw new Error('All map sources failed');
+                    }
+                }
+            }
         } catch (err) {
-            console.error("❌ Map load error:", err);
-            mapOverlay.textContent = "Map failed to load.";
+            console.error("❌ All map services failed:", err);
+            mapOverlay.innerHTML = `
+                <div style="text-align: center; color: #666;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📍</div>
+                    <div style="font-size: 0.9rem; margin-bottom: 0.25rem;">${cityName || 'Selected Location'}</div>
+                    <div style="font-size: 0.75rem; color: #888;">Lat: ${lat}, Lon: ${lon}</div>
+                    <div style="font-size: 0.7rem; color: #aaa; margin-top: 0.5rem;">Map service temporarily unavailable</div>
+                </div>
+            `;
             mapOverlay.classList.remove("hidden");
+            mapImage.style.opacity = 0;
         }
     }, 400); // Start loading after main content begins showing
 
