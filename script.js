@@ -242,11 +242,13 @@ getForecastBtn.addEventListener("click", async () => {
         }, 100);
     }, 300); // Shorter delay for snappier transition
 
-    // ---- Map loading (Free OpenStreetMap Alternative) ----
+    // ---- Map loading (Google Maps with domain-restricted API key) ----
     setTimeout(() => {
         try {
-            // Using free OpenStreetMap service (no API key required)
-            const mapUrl = `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=10&size=600x400&markers=${lat},${lon},lightblue&maptype=mapnik`;
+            // Using Google Maps Static API with domain-restricted key
+            // API key is configured in Google Cloud Console with HTTPS domain restrictions
+            const GOOGLE_MAPS_API_KEY = 'YOUR_DOMAIN_RESTRICTED_API_KEY'; // Replace with your actual domain-restricted key
+            const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=10&size=600x400&markers=color:red%7Clabel:📍%7C${lat},${lon}&key=${GOOGLE_MAPS_API_KEY}&style=feature:poi|visibility:simplified&style=feature:transit|visibility:off`;
             
             mapOverlay.textContent = "Loading map…";
             mapOverlay.classList.remove("hidden");
