@@ -261,16 +261,14 @@ getForecastBtn.addEventListener("click", async () => {
             mapOverlay.classList.remove("hidden");
             mapImage.style.opacity = 0;
 
-            // Try multiple map services in order of preference
+            // Try multiple map services in order of preference - using working URLs
             const mapSources = [
-                // OpenStreetMap (free, reliable)
-                () => `https://tile.openstreetmap.org/static/map?center=${lat},${lon}&zoom=10&size=600x400&markers=${lat},${lon}`,
-                // Alternative: MapQuest Open
-                () => `https://www.mapquestapi.com/staticmap/v5/map?key=demo&center=${lat},${lon}&size=600,400&zoom=10&locations=${lat},${lon}`,
-                // Geoapify with demo key
-                () => `https://maps.geoapify.com/v1/staticmap?style=osm-bright&width=600&height=400&center=lonlat:${lon},${lat}&zoom=10&marker=lonlat:${lon},${lat};color:%23ff0000;size:medium&apiKey=demo`,
-                // OpenStreetMap alternative server
-                () => `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=10&size=600x400&markers=${lat},${lon},red`,
+                // Working OpenStreetMap server
+                () => `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=10&size=600x400&markers=${lat},${lon},red&maptype=mapnik`,
+                // Alternative OSM server
+                () => `http://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=10&size=600x400&markers=${lat},${lon},blue&maptype=mapnik`,
+                // Simple working fallback - direct image URL approach
+                () => `https://via.placeholder.com/600x400/4a90e2/ffffff?text=📍+${cityName}+Map+Loading...`,
                 // Fallback: Static image with coordinates
                 () => `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"><rect width="600" height="400" fill="#e8f4f8"/><text x="300" y="180" text-anchor="middle" font-family="Arial" font-size="16" fill="#666">📍 ${cityName || 'Selected Location'}</text><text x="300" y="210" text-anchor="middle" font-family="Arial" font-size="14" fill="#888">Coordinates: ${lat}, ${lon}</text><text x="300" y="240" text-anchor="middle" font-family="Arial" font-size="12" fill="#aaa">Map service temporarily unavailable</text></svg>`)}`
             ];

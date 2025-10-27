@@ -111,8 +111,8 @@ main {
     bottom: 0;
     min-height: 100vh;
     padding: 2rem 0;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
-    backdrop-filter: blur(10px);
+    background: transparent;
+    backdrop-filter: none;
     opacity: 0;
     transform: translateY(100px);
     transition: opacity 1s ease, transform 1.2s ease;
