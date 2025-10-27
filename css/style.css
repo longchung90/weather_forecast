@@ -813,8 +813,13 @@ main {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform-origin: center bottom;
+    width: 4px;
+    height: 28px;
+    background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
+    transform-origin: 50% 100%;
     transform: translate(-50%, -100%) rotate(0deg);
+    border-radius: 2px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .wind-arrow::before {

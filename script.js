@@ -102,13 +102,23 @@ getForecastBtn.addEventListener("click", async () => {
     const [lat, lon] = selectedCity.split(",");
     const cityName = citySelect.options[citySelect.selectedIndex].text;
 
-    // 🗺️ Update map
-    const mapUrl = `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=9&size=600x400&markers=${lat},${lon},lightblue1`;
-    mapContainer.style.backgroundImage = `url('${mapUrl}')`;
-    mapContainer.style.backgroundSize = "cover";
-    mapContainer.style.backgroundPosition = "center";
-    mapContainer.style.backgroundRepeat = "no-repeat";
-    mapContainer.classList.add("fade-in");
+    const mapImage = document.getElementById("mapImage");
+
+    try {
+        const mapUrl = `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=9&size=600x400&markers=${lat},${lon},lightblue1`;
+
+        mapImage.src = mapUrl;
+        mapImage.onload = () => {
+            mapOverlay.classList.add("hidden");   // hide overlay
+            mapImage.style.opacity = 1;           // fade in
+        };
+        mapImage.onerror = () => {
+            mapOverlay.textContent = "Map unavailable";
+        };
+    } catch (err) {
+        console.error("❌ Map load error:", err);
+        mapOverlay.textContent = "Map failed to load.";
+    }
 
 
 
@@ -188,7 +198,9 @@ getForecastBtn.addEventListener("click", async () => {
         hero.classList.add('fade-out');
         setTimeout(() => {
             mainContent.classList.add("show");
+            weatherGrid.scrollIntoView({ behavior: "smooth" });
         }, 1000);
+
 
 
     } catch (err) {
