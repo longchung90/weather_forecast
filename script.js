@@ -95,7 +95,6 @@ getForecastBtn.addEventListener("click", async () => {
         console.log("Fetching weather from:", apiUrl);
 
         const response = await fetch(apiUrl);
-
         console.log("✅ Fetch status:", response.status);
 
         if (!response.ok) throw new Error("Weather API error");
@@ -125,20 +124,20 @@ getForecastBtn.addEventListener("click", async () => {
             const dateStr = date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
             card.innerHTML = `
-            <div class="weather-day">${weekday}</div>
-            <div class="weather-icon">${icon}</div>
-            <div class="weather-condition">${condition}</div>
-            <div class="weather-temp">${Math.round(day.temp2m)}°C</div>
-            <div class="weather-date">${dateStr}</div>
-            <div class="wind-compass">
-                <div class="wind-arrow" style="transform: rotate(${getWindRotation(windDir)}deg);"></div>
-                <span class="wind-label n">N</span>
-                <span class="wind-label s">S</span>
-                <span class="wind-label e">E</span>
-                <span class="wind-label w">W</span>
-            </div>
-            <div class="wind-speed-text">${windSpeed} m/s</div>
-        `;
+                <div class="weather-day">${weekday}</div>
+                <div class="weather-icon">${icon}</div>
+                <div class="weather-condition">${condition}</div>
+                <div class="weather-temp">${Math.round(day.temp2m)}°C</div>
+                <div class="weather-date">${dateStr}</div>
+                <div class="wind-compass">
+                    <div class="wind-arrow" style="transform: rotate(${getWindRotation(windDir)}deg);"></div>
+                    <span class="wind-label n">N</span>
+                    <span class="wind-label s">S</span>
+                    <span class="wind-label e">E</span>
+                    <span class="wind-label w">W</span>
+                </div>
+                <div class="wind-speed-text">${windSpeed} m/s</div>
+            `;
             weatherGrid.appendChild(card);
         });
 
@@ -154,6 +153,4 @@ getForecastBtn.addEventListener("click", async () => {
         console.error("❌ Weather fetch error:", err);
         alert("Unable to load weather data. Please try again later.");
     }
-});
-
-
+}); // ✅ closes the event listener properly
