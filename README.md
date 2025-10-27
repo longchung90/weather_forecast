@@ -179,12 +179,26 @@ This project is open source and available under the [MIT License](LICENSE).
 - **Font Awesome** for iconography
 - **Google Fonts** for Playfair Display typography
 
-## 📧 Contact
-
-**Long Chung** - [lcportfolio.org](mailto:info@lcportfolio.org)
-
-Project Link: [https://github.com/longchung90/weather_forecast](https://github.com/longchung90/weather_forecast)
-
 ---
+
+## 🌐 Connect with Me
+
+<p align="center">
+  <a href="https://github.com/longhoachung" target="_blank">
+    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Badge"/>
+  </a>
+  <a href="https://lcportfolio.org" target="_blank">
+    <img src="https://img.shields.io/badge/Portfolio-0A66C2?style=for-the-badge&logo=about.me&logoColor=white" alt="Portfolio Badge"/>
+  </a>
+  <a href="https://www.coursera.org/user/your-coursera-username" target="_blank">
+    <img src="https://img.shields.io/badge/Coursera-0056D2?style=for-the-badge&logo=coursera&logoColor=white" alt="Coursera Badge"/>
+  </a>
+</p>
+
+<p align="center">
+  <em>Inspired by adventure. Powered by code.</em>  
+  <br>
+  © 2025 <strong>Long Hoa Chung</strong> — All Rights Reserved.
+</p>
 
 *Inspired by adventure. Powered by code.*
