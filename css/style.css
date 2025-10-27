@@ -700,24 +700,19 @@ main {
 }
 
 .map-overlay {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-.map-overlay {
     position: absolute;
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     background: rgba(0, 0, 0, 0.35);
-    color: #fff;
-    font-style: italic;
+    color: rgba(255, 255, 255, 0.9);
     font-size: 1rem;
+    font-weight: 500;
+    font-style: italic;
     letter-spacing: 0.05em;
-    transition: opacity .4s ease;
     border-radius: 20px;
+    transition: opacity 0.4s ease;
 }
 
 .map-overlay.hidden {
