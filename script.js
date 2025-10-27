@@ -52,7 +52,11 @@ const cityBackgrounds = {
 const bgKey = citySelect.options[citySelect.selectedIndex].dataset.bg;
 const newBg = cityBackgrounds[bgKey];
 if (newBg) {
+    // Update both hero and full-page background
     document.documentElement.style.setProperty('--hero-img', `url('${newBg}')`);
+    document.documentElement.style.setProperty('--city-bg', `url('${newBg}')`);
+}
+
 }
 
 // ===============================
