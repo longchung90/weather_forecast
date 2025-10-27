@@ -111,7 +111,7 @@ main {
     bottom: 0;
     min-height: 100vh;
     padding: 2rem 0;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.05) 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
     backdrop-filter: blur(10px);
     opacity: 0;
     transform: translateY(100px);
@@ -371,9 +371,9 @@ main.show {
    ========================= */
 .weather-card {
     position: relative;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
     backdrop-filter: blur(15px);
-    border: 2px solid rgba(255, 255, 255, 0.25);
+    border: 2px solid rgba(255, 255, 255, 0.15);
     border-radius: 16px;
     padding: 2.5rem 1.5rem;
     text-align: center;
@@ -755,12 +755,13 @@ main.show {
 .weather-grid {
     display: flex;
     flex-wrap: nowrap;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: stretch;
     gap: 24px;
     overflow-x: auto;
     scroll-behavior: smooth;
-    padding-bottom: 0.5rem;
+    padding: 0.5rem 1rem;
+    margin: 0 -1rem;
 }
 
 /* =========================
