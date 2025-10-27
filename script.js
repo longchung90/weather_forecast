@@ -85,22 +85,47 @@ getForecastBtn.addEventListener("click", async () => {
     const cityName = citySelect.options[citySelect.selectedIndex].text;
 
     // 🗺️ Update map
-    const mapUrl = `https://static-maps.yandex.ru/1.x/?ll=${lon},${lat}&size=600,400&z=10&l=map&pt=${lon},${lat},pm2rdm`;
-    mapContainer.style.backgroundImage = `url('${mapUrl}')`;
-    mapContainer.classList.add("fade-in");
+    try {
+        const mapUrl = `https://static-maps.yandex.ru/1.x/?ll=${lon},${lat}&size=600,400&z=10&l=map&pt=${lon},${lat},pm2rdm`;
+        console.log("🗺️ Map URL:", mapUrl);
+        mapContainer.style.backgroundImage = `url('${mapUrl}')`;
+        mapContainer.classList.add("fade-in");
+    } catch (mapError) {
+        console.error("❌ Failed to load map:", mapError);
+    }
+
 
     // 🌤️ Fetch forecast
     try {
-        const apiUrl = `https://api.allorigins.win/raw?url=https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
+        // --- Primary + fallback proxy setup ---
+        let apiUrl = `https://corsproxy.io/?https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
         console.log("Fetching weather from:", apiUrl);
 
-        const response = await fetch(apiUrl);
-        console.log("✅ Fetch status:", response.status);
+        let response;
+
+        try {
+            response = await fetch(apiUrl);
+            console.log("Primary proxy status:", response.status);
+
+            // If the main proxy fails (e.g. 403, 404, 408), try fallback
+            if (!response.ok) {
+                console.warn("Primary proxy failed — switching to fallback proxy...");
+                apiUrl = `https://thingproxy.freeboard.io/fetch/https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
+                response = await fetch(apiUrl);
+            }
+        } catch (proxyError) {
+            console.warn("Primary proxy unreachable — retrying with fallback proxy...");
+            apiUrl = `https://thingproxy.freeboard.io/fetch/https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
+            response = await fetch(apiUrl);
+        }
+
+        console.log("✅ Final fetch status:", response.status);
 
         if (!response.ok) throw new Error("Weather API error");
 
         const data = await response.json();
         console.log("✅ Data received:", data);
+
 
         const series = data.dataseries?.slice(0, 7) || [];
         if (series.length === 0) throw new Error("No data returned");
