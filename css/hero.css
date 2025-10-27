@@ -25,6 +25,10 @@
     animation: kenburns 18s ease-out forwards;
 }
 
+.hero::before {
+    transition: opacity 0.8s ease, background-image 1.2s ease;
+}
+
 /* Gradient overlay to keep text readable */
 .hero::after {
     content: "";

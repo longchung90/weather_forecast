@@ -25,9 +25,12 @@ const mapContainer = document.getElementById("mapContainer");
 // ===============================
 // CITY BACKGROUNDS (for future use if you re-enable)
 // ===============================
+// ===============================
+// Backgrounds for Each City
+// ===============================
 const cityBackgrounds = {
-    london: "images/london.jpg",
     paris: "images/paris.jpg",
+    london: "images/london.jpg",
     berlin: "images/berlin.jpg",
     rome: "images/rome.jpg",
     madrid: "images/madrid.jpg",
@@ -35,7 +38,22 @@ const cityBackgrounds = {
     vienna: "images/vienna.jpg",
     prague: "images/prague.jpg",
     budapest: "images/budapest.jpg",
+    warsaw: "images/warsaw.jpg",
+    athens: "images/athens.jpg",
+    lisbon: "images/lisbon.jpg",
+    bucharest: "images/bucharest.jpg",
+    stockholm: "images/stockholm.jpg",
+    helsinki: "images/helsinki.jpg",
+    copenhagen: "images/copenhagen.jpg",
+    oslo: "images/oslo.jpg",
+    dublin: "images/dublin.jpg"
 };
+
+const bgKey = citySelect.options[citySelect.selectedIndex].dataset.bg;
+const newBg = cityBackgrounds[bgKey];
+if (newBg) {
+    document.documentElement.style.setProperty('--hero-img', `url('${newBg}')`);
+}
 
 // ===============================
 // WEATHER GRADIENT COLORS & ICONS
@@ -85,14 +103,13 @@ getForecastBtn.addEventListener("click", async () => {
     const cityName = citySelect.options[citySelect.selectedIndex].text;
 
     // 🗺️ Update map
-    try {
-        const mapUrl = `https://static-maps.yandex.ru/1.x/?ll=${lon},${lat}&size=600,400&z=10&l=map&pt=${lon},${lat},pm2rdm`;
-        console.log("🗺️ Map URL:", mapUrl);
-        mapContainer.style.backgroundImage = `url('${mapUrl}')`;
-        mapContainer.classList.add("fade-in");
-    } catch (mapError) {
-        console.error("❌ Failed to load map:", mapError);
-    }
+    const mapUrl = `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=9&size=600x400&markers=${lat},${lon},lightblue1`;
+    mapContainer.style.backgroundImage = `url('${mapUrl}')`;
+    mapContainer.style.backgroundSize = "cover";
+    mapContainer.style.backgroundPosition = "center";
+    mapContainer.style.backgroundRepeat = "no-repeat";
+    mapContainer.classList.add("fade-in");
+
 
 
     // 🌤️ Fetch forecast

@@ -799,25 +799,22 @@ main {
    ========================= */
 .wind-compass {
     position: relative;
-    width: 60px;
-    height: 60px;
-    margin: 10px auto;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0.6rem auto 0;
+    background: transparent;
 }
 
 .wind-arrow {
     position: absolute;
-    width: 2px;
-    height: 22px;
-    background: gold;
-    top: 8px;
+    top: 50%;
     left: 50%;
-    transform-origin: bottom center;
-    border-radius: 2px;
+    transform-origin: center bottom;
+    transform: translate(-50%, -100%) rotate(0deg);
 }
 
 .wind-arrow::before {
