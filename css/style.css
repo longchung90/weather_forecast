@@ -532,13 +532,16 @@ main {
 }
 
 .wind-arrow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
     width: 4px;
     height: 28px;
     background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
-    transform-origin: center center;
+    transform-origin: 50% 100%;
+    transform: translate(-50%, -100%) rotate(var(--rot, 0deg));
     border-radius: 2px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-    position: relative;
 }
 
 .wind-arrow::before {
