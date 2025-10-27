@@ -251,18 +251,10 @@ getForecastBtn.addEventListener("click", async () => {
 
             // Try multiple map services in order of preference
             const mapSources = [
-                // Google Maps (if API key is available)
-                () => {
-                    const GOOGLE_MAPS_API_KEY = 'YOUR_DOMAIN_RESTRICTED_API_KEY'; 
-                    if (GOOGLE_MAPS_API_KEY && GOOGLE_MAPS_API_KEY !== 'YOUR_DOMAIN_RESTRICTED_API_KEY') {
-                        return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=10&size=600x400&markers=color:red%7Clabel:📍%7C${lat},${lon}&key=${GOOGLE_MAPS_API_KEY}&style=feature:poi|visibility:simplified&style=feature:transit|visibility:off`;
-                    }
-                    return null;
-                },
                 // OpenStreetMap (free, reliable)
                 () => `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=10&size=600x400&markers=${lat},${lon},lightblue&maptype=mapnik`,
-                // Mapbox (alternative)
-                () => `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s-l+000(${lon},${lat})/${lon},${lat},10/600x400?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw`,
+                // Alternative OpenStreetMap server
+                () => `https://maps.geoapify.com/v1/staticmap?style=osm-carto&width=600&height=400&center=lonlat:${lon},${lat}&zoom=10&marker=lonlat:${lon},${lat};color:%23ff0000;size:medium&apiKey=demo`,
                 // Fallback: Static image with coordinates
                 () => `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"><rect width="600" height="400" fill="#e8f4f8"/><text x="300" y="180" text-anchor="middle" font-family="Arial" font-size="16" fill="#666">📍 ${cityName || 'Selected Location'}</text><text x="300" y="210" text-anchor="middle" font-family="Arial" font-size="14" fill="#888">Coordinates: ${lat}, ${lon}</text><text x="300" y="240" text-anchor="middle" font-family="Arial" font-size="12" fill="#aaa">Map service temporarily unavailable</text></svg>`)}`
             ];
