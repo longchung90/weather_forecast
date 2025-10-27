@@ -151,7 +151,9 @@ function crossfadeBackground(newBg) {
                 
                 // Remove overlay after longer transition
                 setTimeout(() => {
-                    document.body.removeChild(overlay);
+                    if (overlay && overlay.parentNode) {
+                        document.body.removeChild(overlay);
+                    }
                 }, 2500);
             }, 100);
             overlay.style.opacity = '1';
@@ -254,62 +256,36 @@ getForecastBtn.addEventListener("click", async () => {
         }, 100);
     }, 300); // Shorter delay for snappier transition
 
-    // ---- Map loading (Multiple map services with fallback) ----
+    // ---- Map loading (Simple Google Maps with authentication) ----
     setTimeout(async () => {
         try {
             mapOverlay.textContent = "Loading map…";
             mapOverlay.classList.remove("hidden");
             mapImage.style.opacity = 0;
 
-            // Try multiple map services in order of preference - using working URLs
-            const mapSources = [
-                // Working OpenStreetMap server
-                () => `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=10&size=600x400&markers=${lat},${lon},red&maptype=mapnik`,
-                // Alternative OSM server
-                () => `http://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=10&size=600x400&markers=${lat},${lon},blue&maptype=mapnik`,
-                // Simple working fallback - direct image URL approach
-                () => `https://via.placeholder.com/600x400/4a90e2/ffffff?text=📍+${cityName}+Map+Loading...`,
-                // Fallback: Static image with coordinates
-                () => `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"><rect width="600" height="400" fill="#e8f4f8"/><text x="300" y="180" text-anchor="middle" font-family="Arial" font-size="16" fill="#666">📍 ${cityName || 'Selected Location'}</text><text x="300" y="210" text-anchor="middle" font-family="Arial" font-size="14" fill="#888">Coordinates: ${lat}, ${lon}</text><text x="300" y="240" text-anchor="middle" font-family="Arial" font-size="12" fill="#aaa">Map service temporarily unavailable</text></svg>`)}`
-            ];
+            // Simple Google Maps Static API - coordinates + pin only
+            // Authentication is handled by your deployment setup
+            const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=10&size=600x400&markers=color:red%7C${lat},${lon}&maptype=roadmap&format=png`;
 
-            let mapLoaded = false;
-            for (let i = 0; i < mapSources.length && !mapLoaded; i++) {
-                try {
-                    const mapUrl = mapSources[i]();
-                    if (!mapUrl) continue;
-
-                    await new Promise((resolve, reject) => {
-                        const testImage = new Image();
-                        const timeout = setTimeout(() => reject(new Error('Timeout')), 5000);
-                        
-                        testImage.onload = () => {
-                            clearTimeout(timeout);
-                            mapImage.onload = () => {
-                                mapOverlay.classList.add("hidden");
-                                mapImage.style.opacity = 1;
-                                mapLoaded = true;
-                            };
-                            mapImage.src = mapUrl;
-                            resolve();
-                        };
-                        
-                        testImage.onerror = () => {
-                            clearTimeout(timeout);
-                            reject(new Error(`Map source ${i + 1} failed`));
-                        };
-                        
-                        testImage.src = mapUrl;
-                    });
-                    
-                    break;
-                } catch (error) {
-                    console.warn(`Map source ${i + 1} failed:`, error.message);
-                    if (i === mapSources.length - 1) {
-                        throw new Error('All map sources failed');
-                    }
-                }
-            }
+            // Simple loading - no complex fallback needed
+            mapImage.onload = () => {
+                mapOverlay.classList.add("hidden");
+                mapImage.style.opacity = 1;
+            };
+            
+            mapImage.onerror = () => {
+                // Simple fallback - just show coordinates
+                mapOverlay.innerHTML = `
+                    <div style="text-align: center; color: #fff; padding: 2rem;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">📍</div>
+                        <div style="font-size: 1.1rem; margin-bottom: 0.5rem;">${cityName}</div>
+                        <div style="font-size: 0.9rem; color: #ccc;">Lat: ${lat}, Lon: ${lon}</div>
+                    </div>
+                `;
+                mapOverlay.classList.remove("hidden");
+            };
+            
+            mapImage.src = mapUrl;
         } catch (err) {
             console.error("❌ All map services failed:", err);
             mapOverlay.innerHTML = `
