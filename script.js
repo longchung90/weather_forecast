@@ -171,8 +171,8 @@ getForecastBtn.addEventListener("click", async () => {
         hero.classList.add('fade-out');
         setTimeout(() => {
             mainContent.classList.add("show");
-            weatherGrid.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 1000);
+
 
     } catch (err) {
         console.error("❌ Weather fetch error:", err);

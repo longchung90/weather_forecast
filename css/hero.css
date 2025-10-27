@@ -13,6 +13,18 @@
     isolation: isolate;
 }
 
+/* ✅ Only one moving layer (no duplicate image on body) */
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--hero-img, url('../images/eu.jpg')) center/cover no-repeat;
+    opacity: 1;
+    transition: opacity 0.8s ease, background-image 1.2s ease;
+    z-index: 0;
+    animation: kenburns 18s ease-out forwards;
+}
+
 /* Gradient overlay to keep text readable */
 .hero::after {
     content: "";
@@ -26,16 +38,7 @@
     pointer-events: none;
 }
 
-/* ✅ Only one moving layer (no duplicate image on body) */
-.hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: url('../images/eu.jpg') center/cover no-repeat;
-    opacity: 1;
-    transition: opacity 0.8s ease, background-image 1.2s ease;
-    z-index: 0;
-}
+
 
 /* Ken Burns motion (slower & lighter) */
 @keyframes kenburns {
@@ -90,6 +93,19 @@
     transform: scale(1.05);
     transition: opacity 1s ease, transform 1.2s ease;
     pointer-events: none;
+}
+
+main {
+    opacity: 0;
+    transform: translateY(80px);
+    transition: opacity 1s ease, transform 1.2s ease;
+    pointer-events: none;
+}
+
+main.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }
 
 /* Title + Subtitle */
