@@ -166,3 +166,26 @@ getForecastBtn.addEventListener("click", async () => {
         mapOverlay.textContent = "Weather data unavailable.";
         mapOverlay.classList.remove("hidden");
     }
+    // ===============================
+    // Dynamic City Background + Title
+    // ===============================
+    const citySelect = document.getElementById("citySelect");
+    const heroTitle = document.getElementById("heroTitle");     // assumes you already have this
+    const forecastHeading = document.getElementById("forecastHeading"); // optional if exists
+
+    citySelect.addEventListener("change", () => {
+        const selected = citySelect.options[citySelect.selectedIndex];
+        const newBg = selected.dataset.img;
+        const cityName = selected.textContent;
+        const flag = selected.dataset.flag;
+
+        // ✅ Update background
+        if (newBg) {
+            document.documentElement.style.setProperty("--city-bg", `url('${newBg}')`);
+        }
+
+        // ✅ Update hero + forecast titles
+        if (heroTitle) heroTitle.textContent = `${cityName} ${flag}`;
+        if (forecastHeading) forecastHeading.textContent = `7-Day Forecast for ${cityName} ${flag}`;
+    });
+});
