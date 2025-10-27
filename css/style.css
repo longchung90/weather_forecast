@@ -31,11 +31,10 @@ body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: var(--city-bg, url('images/eu.jpg')) center/cover no-repeat;
+    background: var(--city-bg, url('../images/eu.jpg')) center/cover no-repeat;
     z-index: -1;
-    transition: background-image 1s ease-in-out, opacity 0.8s ease;
     opacity: 0.9;
-    filter: brightness(0.9);
+    transition: background-image 1s ease, opacity 0.8s ease;
 }
 
 /* ---- Base / Reset ---- */

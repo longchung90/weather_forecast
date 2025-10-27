@@ -89,26 +89,31 @@ getForecastBtn.addEventListener("click", async () => {
     }
 
     // ---- Weather ----
+    // ---- Weather ----
     try {
-        let apiUrl = `https://corsproxy.io/?https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
-        let response;
-        try {
-            response = await fetch(apiUrl);
-            if (!response.ok) {
-                apiUrl = `https://thingproxy.freeboard.io/fetch/https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
-                response = await fetch(apiUrl);
-            }
-        } catch {
+        // ✅ Reliable CORS proxy (allorigins)
+        let apiUrl = `https://api.allorigins.win/raw?url=https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
+
+        let response = await fetch(apiUrl);
+
+        // If proxy fails, fallback to backup
+        if (!response.ok) {
             apiUrl = `https://thingproxy.freeboard.io/fetch/https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
             response = await fetch(apiUrl);
         }
+
         if (!response.ok) throw new Error("Weather API error");
 
         const data = await response.json();
-        const series = data.dataseries?.slice(0, 7) || [];
+
+        // Validate data before using it
+        const series = Array.isArray(data.dataseries) ? data.dataseries.slice(0, 7) : [];
         if (series.length === 0) throw new Error("No data returned");
 
+        // Clear old forecast
         weatherGrid.innerHTML = "";
+
+        // Build forecast cards
         series.forEach((day, i) => {
             const card = document.createElement("div");
             card.className = "weather-card";
@@ -117,9 +122,10 @@ getForecastBtn.addEventListener("click", async () => {
             const condition = (day.weather || "clear").toLowerCase();
             const iconMap = {
                 clear: "☀️", pcloudy: "⛅", mcloudy: "🌤️", cloudy: "☁️",
-                humid: "🌫️", lightrain: "🌦️", rain: "🌧️", snow: "❄️", tsrain: "⛈️",
+                humid: "🌫️", lightrain: "🌦️", rain: "🌧️", snow: "❄️", tsrain: "⛈️"
             };
             const icon = iconMap[condition] || "☀️";
+
             const windDir = day.wind10m?.direction || "N";
             const windSpeed = day.wind10m?.speed || 0;
 
@@ -131,32 +137,32 @@ getForecastBtn.addEventListener("click", async () => {
             const rot = getWindRotation(windDir);
 
             card.innerHTML = `
-        <div class="weather-day">${weekday}</div>
-        <div class="weather-icon">${icon}</div>
-        <div class="weather-condition">${condition}</div>
-        <div class="weather-temp">${Math.round(day.temp2m)}°C</div>
-        <div class="weather-date">${dateStr}</div>
-        <div class="wind-compass">
-          <div class="wind-arrow" style="--rot:${rot}deg"></div>
-          <span class="wind-label n">N</span>
-          <span class="wind-label s">S</span>
-          <span class="wind-label e">E</span>
-          <span class="wind-label w">W</span>
-        </div>
-        <div class="wind-speed-text">${windSpeed} m/s</div>
-      `;
+      <div class="weather-day">${weekday}</div>
+      <div class="weather-icon">${icon}</div>
+      <div class="weather-condition">${condition}</div>
+      <div class="weather-temp">${Math.round(day.temp2m)}°C</div>
+      <div class="weather-date">${dateStr}</div>
+      <div class="wind-compass">
+        <div class="wind-arrow" style="--rot:${rot}deg"></div>
+        <span class="wind-label n">N</span>
+        <span class="wind-label s">S</span>
+        <span class="wind-label e">E</span>
+        <span class="wind-label w">W</span>
+      </div>
+      <div class="wind-speed-text">${windSpeed} m/s</div>
+    `;
             weatherGrid.appendChild(card);
         });
 
-        // Transition: hero → forecast (decoupled from map load)
-        document.querySelector('.hero').classList.add('fade-out');
+        // ✅ Transition: hero → forecast
+        document.querySelector(".hero").classList.add("fade-out");
         setTimeout(() => {
             mainContent.classList.add("show");
             weatherGrid.scrollIntoView({ behavior: "smooth" });
-        }, 1000);
+        }, 800);
 
     } catch (err) {
         console.error("❌ Weather fetch error:", err);
-        alert("Unable to load weather data. Please try again later.");
+        mapOverlay.textContent = "Weather data unavailable.";
+        mapOverlay.classList.remove("hidden");
     }
-});
