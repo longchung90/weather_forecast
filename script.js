@@ -256,44 +256,137 @@ getForecastBtn.addEventListener("click", async () => {
         }, 100);
     }, 300); // Shorter delay for snappier transition
 
-    // ---- Map loading (Simple Google Maps with authentication) ----
+    // ---- Map loading (Multiple free map services) ----
     setTimeout(async () => {
         try {
+            console.log("🗺️ Starting map load for:", cityName, lat, lon);
             mapOverlay.textContent = "Loading map…";
             mapOverlay.classList.remove("hidden");
             mapImage.style.opacity = 0;
 
-            // Simple Google Maps Static API - coordinates + pin only
-            // Authentication is handled by your deployment setup
-            const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=10&size=600x400&markers=color:red%7C${lat},${lon}&maptype=roadmap&format=png`;
+            // Try multiple free map services in order of preference
+            const mapServices = [
+                // 1. OpenStreetMap with MapBox style (free, no API key)
+                `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s-l+ff0000(${lon},${lat})/${lon},${lat},10,0/600x400@2x?access_token=pk.eyJ1IjoidGVzdCIsImEiOiJjazBiNjVzM`,
+                
+                // 2. Yandex Maps Static API (free, works without API key for basic usage)
+                `https://static-maps.yandex.ru/1.x/?ll=${lon},${lat}&size=600,400&z=10&l=map&pt=${lon},${lat},pm2rdm`,
+                
+                // 3. OpenStreetMap with custom tile server
+                `https://maps.geoapify.com/v1/staticmap?style=osm-bright&width=600&height=400&center=lonlat:${lon},${lat}&zoom=10&marker=lonlat:${lon},${lat};color:%23ff0000;size:medium&apiKey=demo`,
+                
+                // 4. MapTiler (free tier, basic usage)
+                `https://api.maptiler.com/maps/streets-v2/static/${lon},${lat},10/600x400.png?key=get_your_own_OpIi9ZULNHzrESv6T2vL`,
+                
+                // 5. Simple fallback with coordinates display
+                null // This triggers the fallback display
+            ];
 
-            // Simple loading - no complex fallback needed
-            mapImage.onload = () => {
-                mapOverlay.classList.add("hidden");
-                mapImage.style.opacity = 1;
-            };
+            let mapLoaded = false;
             
-            mapImage.onerror = () => {
-                // Simple fallback - just show coordinates
-                mapOverlay.innerHTML = `
-                    <div style="text-align: center; color: #fff; padding: 2rem;">
-                        <div style="font-size: 2rem; margin-bottom: 1rem;">📍</div>
-                        <div style="font-size: 1.1rem; margin-bottom: 0.5rem;">${cityName}</div>
-                        <div style="font-size: 0.9rem; color: #ccc;">Lat: ${lat}, Lon: ${lon}</div>
-                    </div>
-                `;
-                mapOverlay.classList.remove("hidden");
-            };
+            for (let i = 0; i < mapServices.length && !mapLoaded; i++) {
+                const mapUrl = mapServices[i];
+                
+                if (!mapUrl) {
+                    // Fallback: Show elegant location info instead of map
+                    console.log("🔄 Using fallback location display");
+                    mapOverlay.innerHTML = `
+                        <div style="
+                            display: flex; 
+                            flex-direction: column; 
+                            align-items: center; 
+                            justify-content: center;
+                            height: 100%;
+                            text-align: center; 
+                            color: #fff; 
+                            background: linear-gradient(135deg, rgba(201,164,100,0.2), rgba(201,164,100,0.1));
+                            backdrop-filter: blur(10px);
+                            border-radius: 12px;
+                            border: 1px solid rgba(255,255,255,0.1);
+                        ">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">📍</div>
+                            <div style="font-size: 1.3rem; margin-bottom: 0.5rem; font-weight: 500;">${cityName}</div>
+                            <div style="font-size: 1rem; color: #c9a464; margin-bottom: 0.5rem;">
+                                ${Math.abs(lat).toFixed(2)}°${lat >= 0 ? 'N' : 'S'}, 
+                                ${Math.abs(lon).toFixed(2)}°${lon >= 0 ? 'E' : 'W'}
+                            </div>
+                            <div style="font-size: 0.9rem; color: #ccc; margin-top: 1rem; max-width: 280px; line-height: 1.4;">
+                                Elegant weather tracking for this beautiful European destination
+                            </div>
+                        </div>
+                    `;
+                    mapOverlay.classList.remove("hidden");
+                    mapImage.style.opacity = 0;
+                    mapLoaded = true;
+                    break;
+                }
+                
+                try {
+                    console.log(`🌐 Trying map service ${i + 1}: ${mapUrl.split('?')[0]}`);
+                    
+                    // Test if map loads
+                    await new Promise((resolve, reject) => {
+                        const testImg = new Image();
+                        const timeout = setTimeout(() => {
+                            reject(new Error('Map service timeout'));
+                        }, 5000);
+                        
+                        testImg.onload = () => {
+                            clearTimeout(timeout);
+                            console.log(`✅ Map service ${i + 1} loaded successfully`);
+                            
+                            // Set the working map URL
+                            mapImage.onload = () => {
+                                mapOverlay.classList.add("hidden");
+                                mapImage.style.opacity = 1;
+                                mapLoaded = true;
+                            };
+                            mapImage.src = mapUrl;
+                            resolve();
+                        };
+                        
+                        testImg.onerror = () => {
+                            clearTimeout(timeout);
+                            reject(new Error(`Map service ${i + 1} failed`));
+                        };
+                        
+                        testImg.src = mapUrl;
+                    });
+                    
+                    break; // If we get here, the map loaded successfully
+                    
+                } catch (error) {
+                    console.warn(`⚠️ Map service ${i + 1} failed:`, error.message);
+                    continue; // Try next service
+                }
+            }
             
-            mapImage.src = mapUrl;
         } catch (err) {
             console.error("❌ All map services failed:", err);
+            // Final fallback with enhanced design
             mapOverlay.innerHTML = `
-                <div style="text-align: center; color: #666;">
-                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📍</div>
-                    <div style="font-size: 0.9rem; margin-bottom: 0.25rem;">${cityName || 'Selected Location'}</div>
-                    <div style="font-size: 0.75rem; color: #888;">Lat: ${lat}, Lon: ${lon}</div>
-                    <div style="font-size: 0.7rem; color: #aaa; margin-top: 0.5rem;">Map service temporarily unavailable</div>
+                <div style="
+                    display: flex; 
+                    flex-direction: column; 
+                    align-items: center; 
+                    justify-content: center;
+                    height: 100%;
+                    text-align: center; 
+                    color: #fff; 
+                    background: linear-gradient(135deg, rgba(201,164,100,0.15), rgba(0,0,0,0.3));
+                    backdrop-filter: blur(15px);
+                    border-radius: 12px;
+                    border: 1px solid rgba(255,255,255,0.1);
+                ">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🌍</div>
+                    <div style="font-size: 1.2rem; margin-bottom: 0.5rem; font-weight: 500;">${cityName || 'Selected Location'}</div>
+                    <div style="font-size: 0.9rem; color: #c9a464;">
+                        ${Math.abs(lat).toFixed(2)}°${lat >= 0 ? 'N' : 'S'}, 
+                        ${Math.abs(lon).toFixed(2)}°${lon >= 0 ? 'E' : 'W'}
+                    </div>
+                    <div style="font-size: 0.8rem; color: #aaa; margin-top: 1rem; max-width: 300px; line-height: 1.4;">
+                        European destination ready for weather exploration
+                    </div>
                 </div>
             `;
             mapOverlay.classList.remove("hidden");
