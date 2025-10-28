@@ -1,0 +1,27 @@
+{
+    "name": "european-weather-explorer",
+    "version": "1.0.0",
+    "description": "7-Day European Weather Forecast with Interactive Maps",
+    "main": "script.js",
+    "scripts": {
+        "build": "node build.js",
+        "start": "node build.js && cd dist && python3 -m http.server 8000",
+        "dev": "python3 -m http.server 8000"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/longchung90/weather_forecast.git"
+    },
+    "keywords": [
+        "weather",
+        "forecast",
+        "europe",
+        "maps",
+        "vanilla-javascript"
+    ],
+    "author": "longchung90",
+    "license": "MIT",
+    "engines": {
+        "node": ">=14.0.0"
+    }
+}
