@@ -692,10 +692,7 @@ gmp-map {
    ========================= */
 
 
-#mapOverlay,
-#mapImage {
-    display: none !important;
-}
+
 
 gmp-map {
     display: block;

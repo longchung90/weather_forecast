@@ -6,8 +6,7 @@ const citySelect = document.getElementById("citySelect");
 const mainContent = document.querySelector("main");
 //=====MAP ELEMENTS======//
 const mapsKey = process.env.MY_WEATHER_MAP_KEY;
-const getForecastBtn = document.getElementById("getForecastBtn");
-const citySelect = document.getElementById("citySelect");
+
 const forecastCityName = document.getElementById("forecastCityName");
 const map = document.querySelector("gmp-map");
 const marker = document.querySelector("gmp-advanced-marker")
@@ -15,7 +14,6 @@ const marker = document.querySelector("gmp-advanced-marker")
 const weatherGrid = document.getElementById("weatherGrid");
 const forecastHeading = document.getElementById("forecastHeading");
 const forecastCityIcon = document.getElementById("forecastCityIcon");
-const forecastCityName = document.getElementById("forecastCityName");
 const hero = document.querySelector(".hero");
 
 const cityBackgrounds = {
