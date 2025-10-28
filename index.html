@@ -27,11 +27,6 @@
     <!-- ✅ API key loader must be BEFORE any map tags -->
     <gmpx-api-loader key="GOOGLE_MAPS_API_KEY_PLACEHOLDER"></gmpx-api-loader>
 
-    app.get("/", (req, res) => {
-    let html = fs.readFileSync("./public/index.html", "utf8");
-    html = html.replace("GOOGLE_MAPS_API_KEY_PLACEHOLDER", process.env.MY_WEATHER_MAP_KEY);
-    res.send(html);
-    });
 
     <header class="hero">
         <h1>European Weather Explorer</h1>
@@ -66,15 +61,6 @@
             <h1>European Weather Explorer</h1>
             <p>Discover the weather across iconic European cities</p>
         </header>
-
-        </head>
-        <!-- Fonts & Icons -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&display=swap"
-            rel="stylesheet">
-        <link rel="icon" type="image/jpeg" href="./favicon.jpg">
-
-        </head>
 
         <body>
             <!-- =========================
