@@ -1,0 +1,25 @@
+{
+  "name": "weather_forecast",
+  "version": "1.0.0",
+  "description": "A beautiful, responsive vanilla JavaScript weather application that provides 7-day forecasts for iconic European cities. Built with pure HTML, CSS, and JavaScript - no frameworks or build process required.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/longchung90/weather_forecast.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/longchung90/weather_forecast/issues"
+  },
+  "homepage": "https://github.com/longchung90/weather_forecast#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
+  }
+}

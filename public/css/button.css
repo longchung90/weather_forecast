@@ -16,32 +16,40 @@
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: transform .2s ease, box-shadow .25s ease, background .3s ease;
+    transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.3s ease;
     user-select: none;
 }
 
-/* Gold variant */
+/* =========================
+   Gold Variant
+   ========================= */
 .btn-gold {
-    background: linear-gradient(180deg, var(--gold) 0%, var(--gold-700) 100%);
+    background: linear-gradient(180deg, #c9a464 0%, #b89351 100%);
     color: #0b1420;
-    box-shadow: 0 8px 22px rgba(201, 164, 100, 0.45);
+    font-weight: 600;
+    font-size: 1.05rem;
+    padding: 0.8rem 1.6rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(201, 164, 100, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-/* Hover lift */
+/* Hover */
 .btn-gold:hover {
-    background: linear-gradient(180deg, #e3c98a 0%, #c9a464 100%);
     transform: translateY(-2px);
-    box-shadow: 0 14px 32px rgba(201, 164, 100, 0.55);
+    box-shadow: 0 10px 25px rgba(201, 164, 100, 0.55);
 }
 
-/* Active press */
+/* Active / pressed state */
 .btn-gold:active {
     transform: translateY(0);
     background: linear-gradient(180deg, var(--gold-700) 0%, var(--gold-800) 100%);
     box-shadow: 0 5px 12px rgba(201, 164, 100, 0.35);
 }
 
-/* Glow ring */
+/* =========================
+   Glow Ring Effect
+   ========================= */
 .btn-gold::after {
     content: "";
     position: absolute;
@@ -49,7 +57,7 @@
     border-radius: inherit;
     box-shadow: 0 0 0 0 rgba(255, 221, 150, 0.4);
     opacity: 0;
-    transition: opacity .3s ease, box-shadow .3s ease;
+    transition: opacity 0.3s ease, box-shadow 0.3s ease;
     pointer-events: none;
 }
 
@@ -58,12 +66,14 @@
     box-shadow: 0 0 12px 3px rgba(255, 221, 150, 0.25);
 }
 
-/* Icon animation */
+/* =========================
+   Icon Motion
+   ========================= */
 .btn svg {
     width: 16px;
     height: 16px;
     pointer-events: none;
-    transition: transform .2s ease;
+    transition: transform 0.2s ease;
 }
 
 .btn:hover svg {

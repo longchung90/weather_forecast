@@ -1036,3 +1036,13 @@ gmp-map {
         transform: translateY(0);
     }
 }
+
+gmp-map {
+    display: block;
+    width: 100%;
+    height: 420px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+}

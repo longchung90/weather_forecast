@@ -79,29 +79,23 @@ function updateCitySelection() {
 }
 
 // ===== Google Maps init =====
-function initMap() {
-    map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 48.8566, lng: 2.3522 },
-        zoom: 6,
-        mapId: "DEMO_MAP_ID"
-    });
 
-    marker = new google.maps.Marker({
-        position: { lat: 48.8566, lng: 2.3522 },
-        map,
-        title: "Paris"
-    });
-}
-window.initMap = initMap;
+function initMap(lat = 48.85, lon = 2.35) {
+    const mapEl = document.querySelector("gmp-map");
+    if (!mapEl) return;
 
-// ===== Update Map Function =====
-function updateMap(lat, lon, cityName) {
-    if (!map || !marker) return;
-    map.setCenter({ lat, lng: lon });
-    map.setZoom(8);
-    marker.setPosition({ lat, lng: lon });
-    marker.setTitle(cityName);
+    // Set new map center and zoom
+    mapEl.setAttribute("center", `${lat},${lon}`);
+    mapEl.setAttribute("zoom", "5");
+
+    // Update marker position
+    const marker = document.querySelector("#marker");
+    if (marker) marker.setAttribute("position", `${lat},${lon}`);
 }
+window.addEventListener("load", () => {
+    initMap();
+    console.log("🌍 Google Map API initialized");
+});
 
 // ===== Event Listeners =====
 citySelect.addEventListener("change", updateCitySelection);
