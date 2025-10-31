@@ -77,6 +77,25 @@
 
     <!========================= MAIN CONTENT=========================-->
     <main>
+        <section id="forecastSection" class="forecast-section hidden">
+            <!-- ✅ Correct: only one section, starts hidden -->
+            <h2 id="forecastHeading" class="forecast-heading">
+                <span id="forecastCityIcon">🌍</span>
+                <span id="forecastCityName" class="forecast-city-name">Select a City</span>
+            </h2>
+
+            <div id="weatherGrid" class="forecast-grid"></div>
+
+            <!-- Google Map -->
+            <div id="map" class="map-container">
+                <gmp-map center="48.85,2.35" zoom="4" map-id="weatherMap">
+                    <gmp-advanced-marker id="marker" position="48.85,2.35"></gmp-advanced-marker>
+                </gmp-map>
+            </div>
+        </section>
+    </main>
+
+    <main>
         <section id="forecastSection" class="forecast-section">
             <!-- ✅ Fixed: Removed duplicate ID -->
             <h2 id="forecastHeading" class="forecast-heading">
@@ -93,6 +112,9 @@
                 </gmp-map>
             </div>
         </section>
+
+        <section id="forecastSection" class="forecast-section hidden"></section>
+
     </main>
 
     <!-- =========================

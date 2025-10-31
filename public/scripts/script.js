@@ -255,17 +255,23 @@ async function handleGetForecast() {
     setLoadingState(true);
 
     try {
+        // ✅ 1. Update the city name
         if (elements.forecastCityName) {
             elements.forecastCityName.textContent = cityName;
         }
 
+        // ✅ 2. Show the forecast section (reveal map, icons, etc.)
+        const forecastSection = document.getElementById("forecastSection");
+        if (forecastSection) {
+            forecastSection.classList.remove("hidden");
+            forecastSection.classList.add("visible");
+        }
+
+        // ✅ 3. Initialize map and fetch weather
         initMap(parseFloat(lat), parseFloat(lon));
         await fetchWeather(lat, lon);
 
-        if (elements.mainContent) {
-            elements.mainContent.classList.add("show");
-        }
-
+        // ✅ 4. Fade out hero section once data is ready
         if (elements.hero) {
             elements.hero.classList.add("fade-out");
         }
@@ -276,6 +282,7 @@ async function handleGetForecast() {
         setLoadingState(false);
     }
 }
+
 
 // ===== 12. INITIALIZATION =====
 // Show loading state
