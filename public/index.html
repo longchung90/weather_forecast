@@ -75,104 +75,118 @@
 <button class="btn btn-secondary">Cancel</button>
 <button class="btn btn-gold btn-sm">Save</button>
 
+ =========================
+     LOADING OVERLAY
+     ========================= -->
+    <div id="loadingOverlay">
+        <div class="loading-text">Loading map and forecast...</div>
+    </div>
+    </div>
+
+
     <!========================= MAIN CONTENT=========================-->
-    <main>
-        <section id="forecastSection" class="forecast-section hidden">
-            <!-- ✅ Correct: only one section, starts hidden -->
-            <h2 id="forecastHeading" class="forecast-heading">
-                <span id="forecastCityIcon">🌍</span>
-                <span id="forecastCityName" class="forecast-city-name">Select a City</span>
-            </h2>
+        <main>
+            <section id="forecastSection" class="forecast-section hidden">
+                <!-- ✅ Correct: only one section, starts hidden -->
+                <h2 id="forecastHeading" class="forecast-heading">
+                    <span id="forecastCityIcon">🌍</span>
+                    <span id="forecastCityName" class="forecast-city-name">Select a City</span>
+                </h2>
 
-            <div id="weatherGrid" class="forecast-grid"></div>
+                <div id="weatherGrid" class="forecast-grid"></div>
 
-            <!-- Google Map -->
-            <div id="map" class="map-container">
-                <gmp-map center="48.85,2.35" zoom="4" map-id="weatherMap">
-                    <gmp-advanced-marker id="marker" position="48.85,2.35"></gmp-advanced-marker>
-                </gmp-map>
+                <!-- Google Map -->
+                <div id="map" class="map-container">
+                    <gmp-map center="48.85,2.35" zoom="4" map-id="weatherMap">
+                        <gmp-advanced-marker id="marker" position="48.85,2.35"></gmp-advanced-marker>
+                    </gmp-map>
+                </div>
+            </section>
+        </main>
+
+        <main>
+            <section id="forecastSection" class="forecast-section">
+                <!-- ✅ Fixed: Removed duplicate ID -->
+                <h2 id="forecastHeading" class="forecast-heading">
+                    <span id="forecastCityIcon">🌍</span>
+                    <span id="forecastCityName" class="forecast-city-name">Select a City</span>
+                </h2>
+
+                <div id="weatherGrid" class="forecast-grid"></div>
+
+                <!-- Google Map -->
+                <div id="map" class="map-container">
+                    <gmp-map center="48.85,2.35" zoom="4" map-id="midnight-gold-map">
+                        <gmp-advanced-marker id="marker" position="48.85,2.35"></gmp-advanced-marker>
+                    </gmp-map>
+                </div>
+            </section>
+
+            <section id="forecastSection" class="forecast-section hidden"></section>
+
+        </main>
+
+        <!-- =========================
+     FOOTER (Midnight + Gold)
+     ========================= -->
+        <footer class="footer">
+            <div class="footer-inner">
+                <p class="footer-text">© 2025 Long Hoa Chung | European Weather Explorer</p>
+
+                <div class="footer-links">
+                    <a href="https://github.com/longchung90" target="_blank" aria-label="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/long-hoa-chung/" target="_blank" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="hhttps://www.coursera.org/learner/longchung/" target="_blank" aria-label="Coursera">
+                        <i class="fas fa-graduation-cap"></i>
+                    </a>
+                    <a href="https://lcportfolio.org" target="_blank" aria-label="Portfolio">
+                        <i class="fas fa-globe"></i>
+                    </a>
+                </div>
             </div>
-        </section>
-    </main>
+        </footer>
 
-    <main>
-        <section id="forecastSection" class="forecast-section">
-            <!-- ✅ Fixed: Removed duplicate ID -->
-            <h2 id="forecastHeading" class="forecast-heading">
-                <span id="forecastCityIcon">🌍</span>
-                <span id="forecastCityName" class="forecast-city-name">Select a City</span>
-            </h2>
 
-            <div id="weatherGrid" class="forecast-grid"></div>
+        - ✅ Load configuration and Google Maps API dynamically -->
+        <script>
+            async function loadApp() {
+                try {
+                    // Get API key from server
+                    const response = await fetch('/api/config');
+                    const config = await response.json();
 
-            <!-- Google Map -->
-            <div id="map" class="map-container">
-                <gmp-map center="48.85,2.35" zoom="4" map-id="weatherMap">
-                    <gmp-advanced-marker id="marker" position="48.85,2.35"></gmp-advanced-marker>
-                </gmp-map>
-            </div>
-        </section>
+                    // Load Google Maps API dynamically
+                    const mapsScript = document.createElement('script');
+                    mapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsApiKey}&libraries=maps,marker&v=beta&callback=initGoogleMaps`;
+                    mapsScript.async = true;
+                    mapsScript.defer = true;
+                    document.head.appendChild(mapsScript);
 
-        <section id="forecastSection" class="forecast-section hidden"></section>
+                    // Load your app logic
+                    const appScript = document.createElement('script');
+                    appScript.src = 'scripts/script.js';
+                    document.body.appendChild(appScript);
+                } catch (error) {
+                    console.error('Failed to load app:', error);
 
-    </main>
-
-    <!-- =========================
-         FOOTER
-         ========================= -->
-    <footer class="footer">
-        <p>© 2025 Long Chung | European Weather Explorer</p>
-    </footer>
-
-    <!-- ✅ Load app dynamically with API key -->
-    <script>
-        // Global function for Google Maps callback
-        window.googleMapsLoaded = false;
-        window.initGoogleMaps = function () {
-            window.googleMapsLoaded = true;
-            console.log('🗺️ Google Maps API loaded successfully');
-
-            // Initialize your app after Maps API is loaded
-            if (window.initializeApp) {
-                window.initializeApp();
+                    // Fallback: load app without Google Maps
+                    const appScript = document.createElement('script');
+                    appScript.src = 'scripts/script.js';
+                    document.body.appendChild(appScript);
+                }
             }
-        };
 
-        // Load configuration and Google Maps API
-        async function loadApp() {
-            try {
-                // Get API key from server
-                const response = await fetch('/api/config');
-                const config = await response.json();
-
-                // Load Google Maps API
-                const mapsScript = document.createElement('script');
-                mapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsApiKey}&libraries=maps,marker&v=beta&callback=initGoogleMaps`;
-                mapsScript.async = true;
-                mapsScript.defer = true;
-                document.head.appendChild(mapsScript);
-
-                // Load your app script
-                const appScript = document.createElement('script');
-                appScript.src = 'scripts/script.js';
-                document.body.appendChild(appScript);
-
-            } catch (error) {
-                console.error('Failed to load app:', error);
-                // Fallback: load app without Google Maps
-                const appScript = document.createElement('script');
-                appScript.src = 'scripts/script.js';
-                document.body.appendChild(appScript);
+            // Start loading when page is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadApp);
+            } else {
+                loadApp();
             }
-        }
-
-        // Start loading when page is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', loadApp);
-        } else {
-            loadApp();
-        }
-    </script>
+        </script>
 </body>
 
 </html>

@@ -49,6 +49,7 @@ const elements = {
     weatherGrid: document.getElementById("weatherGrid"),
     forecastHeading: document.getElementById("forecastHeading"),
     forecastCityIcon: document.getElementById("forecastCityIcon"),
+    mapContainer: document.querySelector(".map-container"),
     hero: document.querySelector(".hero")
 };
 
@@ -163,20 +164,32 @@ function updateCitySelection() {
 
 
 //======8. MAP==================//
-function initMap(lat = CONFIG.DEFAULT_LAT, lon = CONFIG.DEFAULT_LON) {
+// ===============================
+//  Google Maps Dynamic Initialization
+// ===============================
+let map;
+let marker;
+
+function initMap(lat = 48.85, lon = 2.35, zoomLevel = 8) {
     const mapEl = document.querySelector("gmp-map");
+
     if (!mapEl) {
-        console.warn('Map element not found');
+        console.warn("Map element not found");
         return;
     }
 
+    // Set attributes for the gmp-map Web Component
     mapEl.setAttribute("center", `${lat},${lon}`);
-    mapEl.setAttribute("zoom", "5");
+    mapEl.setAttribute("zoom", zoomLevel.toString());
 
-    const markerEl = document.querySelector("#marker");
-    if (markerEl) {
-        markerEl.setAttribute("position", `${lat},${lon}`);
+    // Update or create marker
+    let markerEl = document.querySelector("#marker");
+    if (!markerEl) {
+        markerEl = document.createElement("gmp-advanced-marker");
+        markerEl.id = "marker";
+        mapEl.appendChild(markerEl);
     }
+    markerEl.setAttribute("position", `${lat},${lon}`);
 }
 
 // ===============================
@@ -361,8 +374,7 @@ async function handleGetForecast() {
         }
 
         // ✅ 3. Initialize map and fetch weather
-        initMap(parseFloat(lat), parseFloat(lon));
-        await fetchWeather(lat, lon);
+        initMap(parseFloat(lat), parseFloat(lon), 9); // zoom=9 is great for cities
 
         // ✅ 4. Fade out hero section once data is ready
         if (elements.hero) {
@@ -417,13 +429,18 @@ async function initializeApp() {
 window.initializeApp = initializeApp;
 
 // Only auto-initialize if Google Maps is already loaded
-if (window.googleMapsLoaded) {
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeApp);
-    } else {
-        initializeApp();
+function initializeApp() {
+    console.log("✅ App initialized");
+
+    const overlay = document.getElementById("loadingOverlay");
+    if (overlay) {
+        overlay.classList.add("hidden");
     }
+
+    // ... your existing initialization code ...
 }
+
+
 // ===== 13. APP START =====
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeApp);
