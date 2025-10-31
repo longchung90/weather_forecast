@@ -10,9 +10,7 @@
   },
   "engines": {
     "node": ">=16.0.0"
-  }
-}
-  {
+  },
   "scripts": {
     "build": "npm install",
     "start": "node server.js"
