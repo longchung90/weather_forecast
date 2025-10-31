@@ -50,6 +50,148 @@ body {
     position: relative;
 }
 
+/* =========================
+   HERO SECTION (Enhanced Brighter + Floating)
+   ========================= */
+
+.hero {
+    position: relative;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    overflow: hidden;
+    isolation: isolate;
+    transition: opacity 1s ease, transform 1.2s ease;
+    z-index: 1;
+}
+
+/* Background (brighter with depth) */
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--hero-img, url('../images/eu.jpg')) center/cover no-repeat;
+    filter: brightness(1.25) contrast(1.1) saturate(1.1);
+    animation: kenburns 18s ease-out forwards;
+    opacity: 1;
+    transition: opacity 0.8s ease, background-image 1.2s ease;
+    z-index: 0;
+}
+
+/* Softer dark overlay */
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(80% 70% at 50% 40%, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.45) 100%);
+    z-index: 1;
+}
+
+/* Content block */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    max-width: 900px;
+    padding: 0 20px;
+    display: grid;
+    gap: 26px;
+    justify-items: center;
+    animation: fadeFloat 1.2s ease both 300ms;
+}
+
+/* Floating title */
+.hero-title {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(3.4rem, 6vw, 5rem);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-shadow: 0 6px 30px rgba(0, 0, 0, 0.6);
+    color: #fff;
+    line-height: 1.1;
+    animation: glowPulse 3s ease-in-out infinite alternate;
+}
+
+.hero-sub {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(1.3rem, 2.3vw, 1.6rem);
+    font-weight: 400;
+    color: #e0d8c7;
+    max-width: 780px;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.45);
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* Transparent glowing button */
+.btn-gold {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1.8px solid var(--gold);
+    color: var(--gold);
+    font-size: 1.2rem;
+    padding: 0.9em 2.2em;
+    border-radius: var(--radius);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 25px rgba(201, 164, 100, 0.25);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-gold:hover {
+    background: rgba(201, 164, 100, 0.15);
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 0 35px rgba(201, 164, 100, 0.4);
+}
+
+/* Animation for gentle float-in */
+@keyframes fadeFloat {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Golden pulse around the title */
+@keyframes glowPulse {
+    from {
+        text-shadow: 0 0 12px rgba(201, 164, 100, 0.3),
+            0 0 40px rgba(201, 164, 100, 0.15);
+    }
+
+    to {
+        text-shadow: 0 0 20px rgba(201, 164, 100, 0.55),
+            0 0 60px rgba(201, 164, 100, 0.25);
+    }
+}
+
+/* Ken Burns background motion */
+@keyframes kenburns {
+    from {
+        transform: scale(1) translate(0, 0);
+    }
+
+    to {
+        transform: scale(1.12) translate(0, -8px);
+    }
+}
+
 /* Fixed background system */
 body::before {
     opacity: 0.8;
