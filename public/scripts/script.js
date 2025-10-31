@@ -5,7 +5,7 @@ window.initMap = function () {
     console.log('🗺️ Google Maps callback triggered');
 
     // Initialize your map
-    const mapElement = new document.querySelector('gmp-map');
+    const mapEL = new document.querySelector('gmp-map');
     if (mapElement) {
         mapElement.addEventListener('gmp-click', (event) => {
             console.log('Map clicked:', event.detail.latLng);
@@ -54,8 +54,6 @@ const elements = {
 };
 
 // ===== 3. STATE ===== (✅ Same variables, grouped)
-let map;
-let marker;
 let isLoading = false; // 🆕 Added loading state
 
 
@@ -180,7 +178,7 @@ function initMap(lat = 48.85, lon = 2.35, zoomLevel = 8) {
 
     // Set attributes for the gmp-map Web Component
     mapEl.setAttribute("center", `${lat},${lon}`);
-    mapEl.setAttribute("zoom", zoomLevel.toString());
+    mapEl.setAttribute("zoom", "5");
 
     // Update or create marker
     let markerEl = document.querySelector("#marker");
