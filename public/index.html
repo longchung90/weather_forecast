@@ -74,39 +74,17 @@
 <button class="btn btn-gold" disabled>Get Forecast</button>
 <button class="btn btn-secondary">Cancel</button>
 <button class="btn btn-gold btn-sm">Save</button>
-
- =========================
+=========================
      LOADING OVERLAY
      ========================= -->
     <div id="loadingOverlay">
         <div class="loading-text">Loading map and forecast...</div>
-    </div>
-    </div>
 
-
-    <!========================= MAIN CONTENT=========================-->
+        <!-- =========================
+     MAIN CONTENT
+     ========================= -->
         <main>
             <section id="forecastSection" class="forecast-section hidden">
-                <!-- ✅ Correct: only one section, starts hidden -->
-                <h2 id="forecastHeading" class="forecast-heading">
-                    <span id="forecastCityIcon">🌍</span>
-                    <span id="forecastCityName" class="forecast-city-name">Select a City</span>
-                </h2>
-
-                <div id="weatherGrid" class="forecast-grid"></div>
-
-                <!-- Google Map -->
-                <div id="map" class="map-container">
-                    <gmp-map center="48.85,2.35" zoom="4" map-id="weatherMap">
-                        <gmp-advanced-marker id="marker" position="48.85,2.35"></gmp-advanced-marker>
-                    </gmp-map>
-                </div>
-            </section>
-        </main>
-
-        <main>
-            <section id="forecastSection" class="forecast-section">
-                <!-- ✅ Fixed: Removed duplicate ID -->
                 <h2 id="forecastHeading" class="forecast-heading">
                     <span id="forecastCityIcon">🌍</span>
                     <span id="forecastCityName" class="forecast-city-name">Select a City</span>
@@ -121,10 +99,9 @@
                     </gmp-map>
                 </div>
             </section>
-
-            <section id="forecastSection" class="forecast-section hidden"></section>
-
         </main>
+
+
 
         <!-- =========================
      FOOTER (Midnight + Gold)
@@ -140,7 +117,7 @@
                     <a href="https://www.linkedin.com/in/long-hoa-chung/" target="_blank" aria-label="LinkedIn">
                         <i class="fab fa-linkedin"></i>
                     </a>
-                    <a href="hhttps://www.coursera.org/learner/longchung/" target="_blank" aria-label="Coursera">
+                    <a href="https://www.coursera.org/learner/longchung/" target="_blank" aria-label="Coursera">
                         <i class="fas fa-graduation-cap"></i>
                     </a>
                     <a href="https://lcportfolio.org" target="_blank" aria-label="Portfolio">
@@ -151,42 +128,51 @@
         </footer>
 
 
-        - ✅ Load configuration and Google Maps API dynamically -->
+        -- ✅ Load configuration and Google Maps API dynamically -->
+        <script>
+            window.googleMapsLoaded = false;
+            window.initGoogleMaps = function () {
+                window.googleMapsLoaded = true;
+                console.log('🗺️ Google Maps API loaded successfully');
+
+                const overlay = document.getElementById('loadingOverlay');
+                if (overlay) {
+                    overlay.classList.add('hidden');
+                    setTimeout(() => overlay.remove(), 800);
+                }
+
+                if (typeof initializeApp === 'function') {
+                    initializeApp();
+                }
+            };
+        </script>
+
         <script>
             async function loadApp() {
                 try {
-                    // Get API key from server
                     const response = await fetch('/api/config');
                     const config = await response.json();
 
-                    // Load Google Maps API dynamically
                     const mapsScript = document.createElement('script');
                     mapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsApiKey}&libraries=maps,marker&v=beta&callback=initGoogleMaps`;
                     mapsScript.async = true;
                     mapsScript.defer = true;
                     document.head.appendChild(mapsScript);
 
-                    // Load your app logic
                     const appScript = document.createElement('script');
                     appScript.src = 'scripts/script.js';
                     document.body.appendChild(appScript);
                 } catch (error) {
                     console.error('Failed to load app:', error);
-
-                    // Fallback: load app without Google Maps
                     const appScript = document.createElement('script');
                     appScript.src = 'scripts/script.js';
                     document.body.appendChild(appScript);
                 }
             }
 
-            // Start loading when page is ready
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', loadApp);
             } else {
                 loadApp();
             }
         </script>
-</body>
-
-</html>
