@@ -83,6 +83,8 @@ const cityBackgrounds = {
     geneva: "images/geneva.jpg",
     brussels: "images/brussels.jpg"
 };
+
+
 //=====5. Utility Functions======//
 function showError(message) {
     console.error(message);
@@ -177,31 +179,122 @@ function initMap(lat = CONFIG.DEFAULT_LAT, lon = CONFIG.DEFAULT_LON) {
     }
 }
 
-// ===== 9. RENDER FUNCTIONS ===== (✅ Move this up here)
-function renderWeatherCards(weatherData) {
-    if (!elements.weatherGrid) return;
+// ===============================
+// WEATHER CODE + ICON MAPS
+// ===============================
+const weatherMap = {
+    clear: "Clear",
+    pcloudy: "Partly Cloudy",
+    mcloudy: "Mostly Cloudy",
+    cloudy: "Overcast",
+    humid: "Humid / Hazy",
+    lightrain: "Light Rain",
+    oshower: "Occasional Showers",
+    ishower: "Isolated Showers",
+    rain: "Rain",
+    lightsnow: "Light Snow",
+    snow: "Snow",
+    rainsnow: "Rain / Snow",
+    tsrain: "Thunderstorm + Rain",
+    ts: "Thunderstorm",
+    haze: "Hazy",
+    fog: "Fog",
+    windy: "Windy",
+    icy: "Icy Conditions",
+    frzr: "Freezing Rain",
+    dust: "Dusty / Sandy",
+};
 
-    // Clear existing content
-    elements.weatherGrid.innerHTML = '';
+const iconMap = {
+    clear: "☀️",
+    pcloudy: "🌤️",
+    mcloudy: "⛅",
+    cloudy: "☁️",
+    rain: "🌧️",
+    lightrain: "🌦️",
+    oshower: "🌦️",
+    ishower: "🌦️",
+    lightsnow: "🌨️",
+    snow: "❄️",
+    rainsnow: "🌨️",
+    tsrain: "⛈️",
+    ts: "⚡️",
+    fog: "🌫️",
+    humid: "💧",
+    windy: "🌬️",
+    haze: "🌁",
+    icy: "🧊",
+    frzr: "🌨️",
+    dust: "💨",
+};
 
-    weatherData.forEach((day, index) => {
-        const card = createWeatherCard(day, index);
-        elements.weatherGrid.appendChild(card);
-    });
+const readable = weatherMap[dayData.weather];
+
+const icon = iconMap[dayData.weather];
+
+// ===============================
+// WEATHER UTILITIES
+// ===============================
+function degToCompass(deg) {
+    const dirs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S',
+        'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+    return dirs[Math.round(deg / 22.5) % 16];
 }
 
+function msToKmh(ms) {
+    return Math.round(ms * 3.6);
+}
+
+// ===== 9. RENDER FUNCTIONS ===== (✅ Move this up here)
 function createWeatherCard(dayData, index) {
-    const card = document.createElement('div');
-    card.className = 'weather-card';
+    const card = document.createElement("div");
+    card.className = "weather-card";
+
+    // Date
+    const date = new Date();
+    date.setDate(date.getDate() + index);
+    const dayName = date.toLocaleDateString("en-GB", { weekday: "short" });
+    const dayNum = date.toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
+
+    // Lookups
+    const readable = weatherMap[dayData.weather] || "Unknown";
+    const icon = iconMap[dayData.weather] || "☁️";
+    const temp = dayData.temp2m ?? "N/A";
+    const windDir = degToCompass(dayData.wind10m?.direction ?? 0);
+    const windSpd = msToKmh(dayData.wind10m?.speed ?? 0);
+
+    // Optional metrics
+    const humidity = dayData.rh2m ? `${dayData.rh2m}%` : "—";
+    const pressure = dayData.mslp ? `${dayData.mslp} hPa` : "—";
+
+    // HTML template
     card.innerHTML = `
-        <div class="day">Day ${index + 1}</div>
-        <div class="weather-info">
-            <div class="weather">${dayData.weather || 'Unknown'}</div>
-            <div class="temp">High: ${dayData.temp2m?.max || 'N/A'}°C</div>
+        <div class="weather-day">${dayName} ${dayNum}</div>
+        <div class="weather-icon">${icon}</div>
+        <div class="weather-temp">H: ${temp}°C &nbsp; L: ${temp}°C</div>
+        <div class="weather-condition">${readable}</div>
+
+        <div class="wind-info">
+            <div class="wind-compass" style="--wind-direction: ${dayData.wind10m?.direction ?? 0}deg">
+                <div class="wind-arrow"></div>
+                <div class="wind-label n">N</div>
+                <div class="wind-label s">S</div>
+                <div class="wind-label e">E</div>
+                <div class="wind-label w">W</div>
+            </div>
+            <div class="wind-speed-text">💨 ${windSpd} km/h</div>
+            <div class="wind-direction-text">↗ ${windDir}</div>
+        </div>
+
+        <div class="weather-extra">
+            <p>💧 Humidity: ${humidity}</p>
+            <p>⏱ Pressure: ${pressure}</p>
         </div>
     `;
+
     return card;
 }
+
 
 function renderErrorState() {
     if (!elements.weatherGrid) return;
@@ -215,7 +308,7 @@ function renderErrorState() {
 
 //=========10. Weather==========//
 async function fetchWeather(lat, lon) {
-    const url = `https://api.7timer.info/astro.php?lon=${lon}&lat=${lat}&product=civil&output=json`;
+    const url = `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
 
     try {
         const response = await fetch(url);
