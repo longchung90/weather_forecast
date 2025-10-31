@@ -27,15 +27,6 @@
     --body: clamp(1rem, 1.2vw, 1.05rem);
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: var(--city-bg, url('../images/eu.jpg')) center/cover no-repeat;
-    z-index: -1;
-    opacity: 0.9;
-    transition: background-image 1s ease, opacity 0.8s ease;
-}
 
 /* ---- Base / Reset ---- */
 * {
@@ -60,6 +51,10 @@ body {
 }
 
 /* Fixed background system */
+body::before {
+    opacity: 0.8;
+}
+
 body::before {
     content: "";
     position: fixed;
@@ -406,6 +401,18 @@ gmp-map {
     }
 }
 
+main {
+    opacity: 0;
+    transform: translateY(80px);
+    pointer-events: none;
+}
+
+main.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
 /* Weather icon (Calendar Style) - Adjusted for longer cards */
 .weather-icon {
     font-size: 5rem;
@@ -692,7 +699,12 @@ gmp-map {
    ========================= */
 
 
-
+main,
+#map,
+gmp-map {
+    position: relative;
+    z-index: 20;
+}
 
 gmp-map {
     display: block;
@@ -721,15 +733,7 @@ gmp-map {
 /* =========================
    WEATHER GRID (horizontal)
    ========================= */
-.weather-grid {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: stretch;
-    gap: 24px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    padding-bottom: 0.5rem;
+
 }
 
 /* =========================
@@ -888,16 +892,6 @@ gmp-map {
 /* =========================
    WEATHER GRID (horizontal)
    ========================= */
-.weather-grid {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: stretch;
-    gap: 22px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    padding-bottom: 1rem;
-}
 
 /* =========================
    WEATHER CARD (refined look)

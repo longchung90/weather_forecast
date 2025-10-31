@@ -1,4 +1,6 @@
-console.log("✅ script.js fully fixed and optimized");
+"scripts": {
+    "start": "node server.js"
+}
 
 // ===== DOM =====
 const getForecastBtn = document.getElementById("getForecastBtn");
@@ -6,8 +8,8 @@ const citySelect = document.getElementById("citySelect");
 const mainContent = document.querySelector("main");
 
 // ===== MAP ELEMENTS =====
-let map;      // declare here; will be initialized by Google Maps callback
-let marker;   // same
+let map;
+let marker;
 const forecastCityName = document.getElementById("forecastCityName");
 
 // ===== WEATHER =====
@@ -39,12 +41,12 @@ const cityBackgrounds = {
     brussels: "images/brussels.jpg"
 };
 
-// ===== Background Transition Function =====
+// ===== Background Transition =====
 function crossfadeBackground(newBg) {
     if (!newBg) return;
     const img = new Image();
     img.onload = () => {
-        const overlay = document.createElement('div');
+        const overlay = document.createElement("div");
         overlay.style.cssText = `
       position: fixed;
       inset: 0;
@@ -55,15 +57,16 @@ function crossfadeBackground(newBg) {
     `;
         document.body.appendChild(overlay);
         requestAnimationFrame(() => {
-            overlay.style.opacity = '1';
+            overlay.style.opacity = "1";
             setTimeout(() => {
-                document.documentElement.style.setProperty('--hero-img', `url('${newBg}')`);
+                document.documentElement.style.setProperty("--hero-img", `url('${newBg}')`);
                 setTimeout(() => document.body.removeChild(overlay), 200);
             }, 1300);
         });
     };
     img.src = newBg;
 }
+
 
 // ===== City selection =====
 function updateCitySelection() {
@@ -79,19 +82,17 @@ function updateCitySelection() {
 }
 
 // ===== Google Maps init =====
-
 function initMap(lat = 48.85, lon = 2.35) {
     const mapEl = document.querySelector("gmp-map");
     if (!mapEl) return;
 
-    // Set new map center and zoom
     mapEl.setAttribute("center", `${lat},${lon}`);
     mapEl.setAttribute("zoom", "5");
 
-    // Update marker position
     const marker = document.querySelector("#marker");
     if (marker) marker.setAttribute("position", `${lat},${lon}`);
 }
+
 window.addEventListener("load", () => {
     initMap();
     console.log("🌍 Google Map API initialized");
@@ -103,5 +104,11 @@ getForecastBtn.addEventListener("click", () => {
     const [lat, lon] = citySelect.value.split(",");
     const cityName = citySelect.options[citySelect.selectedIndex].text;
     forecastCityName.textContent = cityName;
-    updateMap(parseFloat(lat), parseFloat(lon), cityName);
+    initMap(parseFloat(lat), parseFloat(lon)); // ✅ fixed line
 });
+window.addEventListener("load", () => {
+    initMap();
+    document.querySelector("main").classList.add("show");
+    console.log("🌍 Google Map API initialized");
+});
+
