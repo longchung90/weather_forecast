@@ -5,7 +5,7 @@ window.initMap = function () {
     console.log('🗺️ Google Maps callback triggered');
 
     // Initialize your map
-    const mapElement = document.querySelector('gmp-map');
+    const mapElement = new document.querySelector('gmp-map');
     if (mapElement) {
         mapElement.addEventListener('gmp-click', (event) => {
             console.log('Map clicked:', event.detail.latLng);
