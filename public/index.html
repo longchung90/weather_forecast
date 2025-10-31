@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Yur YuYuYuYuYuYurruropean 7-Day Weather Forecast</title>
+    <title>7-Day Weather Forecast</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
@@ -16,8 +16,7 @@
         rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
-    <!-- Google Maps API -->
-    html = html.replace("GOOGLE_MAPS_API_KEY_PLACEHOLDER", process.env.MY_WEATHER_MAP_KEY);
+    <!-- ✅ Don't load Google Maps API here - we'll load it dynamically -->
 </head>
 
 <body>
@@ -32,44 +31,70 @@
             <div class="controls">
                 <select id="citySelect">
                     <option disabled selected>Select a City</option>
-                    <option value="48.85,2.35" data-bg="paris">Paris</option>
-                    <option value="51.51,-0.13" data-bg="london">London</option>
-                    <option value="50.85,4.35" data-bg="brussels">Brussels</option>
-                    <option value="52.37,4.90" data-bg="amsterdam">Amsterdam</option>
-                    <option value="46.20,6.15" data-bg="geneva">Geneva</option>
-                    <option value="52.52,13.40" data-bg="berlin">Berlin</option>
-                    <option value="48.21,16.37" data-bg="vienna">Vienna</option>
-                    <option value="50.08,14.44" data-bg="prague">Prague</option>
-                    <option value="47.50,19.04" data-bg="budapest">Budapest</option>
-                    <option value="52.23,21.01" data-bg="warsaw">Warsaw</option>
-                    <option value="41.89,12.49" data-bg="rome">Rome</option>
-                    <option value="40.41,-3.70" data-bg="madrid">Madrid</option>
-                    <option value="37.98,23.72" data-bg="athens">Athens</option>
-                    <option value="38.72,-9.14" data-bg="lisbon">Lisbon</option>
-                    <option value="44.43,26.10" data-bg="bucharest">Bucharest</option>
-                    <option value="59.33,18.06" data-bg="stockholm">Stockholm</option>
-                    <option value="60.17,24.94" data-bg="helsinki">Helsinki</option>
-                    <option value="55.68,12.57" data-bg="copenhagen">Copenhagen</option>
-                    <option value="48.15,17.11" data-bg="bratislava">Bratislava</option>
-                    <option value="53.35,-6.26" data-bg="dublin">Dublin</option>
+                    <option value="48.85,2.35" data-bg="paris" data-name="Paris" data-flag="🇫🇷">Paris</option>
+                    <option value="51.51,-0.13" data-bg="london" data-name="London" data-flag="🇬🇧">London</option>
+                    <option value="50.85,4.35" data-bg="brussels" data-name="Brussels" data-flag="🇧🇪">Brussels
+                    </option>
+                    <option value="52.37,4.90" data-bg="amsterdam" data-name="Amsterdam" data-flag="🇳🇱">Amsterdam
+                    </option>
+                    <option value="46.20,6.15" data-bg="geneva" data-name="Geneva" data-flag="🇨🇭">Geneva</option>
+                    <option value="52.52,13.40" data-bg="berlin" data-name="Berlin" data-flag="🇩🇪">Berlin</option>
+                    <option value="48.21,16.37" data-bg="vienna" data-name="Vienna" data-flag="🇦🇹">Vienna</option>
+                    <option value="50.08,14.44" data-bg="prague" data-name="Prague" data-flag="🇨🇿">Prague</option>
+                    <option value="47.50,19.04" data-bg="budapest" data-name="Budapest" data-flag="🇭🇺">Budapest
+                    </option>
+                    <option value="52.23,21.01" data-bg="warsaw" data-name="Warsaw" data-flag="🇵🇱">Warsaw</option>
+                    <option value="41.89,12.49" data-bg="rome" data-name="Rome" data-flag="🇮🇹">Rome</option>
+                    <option value="40.41,-3.70" data-bg="madrid" data-name="Madrid" data-flag="🇪🇸">Madrid</option>
+                    <option value="37.98,23.72" data-bg="athens" data-name="Athens" data-flag="🇬🇷">Athens</option>
+                    <option value="38.72,-9.14" data-bg="lisbon" data-name="Lisbon" data-flag="🇵🇹">Lisbon</option>
+                    <option value="44.43,26.10" data-bg="bucharest" data-name="Bucharest" data-flag="🇷🇴">Bucharest
+                    </option>
+                    <option value="59.33,18.06" data-bg="stockholm" data-name="Stockholm" data-flag="🇸🇪">Stockholm
+                    </option>
+                    <option value="60.17,24.94" data-bg="helsinki" data-name="Helsinki" data-flag="🇫🇮">Helsinki
+                    </option>
+                    <option value="55.68,12.57" data-bg="copenhagen" data-name="Copenhagen" data-flag="🇩🇰">Copenhagen
+                    </option>
+                    <option value="48.15,17.11" data-bg="bratislava" data-name="Bratislava" data-flag="🇸🇰">Bratislava
+                    </option>
+                    <option value="53.35,-6.26" data-bg="dublin" data-name="Dublin" data-flag="🇮🇪">Dublin</option>
                 </select>
                 <button id="getForecastBtn" class="btn btn-gold">Get Forecast</button>
             </div>
         </div>
     </header>
+    <!-- Primary action -->
+    <button class="btn btn-gold">Get Forecast</button>
 
+    <!-- Loading state (via JavaScript) -->
+    <button class="btn btn-gold loading">Get Forecast</button>
+
+    <!-- Disabled state -->
+    <button class="btn btn-gold" disabled>Get Forecast</button>
+
+    <!-- Secondary action -->
+    <button class="btn btn-secondary">Cancel</button>
+
+    <!-- Small variant -->
+    <button class="btn btn-gold btn-sm">Save</button>
     <!-- =========================
          MAIN CONTENT
          ========================= -->
     <main>
         <section id="forecastSection" class="forecast-section">
-            <h2 id="forecastCityName" class="city-name"></h2>
-            <div id="forecastCards" class="forecast-grid"></div>
+            <!-- ✅ Fixed: Removed duplicate ID -->
+            <h2 id="forecastHeading" class="forecast-heading">
+                <span id="forecastCityIcon">🌍</span>
+                <span id="forecastCityName" class="forecast-city-name">Select a City</span>
+            </h2>
+
+            <div id="weatherGrid" class="forecast-grid"></div>
 
             <!-- Google Map -->
             <div id="map" class="map-container">
-                <gmp-map center="0,0" zoom="4" map-id="weatherMap">
-                    <gmp-advanced-marker id="marker"></gmp-advanced-marker>
+                <gmp-map center="48.85,2.35" zoom="4" map-id="weatherMap">
+                    <gmp-advanced-marker id="marker" position="48.85,2.35"></gmp-advanced-marker>
                 </gmp-map>
             </div>
         </section>
@@ -82,8 +107,55 @@
         <p>© 2025 Long Chung | European Weather Explorer</p>
     </footer>
 
-    <!-- JS -->
-    <script src="scripts/script.js"></script>
+    <!-- ✅ Load app dynamically with API key -->
+    <script>
+        // Global function for Google Maps callback
+        window.googleMapsLoaded = false;
+        window.initGoogleMaps = function () {
+            window.googleMapsLoaded = true;
+            console.log('🗺️ Google Maps API loaded successfully');
+
+            // Initialize your app after Maps API is loaded
+            if (window.initializeApp) {
+                window.initializeApp();
+            }
+        };
+
+        // Load configuration and Google Maps API
+        async function loadApp() {
+            try {
+                // Get API key from server
+                const response = await fetch('/api/config');
+                const config = await response.json();
+
+                // Load Google Maps API
+                const mapsScript = document.createElement('script');
+                mapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsApiKey}&libraries=maps,marker&v=beta&callback=initGoogleMaps`;
+                mapsScript.async = true;
+                mapsScript.defer = true;
+                document.head.appendChild(mapsScript);
+
+                // Load your app script
+                const appScript = document.createElement('script');
+                appScript.src = 'scripts/script.js';
+                document.body.appendChild(appScript);
+
+            } catch (error) {
+                console.error('Failed to load app:', error);
+                // Fallback: load app without Google Maps
+                const appScript = document.createElement('script');
+                appScript.src = 'scripts/script.js';
+                document.body.appendChild(appScript);
+            }
+        }
+
+        // Start loading when page is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadApp);
+        } else {
+            loadApp();
+        }
+    </script>
 </body>
 
 </html>

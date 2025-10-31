@@ -1,25 +1,20 @@
 {
-  "name": "weather_forecast",
+  "name": "european-weather-explorer",
   "version": "1.0.0",
-  "description": "A beautiful, responsive vanilla JavaScript weather application that provides 7-day forecasts for iconic European cities. Built with pure HTML, CSS, and JavaScript - no frameworks or build process required.",
+  "description": "7-day weather forecast with interactive maps",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/longchung90/weather_forecast.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/longchung90/weather_forecast/issues"
-  },
-  "homepage": "https://github.com/longchung90/weather_forecast#readme",
   "dependencies": {
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0"
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }

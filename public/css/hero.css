@@ -155,4 +155,68 @@
     padding: 0.7rem 1.4rem;
     font-size: 1rem;
     font-weight: 600;
-    border-r
+    border-radius: 10px;
+    white-space: nowrap;
+    /* ✅ Prevent text wrapping */
+    flex-shrink: 0;
+    /* ✅ Prevent button shrinking */
+    min-width: max-content;
+    /* ✅ Ensure button fits content */
+}
+
+/* Controls container (missing from your file) */
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 500px;
+    margin-top: 1rem;
+}
+
+/* =========================
+   RESPONSIVE HERO
+   ========================= */
+
+@media (max-width: 768px) {
+    .hero-content {
+        gap: 18px;
+        padding: 0 15px;
+    }
+
+    .controls-bar {
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+        margin-top: 1.5rem;
+    }
+
+    .controls-bar select {
+        min-width: 100%;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .controls-bar .btn-gold {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        min-height: 95vh;
+    }
+
+    .hero-content {
+        gap: 15px;
+        padding: 0 10px;
+    }
+
+    .controls-bar {
+        padding: 10px;
+        margin-top: 1rem;
+    }
+}

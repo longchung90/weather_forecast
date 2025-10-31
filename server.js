@@ -1,19 +1,26 @@
-const express = require("express");
-const fs = require("fs");
-const path = require("path");
-require("dotenv").config();
+const express = require('express');
+const path = require('path');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Serve static files from /public
-app.use(express.static(path.join(__dirname, "public")));
+// Serve static files from public directory
+app.use(express.static('public'));
 
-// Inject API key dynamically
-app.get("/", (req, res) => {
-    let html = fs.readFileSync(path.join(__dirname, "public", "index.html"), "utf8");
-    html = html.replace("GOOGLE_MAPS_API_KEY_PLACEHOLDER", process.env.MY_WEATHER_MAP_KEY);
-    res.send(html);
+// API endpoint to provide Google Maps API key
+app.get('/api/config', (req, res) => {
+    res.json({
+        googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY
+    });
 });
 
-app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
+// Serve main page
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.listen(PORT, () => {
+    console.log(`🌍 European Weather Explorer running on port ${PORT}`);
+    console.log(`📍 http://localhost:${PORT}`);
+});
