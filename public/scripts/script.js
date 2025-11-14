@@ -67,7 +67,7 @@ function changeBackground(newBg) {
         inset: 0;
         background: url('${newBg}') center/cover no-repeat;
         opacity: 0;
-        z-index: -3;
+        z-index: -1;
         transition: opacity ${CONFIG.TRANSITION_DURATION}ms ease;
     `;
     document.body.appendChild(layer);
@@ -75,10 +75,13 @@ function changeBackground(newBg) {
     requestAnimationFrame(() => layer.style.opacity = 1);
 
     setTimeout(() => {
-        document.documentElement.style.setProperty("--hero-img", `url('${newBg}')`);
+        document.body.style.backgroundImage = `url('${newBg}')`;
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "center";
         layer.remove();
     }, CONFIG.TRANSITION_DURATION);
 }
+
 
 // ---------------------------------------------------------------
 // 6. LEAFLET MAP

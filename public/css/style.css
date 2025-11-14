@@ -155,9 +155,11 @@
 
 
 #map {
-    height: 300px;
+    width: 100%;
+    height: 280px;
+    /* smaller */
     border-radius: 16px;
-    margin-top: 10px;
+    margin: 20px auto;
 }
 
 .leaflet-container {
