@@ -98,31 +98,6 @@ const WEATHER_DETAILS = {
     default: "Unknown"
 };
 // ===============================================================
-// 7TIMER "civil" mode extra codes (day/night variants)
-// ===============================================================
-const WEATHER_ALIAS = {
-    mcloudyday: "mcloudy",
-    mcloudynight: "mcloudy",
-
-    humidday: "humid",
-    humidnight: "humid",
-
-    cloudyday: "cloudy",
-    cloudynight: "cloudy",
-
-    pcloudyday: "pcloudy",
-    pcloudynight: "pcloudy",
-
-    clearday: "clearsky",
-    clearnight: "clearsky",
-
-    // optional extra mappings
-    lightrainday: "lightrain",
-    lightrainnight: "lightrain",
-    oshowerday: "oshower",
-    oshowernight: "oshower",
-};
-// ===============================================================
 // ELEMENTS
 // ===============================================================
 const elements = {
@@ -293,12 +268,7 @@ async function loadWeather(lat, lon) {
 
         /* WEATHER CODE */
         /* WEATHER CODE */
-        let code = day.weather;
-
-        // convert day/night variants → base codes
-        if (WEATHER_ALIAS[code]) {
-            code = WEATHER_ALIAS[code];
-        }
+        const code = day.weather;
 
         const iconSVG = ICONS_IOS[code] || ICONS_IOS.default;
         const label = WEATHER_DETAILS[code] || WEATHER_DETAILS.default;
