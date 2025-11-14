@@ -219,12 +219,19 @@ main {
 }
 
 .forecast-title {
+    font-family: "Playfair Display", serif;
     font-size: 3rem;
     font-weight: 700;
-    font-family: "Playfair Display", serif;
+    display: inline-block;
 
     background: linear-gradient(180deg, #ffebc4, #e2b46f 60%);
+
+    /* REQUIRED for Safari & Chrome */
     -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* RECOMMENDED for compatibility */
+    background-clip: text;
     color: transparent;
 }
 

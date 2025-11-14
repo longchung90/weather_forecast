@@ -278,10 +278,7 @@ async function loadWeather(lat, lon) {
 }
 
 
-// Insert card
-elements.grid.appendChild(card);
-    });
-}
+
 
 // ===============================================================
 // HANDLE GET FORECAST
