@@ -231,7 +231,7 @@ main {
 .forecast-subtitle {
     font-size: 3rem;
     font-weight: 500;
-    color: #ffe8c7;
+    color: #10bfe2;
     font-family: "Playfair Display", serif;
     text-align: center;
 }
@@ -293,7 +293,7 @@ main {
 
 /* CONDITION TEXT (Light Rain, Intermittent Showers, etc.) */
 .w-cond {
-    font-size: 1.15rem;
+    font-size: 1.13rem;
     /* smaller, cleaner */
     font-weight: 500;
     line-height: 1.3rem;
