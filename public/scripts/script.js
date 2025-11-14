@@ -215,7 +215,7 @@ async function loadWeather(lat, lon) {
 
     data.dataseries.slice(0, 7).forEach((day, index) => {
 
-        // Date
+        // --- DATE ---
         const date = new Date();
         date.setDate(date.getDate() + index);
 
@@ -223,55 +223,39 @@ async function loadWeather(lat, lon) {
         const dayNum = date.getDate();
         const dateString = `${month} ${dayNum}`;
 
-        // Weather mapping
+        // --- WEATHER ---
         const key = day.weather.toLowerCase();
         const weather = WEATHER_MAP[key] || WEATHER_MAP.default;
         const icon = ICONS[key] || ICONS.default;
 
-        // Rain
+        // --- RAIN ---
         const rainChance = Math.round((day.cloudcover / 10) * 100);
 
-        // Wind
+        // --- WIND ---
         const windDir = WIND_DIRECTION[day.wind10m.direction] || "N";
         const windSpeed = WIND_SPEED[day.wind10m.speed] || 5;
 
-        // Create card
+        // --- CARD ---
         const card = document.createElement("div");
         card.classList.add("weather-card", "weather-animate");
-
-        // stagger animation
         card.style.setProperty("--delay", `${index * 120}ms`);
 
-        // Build card HTML
+        // --- HTML ---
         card.innerHTML = `
             <div class="w-icon">${icon}</div>
 
-            <div class="w-day">
-                ${date.toLocaleString("en-US", { weekday: "short" })}
-            </div>
+            <div class="w-day">${date.toLocaleString("en-US", { weekday: "short" })}</div>
 
-            <div class="w-date">
-                ${dateString}
-            </div>
+            <div class="w-date">${dateString}</div>
 
-            <div class="w-temp">
-                ${day.temp2m}°C
-            </div>
+            <div class="w-temp">${day.temp2m}</div>
 
-            <div class="w-cond">
-                ${weather.label}
-            </div>
-
-            <div class="w-temp">${day.temp2m}
-            </div>
+            <div class="w-cond">${weather.label}</div>
 
             <div class="w-hilo">
                 <span>H: ${day.temp2m + 2}°C</span>
                 <span>L: ${day.temp2m - 2}°C</span>
             </div>
-
-          
-
 
             <div class="w-extra">
                 <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>

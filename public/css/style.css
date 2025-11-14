@@ -312,17 +312,19 @@ main {
 
 .w-temp {
     font-size: 4.6rem;
-    /* VERY large temperature number */
     font-weight: 700;
     line-height: 1;
+    position: relative;
+    display: inline-block;
 }
 
 .w-temp::after {
     content: "°C";
     font-size: 1.7rem;
     font-weight: 400;
-    margin-left: 4px;
-    opacity: 0.85;
+    margin-left: 6px;
+    position: absolute;
+    top: 12px;
 }
 
 /* Condition (Cloudy, Rain, etc.) */
