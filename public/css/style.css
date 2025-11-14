@@ -1,10 +1,53 @@
-/* ============================================================
-   GLOBAL RESET + BASE
-============================================================ */
+/* ========================================================================
+   GLOBAL DESIGN TOKENS
+   ======================================================================== */
+:root {
+    /* Colors */
+    --text-main: #ffffff;
+    --text-soft: #fff7e6;
+    --text-warm: #f5f1e8;
+
+    --day-color: #ffeac9;
+    --date-color: #ffddb0;
+
+    --gold-light: #ffedc9;
+    --gold-mid: #e2b46f;
+    --gold-deep: #e8810b;
+
+    --glass-bg: rgba(255, 255, 255, 0.12);
+    --glass-border: rgba(255, 255, 255, 0.28);
+    --glass-dark-bg: rgba(10, 12, 18, 0.55);
+
+    /* Shadows */
+    --shadow-strong: 0 8px 30px rgba(0, 0, 0, 0.35);
+    --shadow-light: 0 2px 6px rgba(0, 0, 0, 0.4);
+
+    /* Animation */
+    --fade-duration: 0.7s;
+    --slide-distance: 25px;
+
+    /* Map */
+    --map-blur: 6px;
+
+    /* Layout */
+    --card-width: 165px;
+}
+
+/* ========================================================================
+   GLOBAL RESET
+   ======================================================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html,
+body {
+    color: var(--text-main);
+    font-family: "Playfair Display", serif;
+    overflow-x: hidden;
+    background: transparent !important;
 }
 
 svg {
@@ -12,62 +55,9 @@ svg {
     max-height: 100px;
 }
 
-html,
-body {
-    color: white;
-    font-family: "Playfair Display", serif;
-    overflow-x: hidden;
-    background: transparent !important;
-}
-
-/* Smooth fade + slide animation */
-.weather-animate {
-    opacity: 0;
-    transform: translateY(25px);
-    animation: fadeSlideIn 0.7s ease forwards;
-}
-
-@keyframes fadeSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(25px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-
-
-/* ============================================================
-   FULLSCREEN LOADING OVERLAY
-============================================================ */
-#loadingOverlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(6px);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.6rem;
-
-    opacity: 0;
-    /* start invisible */
-    pointer-events: none;
-    /* cannot block clicks */
-    transition: opacity 0.4s ease;
-}
-
-#loadingOverlay.active {
-    opacity: 1;
-    /* fade in */
-    pointer-events: auto;
-}
-
+/* ========================================================================
+   BACKGROUND LAYER (City Background)
+   ======================================================================== */
 body::before {
     content: "";
     position: fixed;
@@ -79,18 +69,45 @@ body::before {
     z-index: -10;
 }
 
-/* ============================================================
-   HERO SECTION (BACKGROUND KEEPS SHOWING)
-============================================================ */
+/* ========================================================================
+   FULLSCREEN LOADING OVERLAY
+   ======================================================================== */
+#loadingOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.6rem;
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity 0.4s ease;
+}
+
+#loadingOverlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ========================================================================
+   HERO SECTION
+   ======================================================================== */
 .hero {
-    position: relative;
     min-height: 100vh;
     display: grid;
     place-items: center;
     text-align: center;
+    position: relative;
     overflow: hidden;
 }
 
+/* Background layers */
 .hero::before {
     content: "";
     position: absolute;
@@ -106,22 +123,17 @@ body::before {
     background: linear-gradient(180deg,
             rgba(0, 0, 0, 0.25) 0%,
             rgba(0, 0, 0, 0.35) 40%,
-            rgba(0, 0, 0, 0.40) 100%);
+            rgba(0, 0, 0, 0.4) 100%);
     z-index: -2;
 }
 
-.hero.fade-out {
-    opacity: 0;
-}
-
 .hero-content {
-    position: relative;
-    z-index: 10;
     max-width: 900px;
     padding: 0 20px;
     display: grid;
     gap: 28px;
     justify-items: center;
+    z-index: 10;
 }
 
 .hero-title {
@@ -131,11 +143,12 @@ body::before {
 }
 
 .hero-sub {
-    color: #f3e7d4;
     font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+    color: #f3e7d4;
     text-shadow: 0 3px 20px rgba(0, 0, 0, 0.7);
 }
 
+/* Inner fade */
 .hero-inner-fade {
     transition: opacity 1.4s ease;
 }
@@ -144,60 +157,60 @@ body::before {
     opacity: 0;
 }
 
-main {
-    background: transparent;
-    position: relative;
-    z-index: 5;
+/* ========================================================================
+   ANIMATION
+   ======================================================================== */
+.weather-animate {
+    opacity: 0;
+    transform: translateY(var(--slide-distance));
+    animation: fadeSlideIn var(--fade-duration) ease forwards;
 }
 
-.acknowledgement {
-    text-align: center;
-    margin-top: 35px;
-    font-family: "Playfair Display", serif;
-    font-size: 1.1rem;
-    opacity: 0.9;
-    color: #e8810b;
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(var(--slide-distance));
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.acknowledgement a {
-    color: #e8810b;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.acknowledgement a:hover {
-    text-decoration: underline;
-}
-
-/* ============================================================
+/* ========================================================================
    CONTROLS
-============================================================ */
+   ======================================================================== */
 .controls {
     display: flex;
     gap: 16px;
     padding: 18px 26px;
-    align-items: center;
-    justify-content: center;
-    background: rgba(10, 12, 18, 0.55);
-    border: 1.5px solid rgba(255, 255, 255, 0.28);
+
+    background: var(--glass-dark-bg);
+    border: 1.5px solid var(--glass-border);
     border-radius: 18px;
     backdrop-filter: blur(14px);
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
+    box-shadow: var(--shadow-strong);
+
+    align-items: center;
+    justify-content: center;
 }
 
 .controls select {
     background: rgba(255, 255, 255, 0.18);
     border: 1.4px solid rgba(255, 255, 255, 0.35);
     border-radius: 12px;
+
     padding: 12px 16px;
-    color: #ffffff !important;
     min-width: 240px;
+
+    color: white;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .controls option {
-    color: white;
     background: #000;
+    color: white;
 }
 
 .btn-gold {
@@ -206,18 +219,18 @@ main {
     padding: 0.85em 2em;
     font-weight: 700;
     border-radius: 14px;
-    border: none;
     cursor: pointer;
     transition: 0.3s;
+    border: none;
 }
 
 .btn-gold:hover {
     transform: translateY(-3px);
 }
 
-/* ============================================================
-   FORECAST SECTION
-============================================================ */
+/* ========================================================================
+   FORECAST SECTION + TITLES
+   ======================================================================== */
 .forecast-section {
     padding: 60px 20px 80px;
     max-width: 1200px;
@@ -225,19 +238,15 @@ main {
     background: transparent;
 }
 
-/* ============================================================
-   FORECAST TITLE
-============================================================ */
 .forecast-heading {
     margin-top: 40px;
     margin-bottom: 25px;
 
     font-size: 3.5rem;
-    font-family: "Playfair Display", serif;
     font-weight: 700;
     text-align: center;
 
-    background: linear-gradient(180deg, #ffedc9, #e2b46f 55%);
+    background: linear-gradient(180deg, var(--gold-light), var(--gold-mid) 55%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 
@@ -251,112 +260,68 @@ main {
     font-size: 3rem;
     font-weight: 500;
     color: #10bfe2;
-    font-family: "Playfair Display", serif;
     text-align: center;
 }
 
-.hidden {
-    display: none !important;
-}
-
-.small-btn {
-    padding: 0.55em 1.4em;
-    font-size: 1rem;
-    margin-bottom: 22px;
-    border-radius: 12px;
-}
-
-/* ============================================================
+/* ========================================================================
    WEATHER GRID
-============================================================ */
+   ======================================================================== */
 .forecast-grid {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: stretch;
     gap: 18px;
-
     overflow-x: auto;
     padding: 20px;
+    justify-content: center;
     width: 100%;
 }
 
-/* ============================================================
-   WEATHER CARD — POLISHED
-============================================================ */
-/* WEATHER TILE UPGRADE */
-/* ============================================================
-   WEATHER CARD — POLISHED
-============================================================ */
+/* ========================================================================
+   WEATHER CARDS
+   ======================================================================== */
 .weather-card {
-    width: 165px;
-    padding: 22px 18px;
-    background: rgba(255, 255, 255, 0.12);
+    width: var(--card-width);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+
     backdrop-filter: blur(16px);
+    box-shadow: var(--shadow-strong);
+
     border-radius: 22px;
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    padding: 22px 18px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
 }
 
-/* GLOBAL CARD TEXT IMPROVEMENT */
-.weather-card * {
-    color: #F5F1E8 !important;
-    /* warm white */
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
-    /* stronger readability */
-}
-
-/* CONDITION TEXT (Light Rain, Intermittent Showers, etc.) */
-.w-cond {
-    font-size: 1.13rem;
-    /* smaller, cleaner */
-    font-weight: 500;
-    line-height: 1.3rem;
-    text-align: center;
-    /* FIXES LEFT ALIGN ON 2 LINES */
-    width: 100%;
-    /* ensures proper centering */
-    padding: 0 5px;
-    /* prevents cropping */
-}
-
-/* Day */
+/* Day / Date */
 .w-day {
     font-size: 1.6rem;
     font-weight: 700;
-    color: #ffeac9;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    color: var(--day-color);
+    text-shadow: var(--shadow-light);
 }
 
 .w-date {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #ffddb0;
+    color: var(--date-color);
 }
 
-/* ICON */
+/* Icon */
 .w-icon {
     font-size: 3rem;
     line-height: 1;
+    margin: 6px 0 4px;
 }
-
-.w-icon {
-    margin-top: 6px;
-    margin-bottom: 4px;
-}
-
 
 /* Temperature */
 .w-temp {
     font-size: 3.4rem;
     font-weight: 700;
-    color: #fff7e6;
+    color: var(--text-soft);
     text-shadow: 0 3px 10px rgba(0, 0, 0, 0.55);
-    margin: 6px 0;
 }
 
 .w-temp sup {
@@ -364,40 +329,37 @@ main {
     opacity: 0.8;
 }
 
+/* Condition text */
+.w-cond {
+    font-size: 1.13rem;
+    font-weight: 500;
+    line-height: 1.3rem;
+    text-align: center;
+    padding: 0 5px;
+}
 
-
-/* High/Low */
+/* High / Low */
 .w-hilo {
     font-size: 0.95rem;
     color: #ffe8bd;
 }
 
-/* Extra section */
-.w-extra div {
-    white-space: nowrap;
-    /* forces one line */
-}
-
+/* Extra weather info */
 .w-extra {
     font-size: 0.95rem;
-    /* smaller */
     line-height: 1.2rem;
-    /* cleaner spacing */
-}
-
-.w-extra {
     color: rgba(255, 255, 255, 0.85);
 }
 
-/* ============================================================
-   MAP
-============================================================ */
-/* ============================================================
-   MAP — CENTERED PERFECTLY
-============================================================ */
+.w-extra div {
+    white-space: nowrap;
+}
+
+/* ========================================================================
+   MAP STYLING
+   ======================================================================== */
 .map-container {
-    margin: 35px auto 0 auto;
-    width: 100%;
+    margin: 35px auto 0;
     max-width: 900px;
     height: 340px;
     border-radius: 20px;
@@ -409,24 +371,24 @@ main {
     content: "";
     position: absolute;
     inset: 0;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(var(--map-blur));
     background: rgba(0, 0, 0, 0.25);
     z-index: -1;
 }
 
-/* ============================================================
+/* ========================================================================
    FOOTER
-============================================================ */
+   ======================================================================== */
 .footer {
     text-align: center;
     padding: 40px 0;
 }
 
 .footer-links {
-    margin-top: 12px;
     display: flex;
     justify-content: center;
     gap: 18px;
+    margin-top: 12px;
 }
 
 .footer-links i {
@@ -438,3 +400,7 @@ main {
 .footer-links i:hover {
     color: #f7d39b;
 }
+
+/* ========================================================================
+   END OF FILE
+   ======================================================================== */
