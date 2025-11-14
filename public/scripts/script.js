@@ -102,66 +102,93 @@ const ICON_BLIZZ = `
 </svg>`;
 
 
-// ===============================================================
-// ICON MAP
-// ===============================================================
 const ICONS_IOS = {
-    clearsky: ICON_SUN,
-    pclear: ICON_PCLEAR,
-    pcloudy: ICON_PCLOUDY,
-    mcloudy: ICON_MCLOUDY,
-    cloudy: ICON_CLOUD,
+    clearday: ICON_SUN,
+    clearnight: ICON_SUN,
 
-    fog: ICON_FOG,
-    haze: ICON_FOG,
-    humid: ICON_FOG,
-    windy: ICON_WIND,
+    pcloudyday: ICON_PCLOUDY,
+    pcloudynight: ICON_PCLOUDY,
 
-    drizzle: ICON_LRAIN,
-    lightrain: ICON_LRAIN,
-    ishower: ICON_LRAIN,
-    oshower: ICON_LRAIN,
+    mcloudyday: ICON_MCLOUDY,
+    mcloudynight: ICON_MCLOUDY,
 
-    rain: ICON_RAIN,
+    cloudyday: ICON_CLOUD,
+    cloudynight: ICON_CLOUD,
 
-    ts: ICON_TS,
-    tstorms: ICON_TS,
+    lightrainday: ICON_LRAIN,
+    lightrainnight: ICON_LRAIN,
 
-    lightsnow: ICON_SNOW,
-    snow: ICON_SNOW,
+    oshowerday: ICON_LRAIN,
+    oshowernight: ICON_LRAIN,
 
-    rainsnow: ICON_RSNOW,
-    sleet: ICON_RSNOW,
-    frain: ICON_RSNOW,
+    ishowerday: ICON_LRAIN,
+    ishowernight: ICON_LRAIN,
 
-    blizzard: ICON_BLIZZ
+    rainday: ICON_RAIN,
+    rainnight: ICON_RAIN,
+
+    tsday: ICON_TS,
+    tsnight: ICON_TS,
+
+    lightsnowday: ICON_SNOW,
+    lightsnownight: ICON_SNOW,
+    snowday: ICON_SNOW,
+    snownight: ICON_SNOW,
+
+    rainsnowday: ICON_RSNOW,
+    rainsnownight: ICON_RSNOW
 };
 // ===============================================================
 // LABEL MAP
 // ===============================================================
 const WEATHER_DETAILS = {
-    clearsky: "Clear",
-    pclear: "Mostly Clear",
-    pcloudy: "Partly Cloudy",
-    mcloudy: "Mostly Cloudy",
-    cloudy: "Cloudy",
-    fog: "Fog",
-    haze: "Haze",
-    humid: "Humid",
-    windy: "Windy",
-    drizzle: "Drizzle",
-    lightrain: "Light Rain",
-    ishower: "Intermittent Showers",
-    oshower: "Occasional Showers",
-    rain: "Rain",
-    ts: "Thunderstorm",
-    tstorms: "Thunderstorms",
-    lightsnow: "Light Snow",
-    snow: "Snow",
-    rainsnow: "Rain & Snow Mix",
-    sleet: "Sleet",
-    frain: "Freezing Rain",
-    blizzard: "Blizzard"
+    // Clear / sunny
+    clearday: "Clear",
+    clearnight: "Clear",
+
+    // Partly cloudy
+    pcloudyday: "Partly Cloudy",
+    pcloudynight: "Partly Cloudy",
+
+    // Mostly cloudy
+    mcloudyday: "Mostly Cloudy",
+    mcloudynight: "Mostly Cloudy",
+
+    // Fully cloudy
+    cloudyday: "Cloudy",
+    cloudynight: "Cloudy",
+
+    // Light rain
+    lightrainday: "Light Rain",
+    lightrainnight: "Light Rain",
+
+    // Showers
+    oshowerday: "Occasional Showers",
+    oshowernight: "Occasional Showers",
+
+    ishowerday: "Intermittent Showers",
+    ishowernight: "Intermittent Showers",
+
+    // Rain
+    rainday: "Rain",
+    rainnight: "Rain",
+
+    // Thunderstorm
+    tsday: "Thunderstorm",
+    tsnight: "Thunderstorm",
+
+    // Snow
+    lightsnowday: "Light Snow",
+    lightsnownight: "Light Snow",
+    snowday: "Snow",
+    snownight: "Snow",
+
+    // Rain & Snow Mix
+    rainsnowday: "Rain & Snow",
+    rainsnownight: "Rain & Snow",
+
+    // Default fallback
+    default: "Unknown"
 };
 
 
@@ -324,6 +351,7 @@ async function loadWeather(lat, lon) {
     elements.grid.innerHTML = "";
 
     data.dataseries.slice(0, 7).forEach((day, index) => {
+        console.log(">>> RAW WEATHER CODE =", day.weather);
 
         /* DATE */
         const d = new Date();
