@@ -16,7 +16,7 @@ body {
     color: white;
     font-family: "Playfair Display", serif;
     overflow-x: hidden;
-    background: #000 !important;
+    background: transparent !important;
 }
 
 /* ============================================================
