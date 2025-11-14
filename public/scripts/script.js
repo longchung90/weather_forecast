@@ -200,6 +200,9 @@ async function loadWeather(lat, lon) {
 
     data.dataseries.slice(0, 7).forEach((day, index) => {
 
+        console.log("WEATHER RAW KEY:", day.weather);
+
+
         const date = new Date();
         date.setDate(date.getDate() + index);
 
