@@ -1,5 +1,5 @@
 /* ============================================================
-   GLOBAL RESET + BODY
+   GLOBAL RESET + BASE
 ============================================================ */
 * {
     margin: 0;
@@ -7,11 +7,15 @@
     box-sizing: border-box;
 }
 
+html {
+    background: #000;
+}
+
 body {
     color: white;
     font-family: "Playfair Display", serif;
     overflow-x: hidden;
-    background: transparent !important;
+    background: #000 !important;
 }
 
 /* ============================================================
@@ -34,7 +38,7 @@ body {
 }
 
 /* ============================================================
-   HERO SECTION — Your Premium Style (Kept As Is)
+   HERO SECTION (BACKGROUND KEEPS SHOWING)
 ============================================================ */
 .hero {
     position: relative;
@@ -43,7 +47,6 @@ body {
     place-items: center;
     text-align: center;
     overflow: hidden;
-    isolation: isolate;
 }
 
 .hero::before {
@@ -70,10 +73,9 @@ body {
 
 .hero.fade-out {
     opacity: 0;
-    transition: opacity 1.8s ease;
+    transition: opacity 1.5s ease;
 }
 
-/* HERO CONTENT */
 .hero-content {
     position: relative;
     z-index: 10;
@@ -85,7 +87,7 @@ body {
 }
 
 .hero-title {
-    font-size: clamp(3.7rem, 6vw, 5.2rem);
+    font-size: clamp(3.8rem, 6vw, 5.2rem);
     font-weight: 700;
     text-shadow: 0 6px 34px rgba(0, 0, 0, 0.65);
 }
@@ -97,7 +99,7 @@ body {
 }
 
 /* ============================================================
-   CONTROLS (Your Premium Design)
+   CONTROLS
 ============================================================ */
 .controls {
     display: flex;
@@ -105,11 +107,9 @@ body {
     padding: 18px 26px;
     align-items: center;
     justify-content: center;
-
     background: rgba(10, 12, 18, 0.55);
     border: 1.5px solid rgba(255, 255, 255, 0.28);
     border-radius: 18px;
-
     backdrop-filter: blur(14px);
     box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
 }
@@ -119,22 +119,18 @@ body {
     border: 1.4px solid rgba(255, 255, 255, 0.35);
     border-radius: 12px;
     padding: 12px 16px;
-    color: #ffffff;
+    color: #ffffff !important;
     min-width: 240px;
-}
-
-.controls select,
-.controls select option,
-.controls select:focus,
-.controls select:active {
-    color: #fff !important;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
+.controls option {
+    color: white;
+    background: #000;
+}
+
 .btn-gold {
-    background: linear-gradient(180deg,
-            rgba(255, 221, 160, 0.85),
-            rgba(255, 184, 77, 0.9));
+    background: linear-gradient(180deg, rgba(255, 221, 160, 0.85), rgba(255, 184, 77, 0.9));
     color: #3a290f;
     padding: 0.85em 2em;
     font-weight: 700;
@@ -155,15 +151,12 @@ body {
     padding: 60px 20px;
     max-width: 1200px;
     margin: auto;
-    background: transparent !important;
-    backdrop-filter: blur(8px);
-    ;
 }
 
 .forecast-heading {
-    font-size: 2rem;
     text-align: center;
-    margin-bottom: 28px;
+    font-size: 2rem;
+    margin-bottom: 30px;
 }
 
 .hidden {
@@ -171,39 +164,29 @@ body {
 }
 
 /* ============================================================
-   WEATHER GRID — Apple Style Layout
+   WEATHER GRID
 ============================================================ */
 .forecast-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    gap: 22px;
+    justify-items: center;
 }
 
 /* ============================================================
-   WEATHER CARD — Apple Style
+   WEATHER CARD — POLISHED
 ============================================================ */
 .weather-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(14px);
+    width: 170px;
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(20px);
     border-radius: 18px;
     padding: 18px;
-    text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.25);
-
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    text-align: center;
     display: grid;
     gap: 10px;
-    place-items: center;
-
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
-}
-
-.weather-card {
-    width: 160px;
-    padding: 14px;
-    margin: 10px;
 }
 
 .weather-day {
@@ -228,26 +211,19 @@ body {
 .rain-line {
     font-size: 1rem;
     color: #9fd2ff;
-    font-weight: 500;
 }
 
 /* ============================================================
-   WIND BOX — Apple Mini-Compass Style
+   WIND COMPASS
 ============================================================ */
 .wind-box {
-    margin-top: 6px;
+    margin-top: 4px;
     text-align: center;
 }
 
 .wind-title {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     opacity: 0.8;
-    margin-bottom: 4px;
-}
-
-.wind-compass {
-    display: flex;
-    justify-content: center;
 }
 
 .compass-circle {
@@ -256,11 +232,12 @@ body {
     border: 2px solid rgba(255, 255, 255, 0.38);
     border-radius: 50%;
     position: relative;
+    margin: auto;
 }
 
 .compass-arrow {
     position: absolute;
-    top: 4px;
+    top: 3px;
     left: 50%;
     width: 4px;
     height: 28px;
@@ -277,15 +254,10 @@ body {
     font-size: 0.85rem;
 }
 
-.unit {
-    font-size: 0.65rem;
-    opacity: 0.8;
-}
-
 .compass-dir {
     position: absolute;
     font-size: 0.65rem;
-    opacity: 0.7;
+    opacity: 0.75;
 }
 
 .compass-dir.n {
@@ -313,41 +285,36 @@ body {
 }
 
 .wind-direction-text {
-    margin-top: 4px;
     font-size: 0.85rem;
-    opacity: 0.85;
+    margin-top: 3px;
 }
 
 /* ============================================================
-   MAP — Elegant Square Apple Style
+   MAP
 ============================================================ */
 .map-container {
+    margin-top: 35px;
     width: 100%;
-    height: 300px;
     max-width: 900px;
-    margin: 30px auto;
+    height: 320px;
+    background: rgba(0, 0, 0, 0.4);
     border-radius: 18px;
     overflow: hidden;
-}
-
-.leaflet-container {
-    background: #1d1d1d !important;
-    outline: none;
 }
 
 /* ============================================================
    FOOTER
 ============================================================ */
 .footer {
-    padding: 40px 0;
     text-align: center;
+    padding: 40px 0;
 }
 
 .footer-links {
     margin-top: 12px;
     display: flex;
-    gap: 18px;
     justify-content: center;
+    gap: 18px;
 }
 
 .footer-links i {
