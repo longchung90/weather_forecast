@@ -204,217 +204,215 @@ main {
     max-width: 1200px;
     margin: auto;
     background: transparent;
-    z-index: 20
 }
 
+/* ============================================================
+   FORECAST TITLE
+============================================================ */
 .forecast-heading {
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-top: 40px;
+    margin-bottom: 25px;
 
-    font-size: 2.8rem;
+    font-size: 3.5rem;
     font-family: "Playfair Display", serif;
     font-weight: 700;
     text-align: center;
 
-    /* NEW — fallback color so text is ALWAYS visible */
-    color: #fff4da;
+    background: linear-gradient(180deg, #ffedc9, #e2b46f 55%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 
-    /* Gradient overlay on
+    background-clip: text;
+    color: transparent;
+
+    letter-spacing: 0.5px;
+}
+
+.forecast-subtitle {
+    font-size: 3rem;
+    font-weight: 500;
+    color: #ffe8c7;
+    font-family: "Playfair Display", serif;
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.small-btn {
+    padding: 0.55em 1.4em;
+    font-size: 1rem;
+    margin-bottom: 22px;
+    border-radius: 12px;
+}
+
 /* ============================================================
    WEATHER GRID
 ============================================================ */
-    .forecast-grid {
-        display: flex;
-        gap: 18px;
-        padding: 20px;
-        justify-content: center;
-        align-items: stretch;
-        overflow-x: auto;
-    }
+.forecast-grid {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    gap: 18px;
 
-    /* ============================================================
+    overflow-x: auto;
+    padding: 20px;
+    width: 100%;
+}
+
+/* ============================================================
    WEATHER CARD — POLISHED
 ============================================================ */
-    /* WEATHER TILE UPGRADE */
-    /* ============================================================
+/* WEATHER TILE UPGRADE */
+/* ============================================================
    WEATHER CARD — POLISHED
 ============================================================ */
-    .weather-card {
-        width: 165px;
-        padding: 22px 18px;
-        background: rgba(255, 255, 255, 0.12);
-        backdrop-filter: blur(16px);
-        border-radius: 22px;
-        border: 1px solid rgba(255, 255, 255, 0.28);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-    }
+.weather-card {
+    width: 165px;
+    padding: 22px 18px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(16px);
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
 
-    /* ============================================================
-       FIX WEATHER GRID FORCE FLEX
-    ============================================================ */
-    #weatherGrid,
-    .forecast-grid {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: stretch !important;
-        justify-content: center !important;
-        gap: 20px !important;
+/* GLOBAL CARD TEXT IMPROVEMENT */
+.weather-card * {
+    color: #F5F1E8 !important;
+    /* warm white */
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+    /* stronger readability */
+}
 
-        overflow-x: auto !important;
-        width: 100% !important;
-        padding: 20px !important;
-    }
+/* CONDITION TEXT (Light Rain, Intermittent Showers, etc.) */
+.w-cond {
+    font-size: 1.15rem;
+    /* smaller, cleaner */
+    font-weight: 500;
+    line-height: 1.3rem;
+    text-align: center;
+    /* FIXES LEFT ALIGN ON 2 LINES */
+    width: 100%;
+    /* ensures proper centering */
+    padding: 0 5px;
+    /* prevents cropping */
+}
 
-    .weather-card {
-        flex: 0 0 auto !important;
-    }
+/* Day */
+.w-day {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffeac9;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
 
-    /* GLOBAL CARD TEXT IMPROVEMENT */
-    .weather-card {
-        color: #F5F1E8 !important;
-        /* warm white */
-        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
-        /* stronger readability */
-    }
+.w-date {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffddb0;
+}
 
-    /* CONDITION TEXT (Light Rain, Intermittent Showers, etc.) */
-    .w-cond {
-        font-size: 1.15rem;
-        /* smaller, cleaner */
-        font-weight: 500;
-        line-height: 1.3rem;
-        text-align: center;
-        /* FIXES LEFT ALIGN ON 2 LINES */
-        width: 100%;
-        /* ensures proper centering */
-        padding: 0 5px;
-        /* prevents cropping */
-    }
+/* ICON */
+.w-icon {
+    font-size: 3rem;
+    line-height: 1;
+}
 
-    /* Day */
-    .w-day {
-        font-size: 1.6rem;
-        font-weight: 700;
-        color: #ffeac9;
-        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-    }
-
-    .w-date {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #ffddb0;
-    }
-
-    /* ICON */
-    .w-icon {
-        font-size: 3rem;
-        line-height: 1;
-    }
-
-    .w-icon {
-        margin-top: 6px;
-        margin-bottom: 4px;
-    }
+.w-icon {
+    margin-top: 6px;
+    margin-bottom: 4px;
+}
 
 
-    /* Temperature */
-    .w-temp {
-        font-size: 3.4rem;
-        font-weight: 700;
-        color: #fff7e6;
-        text-shadow: 0 3px 10px rgba(0, 0, 0, 0.55);
-        margin: 6px 0;
-    }
+/* Temperature */
+.w-temp {
+    font-size: 3.4rem;
+    font-weight: 700;
+    color: #fff7e6;
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.55);
+    margin: 6px 0;
+}
 
-    .w-temp sup {
-        font-size: 1.4rem;
-        opacity: 0.8;
-    }
+.w-temp sup {
+    font-size: 1.4rem;
+    opacity: 0.8;
+}
 
 
 
-    /* High/Low */
-    .w-hilo {
-        font-size: 0.95rem;
-        color: #ffe8bd;
-    }
+/* High/Low */
+.w-hilo {
+    font-size: 0.95rem;
+    color: #ffe8bd;
+}
 
-    /* Extra section */
-    .w-extra {
-        font-size: 1.05rem;
-        text-align: left;
-        width: 100%;
-        margin-top: 8px;
-        line-height: 1.5rem;
-        opacity: 0.95;
-    }
+/* Extra section */
+.w-extra {
+    font-size: 1.05rem;
+    text-align: left;
+    width: 100%;
+    margin-top: 8px;
+    line-height: 1.5rem;
+    opacity: 0.95;
+}
 
-    .w-extra div {
-        white-space: nowrap;
-        /* forces one line */
-    }
+.w-extra {
+    color: rgba(255, 255, 255, 0.85);
+}
 
-    .w-extra {
-        font-size: 0.95rem;
-        /* smaller */
-        line-height: 1.2rem;
-        /* cleaner spacing */
-    }
-
-    .w-extra {
-        color: rgba(255, 255, 255, 0.85);
-    }
-
-    /* ============================================================
+/* ============================================================
    MAP
 ============================================================ */
-    /* ============================================================
+/* ============================================================
    MAP — CENTERED PERFECTLY
 ============================================================ */
-    .map-container {
-        margin: 35px auto 0 auto;
-        width: 100%;
-        max-width: 900px;
-        height: 340px;
-        border-radius: 20px;
-        overflow: hidden;
-        position: relative;
-    }
+.map-container {
+    margin: 35px auto 0 auto;
+    width: 100%;
+    max-width: 900px;
+    height: 340px;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}
 
-    .map-container::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        backdrop-filter: blur(10px);
-        background: rgba(0, 0, 0, 0.25);
-        z-index: -1;
-    }
+.map-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.25);
+    z-index: -1;
+}
 
-    /* ============================================================
+/* ============================================================
    FOOTER
 ============================================================ */
-    .footer {
-        text-align: center;
-        padding: 40px 0;
-    }
+.footer {
+    text-align: center;
+    padding: 40px 0;
+}
 
-    .footer-links {
-        margin-top: 12px;
-        display: flex;
-        justify-content: center;
-        gap: 18px;
-    }
+.footer-links {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+}
 
-    .footer-links i {
-        font-size: 1.5rem;
-        color: white;
-        transition: 0.3s;
-    }
+.footer-links i {
+    font-size: 1.5rem;
+    color: white;
+    transition: 0.3s;
+}
 
-    .footer-links i:hover {
-        color: #f7d39b;
-    }
+.footer-links i:hover {
+    color: #f7d39b;
+}
