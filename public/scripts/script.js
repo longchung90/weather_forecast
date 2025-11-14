@@ -71,12 +71,13 @@ const ICONS = {
     cloudy: "☁️",
     rain: "🌧️",
     lightrain: "🌦️",
-    oshower: "🌦️",
-    ishower: "🌦️",
-    snow: "❄️",
+    heavyrain: "🌧️💧",
+
+    // SNOW SUPPORT
     lightsnow: "🌨️",
-    heavysnow: "❄️❄️",
-    ts: "⛈️",
+    snow: "❄️",
+    heavysnow: "❄️🌨️",
+
     default: "🌍"
 };
 
@@ -189,8 +190,6 @@ async function loadWeather(lat, lon) {
 
     data.dataseries.slice(0, 7).forEach((day, index) => {
 
-        console.log("Weather key:", key, "→ label:", weather.label, "icon:", icon);
-
         // --- DATE ---
         const date = new Date();
         date.setDate(date.getDate() + index);
@@ -201,32 +200,26 @@ async function loadWeather(lat, lon) {
         const dateString = `${month} ${dayNum}`;
 
         // --- WEATHER ---
-        const key = day.weather.toLowerCase();
+        const key = day.weather.toLowerCase();   // e.g. "snow", "lightrain"
         const weather = WEATHER_MAP[key] || WEATHER_MAP.default;
         const icon = ICONS[key] || ICONS.default;
 
         // --- RAIN ---
         const rainChance = Math.round((day.cloudcover / 10) * 100);
 
-        // --- SNOW (option A) ---
-        const hasSnow = key.includes("snow");
-        const snowChance = hasSnow ? rainChance : null;
-
         // --- WIND ---
         const windDir = WIND_DIRECTION[day.wind10m.direction] || "N";
         const windSpeed = WIND_SPEED[day.wind10m.speed] || 5;
 
-        // --- CARD ---
+        // --- CREATE CARD ---
         const card = document.createElement("div");
         card.classList.add("weather-card", "weather-animate");
         card.style.setProperty("--delay", `${index * 120}ms`);
 
-        // --- HTML ---
+        // --- BUILD HTML ---
         card.innerHTML = `
-            <div class="w-top">
-                <div class="w-day">${weekday}</div>
-                <div class="w-date">${dateString}</div>
-            </div>
+            <div class="w-day">${weekday}</div>
+            <div class="w-date">${dateString}</div>
 
             <div class="w-icon">${icon}</div>
 
@@ -234,28 +227,22 @@ async function loadWeather(lat, lon) {
                 ${day.temp2m}<sup>°C</sup>
             </div>
 
-            <div class="w-cond">
-                ${weather.label}
-            </div>
-            
-            <div class="snow-icon">
-            </div>
+            <div class="w-cond">${weather.label}</div>
 
             <div class="w-hilo">
-                <span>H: ${day.temp2m + 2}°C</span>
-                <span>L: ${day.temp2m - 2}°C</span>
+                H: ${day.temp2m + 2}°C • L: ${day.temp2m - 2}°C
             </div>
 
             <div class="w-extra">
                 <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>
                 <div><strong>Rain:</strong> ${rainChance}%</div>
-                ${snowChance !== null ? `<div><strong>Snow:</strong> ${snowChance}%</div>` : ""}
             </div>
         `;
 
         elements.grid.appendChild(card);
     });
 }
+
 
 
 
