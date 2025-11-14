@@ -9,15 +9,14 @@
 
 html,
 body {
-    background: none;
-}
-
-body {
     color: white;
     font-family: "Playfair Display", serif;
     overflow-x: hidden;
     background: transparent !important;
 }
+
+
+
 
 /* ============================================================
    FULLSCREEN LOADING OVERLAY
@@ -82,9 +81,9 @@ body::before {
     position: absolute;
     inset: 0;
     background: linear-gradient(180deg,
-            rgba(0, 0, 0, 0.55) 0%,
-            rgba(0, 0, 0, 0.60) 40%,
-            rgba(0, 0, 0, 0.75) 100%);
+            rgba(0, 0, 0, 0.25) 0%,
+            rgba(0, 0, 0, 0.35) 40%,
+            rgba(0, 0, 0, 0.40) 100%);
     z-index: -2;
 }
 

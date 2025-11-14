@@ -107,10 +107,12 @@ const WIND_SPEED = { 1: 5, 2: 10, 3: 15, 4: 25, 5: 35, 6: 50, 7: 65 };
 function changeBackground(newBg) {
     const fullPath = newBg.startsWith("/") ? newBg : "/" + newBg;
 
+    // PRELOAD IMAGE FIRST
     const img = new Image();
     img.src = fullPath;
 
     img.onload = () => {
+        // Create fade layer BELOW EVERYTHING
         const layer = document.createElement("div");
         layer.style.cssText = `
             position: fixed;
@@ -118,24 +120,23 @@ function changeBackground(newBg) {
             background: url('${fullPath}') center/cover no-repeat;
             opacity: 0;
             transition: opacity ${CONFIG.TRANSITION}ms ease;
-            z-index: -2;
+            z-index: -20;   /* ⭐ FIX HERE ⭐ */
             pointer-events: none;
         `;
         document.body.appendChild(layer);
 
+        // Fade-in
         requestAnimationFrame(() => {
             layer.style.opacity = 1;
         });
 
+        // After fade completes, update global background and remove layer
         setTimeout(() => {
-            // ⭐ IMPORTANT FIX HERE ⭐
             document.documentElement.style.setProperty("--hero-img", `url('${fullPath}')`);
             layer.remove();
         }, CONFIG.TRANSITION);
     };
 }
-
-
 
 // Background + city text changes ONLY when selecting a city
 function updateCity() {
