@@ -354,13 +354,16 @@ main {
 }
 
 /* Extra section */
+.w-extra div {
+    white-space: nowrap;
+    /* forces one line */
+}
+
 .w-extra {
-    font-size: 1.05rem;
-    text-align: left;
-    width: 100%;
-    margin-top: 8px;
-    line-height: 1.5rem;
-    opacity: 0.95;
+    font-size: 0.95rem;
+    /* smaller */
+    line-height: 1.2rem;
+    /* cleaner spacing */
 }
 
 .w-extra {
