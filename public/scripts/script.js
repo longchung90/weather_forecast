@@ -149,7 +149,6 @@ function initializeApp() {
     elements.select.addEventListener("change", updateCity);
     elements.btn.addEventListener("click", handleGetForecast);
 
-    document.documentElement.style.setProperty("--hero-img", "url('./images/eu.jpg')");
 
 
     // Start map
