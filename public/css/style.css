@@ -199,31 +199,12 @@ main {
 /* ============================================================
    FORECAST SECTION
 ============================================================ */
-/* ============================================================
-   FIX FORECAST SECTION VISIBILITY
-============================================================ */
 .forecast-section {
-    position: relative !important;
-    z-index: 50 !important;
-    padding-top: 40px !important;
-}
-
-.forecast-grid {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: center !important;
-    align-items: stretch !important;
-    gap: 18px !important;
-
-    padding: 20px !important;
-    width: 100% !important;
-    overflow-x: auto !important;
-    position: relative !important;
-    z-index: 51 !important;
-}
-
-.weather-card {
-    flex: 0 0 auto !important;
+    padding: 60px 20px 80px;
+    max-width: 1200px;
+    margin: auto;
+    background: transparent;
+    z-index: 20
 }
 
 .forecast-heading {
@@ -239,7 +220,17 @@ main {
     color: #fff4da;
 
     /* Gradient overlay on
-
+/* ============================================================
+   WEATHER GRID
+============================================================ */
+    .forecast-grid {
+        display: flex;
+        gap: 18px;
+        padding: 20px;
+        justify-content: center;
+        align-items: stretch;
+        overflow-x: auto;
+    }
 
     /* ============================================================
    WEATHER CARD — POLISHED
@@ -263,7 +254,7 @@ main {
     }
 
     /* GLOBAL CARD TEXT IMPROVEMENT */
-    .weather-card weather-card * {
+    .weather-card .weather-card * {
         color: #F5F1E8 !important;
         /* warm white */
         text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
