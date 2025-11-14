@@ -84,9 +84,14 @@
     <main>
         <section id="forecastSection" class="hidden">
             <h2 id="forecastHeading" class="forecast-heading">
-                <span id="forecastCityIcon">🌍</span>
-                <span id="forecastCityName">Select a City</span>
+                <span class="forecast-subtitle">Here is your 7-day forecast for</span>
+                <span class="forecast-title">
+                    <span id="forecastCityIcon">🌍</span>
+                    <span id="forecastCityName">Select a City</span>
+                </span>
             </h2>
+
+            <button id="changeCityBtn" class="btn btn-gold small-btn">Change City</button>
 
             <div id="weatherGrid" class="forecast-grid"></div>
             <div id="map" class="map-container"></div>

@@ -186,12 +186,39 @@ main {
 
 .forecast-heading {
     text-align: center;
-    font-size: 2rem;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.forecast-subtitle {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #f7e4b2;
+    letter-spacing: 0.5px;
+    font-family: "Playfair Display", serif;
+}
+
+.forecast-title {
+    font-size: 3rem;
+    font-weight: 700;
+    font-family: "Playfair Display", serif;
+
+    background: linear-gradient(180deg, #ffebc4, #e2b46f 60%);
+    -webkit-background-clip: text;
+    color: transparent;
 }
 
 .hidden {
     display: none !important;
+}
+
+.small-btn {
+    padding: 0.55em 1.4em;
+    font-size: 1rem;
+    margin-bottom: 22px;
+    border-radius: 12px;
 }
 
 /* ============================================================
@@ -213,46 +240,66 @@ main {
 /* ============================================================
    WEATHER CARD — POLISHED
 ============================================================ */
+/* WEATHER TILE UPGRADE */
 .weather-card {
     background: rgba(255, 255, 255, 0.22);
-    /* slightly stronger glass */
-    backdrop-filter: blur(14px);
-    border-radius: 18px;
-    padding: 18px 14px;
-    width: 180px;
-    /* wider tiles */
+    backdrop-filter: blur(16px);
+    border-radius: 22px;
+    padding: 20px 18px;
+    width: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     border: 1px solid rgba(255, 255, 255, 0.28);
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
 }
 
-.weather-card,
-.weather-day,
-.weather-temp,
-.weather-cond,
-.weather-date,
-.rain-line,
-.wind-simple,
-.wind-dir {
-    color: #ffffff !important;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+/* Day */
+.w-day {
+    font-size: 1.6rem;
+    font-weight: 700;
 }
 
-.weather-date {
+/* Date */
+.w-date {
+    font-size: 1.1rem;
     opacity: 0.85;
 }
 
-.weather-cond {
-    font-size: 1rem;
-    opacity: 0.9;
+/* Temperature */
+.w-temp {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 6px 0;
 }
 
-.rain-line,
-.wind-simple {
+/* Condition (Cloudy, Rain, etc.) */
+.w-cond {
+    font-size: 1.2rem;
     opacity: 0.9;
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+/* High / Low */
+.w-hilo {
+    font-size: 1.1rem;
+    display: flex;
+    gap: 16px;
+    font-weight: 600;
+}
+
+/* Extra details */
+.w-extra {
+    font-size: 1rem;
+    text-align: left;
+    width: 100%;
+    margin-top: 8px;
+    line-height: 1.4rem;
+}
+
+.w-extra strong {
+    opacity: 1;
 }
 
 /* ============================================================

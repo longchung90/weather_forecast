@@ -143,13 +143,22 @@ function updateCity() {
     const opt = elements.select.options[elements.select.selectedIndex];
     if (!opt) return;
 
-    elements.cityIcon.textContent = opt.dataset.flag;
     elements.cityName.textContent = opt.dataset.name;
+    elements.cityIcon.textContent = opt.dataset.flag;
+
+    // Update subtitle dynamically
+
+    document.querySelector(".forecast-title").classList.add("show");
+
 
     const bgPath = cityBG[opt.dataset.bg];
     if (bgPath) changeBackground(bgPath);
 }
 
+document.getElementById("changeCityBtn").addEventListener("click", () => {
+    elements.section.classList.add("hidden");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
 
 
@@ -209,18 +218,14 @@ async function loadWeather(lat, lon) {
         const card = document.createElement("div");
         card.className = "weather-card";
 
-        card.innerHTML = `
-            <div class="weather-day">${date.toLocaleString("en-US", { weekday: "short" })}</div>
-            <div class="weather-date">${dateString}</div>
-            <div class="weather-icon">${weather.icon}</div>
-            <div class="weather-temp">${day.temp2m}°C</div>
-            <div class="weather-cond">${weather.label}</div>
-            <div class="rain-line">🌧️ ${rainChance}%</div>
-
-            <div class="wind-simple">
-                💨 ${windSpeed} km/h<br>
-                <span class="wind-dir">${windDir}</span>
-            </div>
+        card.innerHTML =
+            <><div class="w-day">${date.toLocaleString("en-US", { weekday: "short" })}</div><div class="w-date">${dateString}</div><div class="w-temp">${day.temp2m}°C</div><div class="w-cond">${weather.label}</div><div class="w-hilo">
+                <span>H: ${day.temp2m + 2}°C</span>
+                <span>L: ${day.temp2m - 2}°C</span>
+            </div><div class="w-extra">
+                    <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>
+                    <div><strong>Rain:</strong> ${rainChance}%</div>
+                </div></>
         `;
 
         elements.grid.appendChild(card);
@@ -255,4 +260,5 @@ window.addEventListener("load", () => {
     elements.select.addEventListener("change", updateCity);
     elements.btn.addEventListener("click", handleGet);
 });
+
 
