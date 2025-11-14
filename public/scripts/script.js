@@ -103,8 +103,51 @@ const WIND_SPEED = { 1: 5, 2: 10, 3: 15, 4: 25, 5: 35, 6: 50, 7: 65 };
 // BACKGROUND TRANSITION (Corrected path)
 // ===============================================================
 function changeBackground(newBg) {
-    document.documentElement.style.setProperty("--hero-img", `url('${newBg}')`);
+    const fullPath = "/" + newBg; // always points to /images/... correctly
+
+    const layer = document.createElement("div");
+    layer.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: url('${fullPath}') center/cover no-repeat;
+        opacity: 0;
+        transition: opacity ${CONFIG.TRANSITION}ms ease;
+        z-index: -2;
+    `;
+    document.body.appendChild(layer);
+
+    requestAnimationFrame(() => {
+        layer.style.opacity = 1;
+    });
+
+    setTimeout(() => {
+        document.documentElement.style.setProperty("--hero-img", `url('${fullPath}')`);
+        layer.remove();
+    }, CONFIG.TRANSITION);
 }
+elements.btn.addEventListener("click", async () => {
+
+    // ================================
+    // ⭐ UPDATE BACKGROUND IMAGE HERE
+    // ================================
+    const selectedOption = elements.select.options[elements.select.selectedIndex];
+    const cityName = selectedOption.text.toLowerCase();
+
+    const bg = cityBG[cityName];
+
+    if (bg) {
+        document.documentElement.style.setProperty("--hero-img", `url(${bg})`);
+        console.log("Background updated:", bg);
+    }
+
+    // ================================
+    // The rest of your forecast code
+    // (API call, map update, grid update...)
+    // ================================
+
+});
+
+
 
 // ===============================================================
 // UPDATE CITY
