@@ -24,25 +24,28 @@ const elements = {
 // 3. BACKGROUND IMAGES
 // ---------------------------------------------------------------
 const cityBG = {
-    paris: "/images/paris.jpg",
-    london: "/images/london.jpg",
-    brussels: "/images/brussels.jpg",
-    amsterdam: "/images/amsterdam.jpg",
-    geneva: "/images/geneva.jpg",
-    berlin: "/images/berlin.jpg",
-    vienna: "/images/vienna.jpg",
-    prague: "/images/prague.jpg",
-    budapest: "/images/budapest.jpg",
-    warsaw: "/images/warsaw.jpg",
-    athens: "/images/athens.jpg",
-    lisbon: "/images/lisbon.jpg",
-    bucharest: "/images/bucharest.jpg",
-    stockholm: "/images/stockholm.jpg",
-    helsinki: "/images/helsinki.jpg",
-    copenhagen: "/images/copenhagen.jpg",
-    bratislava: "/images/bratislava.jpg",
-    dublin: "/images/dublin.jpg"
+    paris: "images/paris.jpg",
+    london: "images/london.jpg",
+    brussels: "images/brussels.jpg",
+    amsterdam: "images/amsterdam.jpg",
+    geneva: "images/geneva.jpg",
+    berlin: "images/berlin.jpg",
+    vienna: "images/vienna.jpg",
+    prague: "images/prague.jpg",
+    budapest: "images/budapest.jpg",
+    warsaw: "images/warsaw.jpg",
+    rome: "images/rome.jpg",
+    madrid: "images/madrid.jpg",
+    athens: "images/athens.jpg",
+    lisbon: "images/lisbon.jpg",
+    bucharest: "images/bucharest.jpg",
+    stockholm: "images/stockholm.jpg",
+    helsinki: "images/helsinki.jpg",
+    copenhagen: "images/copenhagen.jpg",
+    bratislava: "images/bratislava.jpg",
+    dublin: "images/dublin.jpg"
 };
+
 
 // ---------------------------------------------------------------
 // 4. FADE BACKGROUND
