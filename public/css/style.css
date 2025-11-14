@@ -351,6 +351,13 @@ main {
     opacity: 1;
 }
 
+.w-icon svg {
+    width: 48px;
+    height: 48px;
+    stroke: #ffffff;
+    color: #ffffff;
+    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.6));
+}
 
 /* ============================================================
    MAP

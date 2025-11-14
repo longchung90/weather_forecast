@@ -310,7 +310,7 @@ async function loadWeather(lat, lon) {
 
     // Fetch forecast
     const res = await fetch(
-        `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`
+        `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civillight&output=json`
     );
     const data = await res.json();
 
