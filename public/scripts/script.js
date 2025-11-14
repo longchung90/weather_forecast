@@ -20,29 +20,6 @@ const elements = {
     overlay: document.getElementById("loadingOverlay")
 };
 
-// ---------------------------------------------------------------
-// 1. CONFIG
-// ---------------------------------------------------------------
-const CONFIG = {
-    DEFAULT_LAT: 48.85,
-    DEFAULT_LON: 2.35,
-    TRANSITION_DURATION: 1200
-};
-
-// ---------------------------------------------------------------
-// 2. DOM ELEMENTS
-// ---------------------------------------------------------------
-const elements = {
-    btn: document.getElementById("getForecastBtn"),
-    select: document.getElementById("citySelect"),
-    section: document.getElementById("forecastSection"),
-    hero: document.querySelector(".hero"),
-    heading: document.getElementById("forecastHeading"),
-    icon: document.getElementById("forecastCityIcon"),
-    name: document.getElementById("forecastCityName"),
-    grid: document.getElementById("weatherGrid"),
-    overlay: document.getElementById("loadingOverlay")
-};
 
 // ---------------------------------------------------------------
 // 3. BACKGROUND IMAGES
