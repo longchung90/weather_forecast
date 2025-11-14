@@ -202,12 +202,26 @@ main {
 
 }
 
+.forecast-section {
+    padding-bottom: 80px;
+}
+
 .forecast-heading {
+    margin-top: 40px;
+    margin-bottom: 25px;
+
+    font-size: 3.4rem;
+    font-family: "Playfair Display", serif;
+    font-weight: 700;
+
+    background: linear-gradient(180deg, #ffedc9, #e2b46f 55%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    background-clip: text;
+    color: transparent;
+
     text-align: center;
-    margin-bottom: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
 }
 
 .forecast-subtitle {
@@ -279,6 +293,11 @@ main {
     border: 1px solid rgba(255, 255, 255, 0.28);
 }
 
+.weather-card {
+    padding: 24px 20px;
+    gap: 12px;
+}
+
 /* Day */
 .w-day {
     font-size: 1.6rem;
@@ -291,11 +310,19 @@ main {
     opacity: 0.85;
 }
 
-/* Temperature */
 .w-temp {
-    font-size: 3rem;
-    font-weight: 800;
-    margin: 6px 0;
+    font-size: 4.6rem;
+    /* VERY large temperature number */
+    font-weight: 700;
+    line-height: 1;
+}
+
+.w-temp::after {
+    content: "°C";
+    font-size: 1.7rem;
+    font-weight: 400;
+    margin-left: 4px;
+    opacity: 0.85;
 }
 
 /* Condition (Cloudy, Rain, etc.) */
@@ -304,6 +331,12 @@ main {
     opacity: 0.9;
     text-align: center;
     margin-bottom: 6px;
+}
+
+.w-icon {
+    font-size: 3rem;
+    /* bigger icon */
+    margin-bottom: 8px;
 }
 
 /* High / Low */

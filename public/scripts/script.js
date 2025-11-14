@@ -262,10 +262,16 @@ async function loadWeather(lat, lon) {
                 ${weather.label}
             </div>
 
+            <div class="w-temp">${day.temp2m}
+            </div>
+
             <div class="w-hilo">
                 <span>H: ${day.temp2m + 2}°C</span>
                 <span>L: ${day.temp2m - 2}°C</span>
             </div>
+
+          
+
 
             <div class="w-extra">
                 <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>
