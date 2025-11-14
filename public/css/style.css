@@ -287,15 +287,19 @@ main {
 
 /* Day */
 .w-day {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #ffebc4;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffeac9;
+    /* soft gold */
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .w-date {
-    font-size: 0.95rem;
-    opacity: 0.9;
-    color: #ffe8c7;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffddb0;
+    /* lighter gold */
+    opacity: 0.95;
 }
 
 .w-temp {
@@ -313,15 +317,17 @@ main {
 }
 
 .w-temp {
-    font-size: 2.8rem;
+    font-size: 3rem;
     font-weight: 700;
-    color: #ffe8c7;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+    color: #fff7e6;
+    /* bright warm white-gold */
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.55);
+    margin: 6px 0;
 }
 
 .w-temp sup {
-    font-size: 1.2rem;
-    font-weight: 500;
+    font-size: 1.4rem;
+    opacity: 0.85;
 }
 
 .w-temp::after {

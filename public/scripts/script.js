@@ -215,6 +215,11 @@ async function loadWeather(lat, lon) {
 
     data.dataseries.slice(0, 7).forEach((day, index) => {
 
+        console.log("Wind raw:", day.wind10m.direction);
+        console.log("Converted:", WIND_DIRECTION[day.wind10m.direction]);
+
+
+
         // --- DATE ---
         const date = new Date();
         date.setDate(date.getDate() + index);
@@ -248,7 +253,14 @@ async function loadWeather(lat, lon) {
 
             <div class="w-date">${dateString}</div>
 
-            <div class="w-temp">${day.temp2m}</div>
+            <<div class="w-temp">
+            ${day.temp2m}<sup>°C</sup>
+            </div>
+            <div><strong>Wind Dir:</strong>
+            ${windDir} (${day.wind10m.direction})
+            </div>
+
+
 
             <div class="w-cond">${weather.label}</div>
 
