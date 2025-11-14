@@ -46,7 +46,7 @@ const cityBG = {
 // WEATHER MAP (Corrected for 7timer API codes)
 // ===============================================================
 
-const WEATHER_DETAILS = {
+const details = {
     clear: { label: "Clear Sky", icon: "☀️" },
     pcloudy: { label: "Partly Cloudy", icon: "🌤️" },
     mcloudy: { label: "Mostly Cloudy", icon: "⛅" },
