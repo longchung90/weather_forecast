@@ -49,7 +49,7 @@ const cityBG = {
 // WEATHER ICONS
 // ===========================================================
 const ICONS = {
-    clear: "☀️",
+    clearsky: "☀️",
     pcloudy: "⛅",
     mcloudy: "☁️",
     cloudy: "☁️",
@@ -58,57 +58,29 @@ const ICONS = {
     oshower: "🌦️",
     ishower: "🌦️",
     snow: "❄️",
-    rainsnow: "🌨️",
     lightsnow: "🌨️",
+    heavysnow: "❄️❄️",
     ts: "⛈️",
-    default: "🌤️"
+    default: "🌍"
 };
+
 
 const WEATHER_MAP = {
-    clearday: { icon: "☀️", label: "Clear (Day)" },
-    clearnight: { icon: "🌙", label: "Clear (Night)" },
-
-    pcloudyday: { icon: "⛅", label: "Partly Cloudy (Day)" },
-    pcloudynight: { icon: "🌙☁️", label: "Partly Cloudy (Night)" },
-
-    mcloudyday: { icon: "🌥️", label: "Mostly Cloudy (Day)" },
-    mcloudynight: { icon: "☁️", label: "Mostly Cloudy (Night)" },
-
-    cloudyday: { icon: "☁️", label: "Cloudy (Day)" },
-    cloudynight: { icon: "☁️", label: "Cloudy (Night)" },
-
-    humidday: { icon: "💧", label: "Humid (Day)" },
-    humidnight: { icon: "💧", label: "Humid (Night)" },
-
-    lightrainday: { icon: "🌦️", label: "Light Rain (Day)" },
-    lightrainnight: { icon: "🌧️", label: "Light Rain (Night)" },
-
-    oshowerday: { icon: "🌦️", label: "Occasional Showers (Day)" },
-    oshowernight: { icon: "🌧️", label: "Occasional Showers (Night)" },
-
-    ishowerday: { icon: "🌦️", label: "Isolated Showers (Day)" },
-    ishowernight: { icon: "🌧️", label: "Isolated Showers (Night)" },
-
-    rainday: { icon: "🌧️", label: "Rain (Day)" },
-    rainnight: { icon: "🌧️", label: "Rain (Night)" },
-
-    lightsnowday: { icon: "🌨️", label: "Light Snow (Day)" },
-    lightsnownight: { icon: "🌨️", label: "Light Snow (Night)" },
-
-    snowday: { icon: "❄️", label: "Snow (Day)" },
-    snownight: { icon: "❄️", label: "Snow (Night)" },
-
-    rainsnowday: { icon: "🌧️❄️", label: "Rain + Snow (Day)" },
-    rainsnownight: { icon: "🌧️❄️", label: "Rain + Snow (Night)" },
-
-    tsday: { icon: "⛈️", label: "Thunderstorm (Day)" },
-    tsnight: { icon: "⛈️", label: "Thunderstorm (Night)" },
-
-    tsrainday: { icon: "🌩️", label: "Storm + Rain (Day)" },
-    tsrainnight: { icon: "🌩️", label: "Storm + Rain (Night)" },
-
-    default: { icon: "❓", label: "Unknown" }
+    clearsky: { label: "Clear" },
+    pcloudy: { label: "Partly Cloudy" },
+    mcloudy: { label: "Mostly Cloudy" },
+    cloudy: { label: "Cloudy" },
+    rain: { label: "Rain" },
+    lightrain: { label: "Light Rain" },
+    oshower: { label: "Occasional Showers" },
+    ishower: { label: "Isolated Showers" },
+    snow: { label: "Snow" },
+    lightsnow: { label: "Light Snow" },
+    heavysnow: { label: "Heavy Snow" },
+    ts: { label: "Thunderstorm" },
+    default: { label: "Weather" }
 };
+
 
 // ===============================================================
 // WIND DATA
@@ -215,15 +187,11 @@ async function loadWeather(lat, lon) {
 
     data.dataseries.slice(0, 7).forEach((day, index) => {
 
-        console.log("Wind raw:", day.wind10m.direction);
-        console.log("Converted:", WIND_DIRECTION[day.wind10m.direction]);
-
-
-
         // --- DATE ---
         const date = new Date();
         date.setDate(date.getDate() + index);
 
+        const weekday = date.toLocaleString("en-US", { weekday: "short" });
         const month = date.toLocaleString("en-US", { month: "short" });
         const dayNum = date.getDate();
         const dateString = `${month} ${dayNum}`;
@@ -236,6 +204,10 @@ async function loadWeather(lat, lon) {
         // --- RAIN ---
         const rainChance = Math.round((day.cloudcover / 10) * 100);
 
+        // --- SNOW (option A) ---
+        const hasSnow = key.includes("snow");
+        const snowChance = hasSnow ? rainChance : null;
+
         // --- WIND ---
         const windDir = WIND_DIRECTION[day.wind10m.direction] || "N";
         const windSpeed = WIND_SPEED[day.wind10m.speed] || 5;
@@ -247,22 +219,20 @@ async function loadWeather(lat, lon) {
 
         // --- HTML ---
         card.innerHTML = `
+            <div class="w-top">
+                <div class="w-day">${weekday}</div>
+                <div class="w-date">${dateString}</div>
+            </div>
+
             <div class="w-icon">${icon}</div>
 
-            <div class="w-day">${date.toLocaleString("en-US", { weekday: "short" })}</div>
-
-            <div class="w-date">${dateString}</div>
-
-            <<div class="w-temp">
-            ${day.temp2m}<sup>°C</sup>
-            </div>
-            <div><strong>Wind Dir:</strong>
-            ${windDir} (${day.wind10m.direction})
+            <div class="w-temp">
+                ${day.temp2m}<sup>°C</sup>
             </div>
 
-
-
-            <div class="w-cond">${weather.label}</div>
+            <div class="w-cond">
+                ${weather.label}
+            </div>
 
             <div class="w-hilo">
                 <span>H: ${day.temp2m + 2}°C</span>
@@ -272,12 +242,14 @@ async function loadWeather(lat, lon) {
             <div class="w-extra">
                 <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>
                 <div><strong>Rain:</strong> ${rainChance}%</div>
+                ${snowChance !== null ? `<div><strong>Snow:</strong> ${snowChance}%</div>` : ""}
             </div>
         `;
 
         elements.grid.appendChild(card);
     });
 }
+
 
 
 
