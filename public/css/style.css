@@ -302,7 +302,7 @@ main {
     opacity: 0.95;
 }
 
-..w-temp {
+.w-temp {
     font-size: 3rem;
     font-weight: 700;
     color: #fff7e6;
@@ -351,33 +351,6 @@ main {
     opacity: 1;
 }
 
-/* ============================================================
-   WIND COMPASS
-============================================================ */
-.wind-simple {
-    margin-top: 4px;
-    font-size: 0.9rem;
-    opacity: 0.9;
-    text-align: center;
-}
-
-.wind-dir {
-    font-size: 0.9rem;
-    opacity: 0.8;
-}
-
-.snow-icon {
-    width: 34px;
-    height: 34px;
-    position: relative;
-}
-
-.snow-icon::before {
-    content: "❄";
-    font-size: 2.2rem;
-    color: #cfe8ff;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
-}
 
 /* ============================================================
    MAP
