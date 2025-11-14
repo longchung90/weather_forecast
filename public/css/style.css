@@ -8,10 +8,10 @@
 }
 
 body {
-    background: #0f0f0f;
     color: white;
     font-family: "Playfair Display", serif;
     overflow-x: hidden;
+    background: transparent !important;
 }
 
 /* ============================================================
@@ -155,7 +155,7 @@ body {
     padding: 60px 20px;
     max-width: 1200px;
     margin: auto;
-    background: rgba(0, 0, 0, 0.30);
+    background: transparent !important;
     backdrop-filter: blur(8px);
     ;
 }
@@ -175,186 +175,187 @@ body {
 ============================================================ */
 .forecast-grid {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
-    .forecast-grid {
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 22px;
-    }
-
-    /* ============================================================
+/* ============================================================
    WEATHER CARD — Apple Style
 ============================================================ */
-    .weather-card {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(14px);
-        border-radius: 18px;
-        padding: 18px;
-        text-align: center;
-        border: 1px solid rgba(255, 255, 255, 0.25);
+.weather-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(14px);
+    border-radius: 18px;
+    padding: 18px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.25);
 
-        display: grid;
-        gap: 10px;
-        place-items: center;
+    display: grid;
+    gap: 10px;
+    place-items: center;
 
-        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
-    }
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
 
-    .weather-card {
-        width: 160px;
-        padding: 14px;
-        margin: 10px;
-    }
+.weather-card {
+    width: 160px;
+    padding: 14px;
+    margin: 10px;
+}
 
-    .weather-day {
-        font-size: 1.2rem;
-        font-weight: 600;
-    }
+.weather-day {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
 
-    .weather-icon {
-        font-size: 2.6rem;
-    }
+.weather-icon {
+    font-size: 2.6rem;
+}
 
-    .weather-temp {
-        font-size: 1.6rem;
-        font-weight: 700;
-    }
+.weather-temp {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
 
-    .weather-cond {
-        opacity: 0.85;
-        font-size: 1rem;
-    }
+.weather-cond {
+    opacity: 0.85;
+    font-size: 1rem;
+}
 
-    .rain-line {
-        font-size: 1rem;
-        color: #9fd2ff;
-        font-weight: 500;
-    }
+.rain-line {
+    font-size: 1rem;
+    color: #9fd2ff;
+    font-weight: 500;
+}
 
-    /* ============================================================
+/* ============================================================
    WIND BOX — Apple Mini-Compass Style
 ============================================================ */
-    .wind-box {
-        margin-top: 6px;
-        text-align: center;
-    }
+.wind-box {
+    margin-top: 6px;
+    text-align: center;
+}
 
-    .wind-title {
-        font-size: 0.85rem;
-        opacity: 0.8;
-        margin-bottom: 4px;
-    }
+.wind-title {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin-bottom: 4px;
+}
 
-    .wind-compass {
-        display: flex;
-        justify-content: center;
-    }
+.wind-compass {
+    display: flex;
+    justify-content: center;
+}
 
-    .compass-circle {
-        width: 70px;
-        height: 70px;
-        border: 2px solid rgba(255, 255, 255, 0.38);
-        border-radius: 50%;
-        position: relative;
-    }
+.compass-circle {
+    width: 70px;
+    height: 70px;
+    border: 2px solid rgba(255, 255, 255, 0.38);
+    border-radius: 50%;
+    position: relative;
+}
 
-    .compass-arrow {
-        position: absolute;
-        top: 4px;
-        left: 50%;
-        width: 4px;
-        height: 28px;
-        background: #ffd57c;
-        transform-origin: bottom center;
-        border-radius: 4px;
-    }
+.compass-arrow {
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    width: 4px;
+    height: 28px;
+    background: #ffd57c;
+    transform-origin: bottom center;
+    border-radius: 4px;
+}
 
-    .compass-center {
-        position: absolute;
-        bottom: 4px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 0.85rem;
-    }
+.compass-center {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.85rem;
+}
 
-    .unit {
-        font-size: 0.65rem;
-        opacity: 0.8;
-    }
+.unit {
+    font-size: 0.65rem;
+    opacity: 0.8;
+}
 
-    .compass-dir {
-        position: absolute;
-        font-size: 0.65rem;
-        opacity: 0.7;
-    }
+.compass-dir {
+    position: absolute;
+    font-size: 0.65rem;
+    opacity: 0.7;
+}
 
-    .compass-dir.n {
-        top: -12px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
+.compass-dir.n {
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-    .compass-dir.s {
-        bottom: -12px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
+.compass-dir.s {
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-    .compass-dir.e {
-        right: -12px;
-        top: 50%;
-        transform: translateY(-50%);
-    }
+.compass-dir.e {
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+}
 
-    .compass-dir.w {
-        left: -12px;
-        top: 50%;
-        transform: translateY(-50%);
-    }
+.compass-dir.w {
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+}
 
-    .wind-direction-text {
-        margin-top: 4px;
-        font-size: 0.85rem;
-        opacity: 0.85;
-    }
+.wind-direction-text {
+    margin-top: 4px;
+    font-size: 0.85rem;
+    opacity: 0.85;
+}
 
-    /* ============================================================
+/* ============================================================
    MAP — Elegant Square Apple Style
 ============================================================ */
-    .map-container {
-        width: 380px;
-        height: 380px;
-        margin: 40px auto 0 auto;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
-    }
+.map-container {
+    width: 100%;
+    height: 300px;
+    max-width: 900px;
+    margin: 30px auto;
+    border-radius: 18px;
+    overflow: hidden;
+}
 
-    .leaflet-container {
-        background: #1d1d1d !important;
-        outline: none;
-    }
+.leaflet-container {
+    background: #1d1d1d !important;
+    outline: none;
+}
 
-    /* ============================================================
+/* ============================================================
    FOOTER
 ============================================================ */
-    .footer {
-        padding: 40px 0;
-        text-align: center;
-    }
+.footer {
+    padding: 40px 0;
+    text-align: center;
+}
 
-    .footer-links {
-        margin-top: 12px;
-        display: flex;
-        gap: 18px;
-        justify-content: center;
-    }
+.footer-links {
+    margin-top: 12px;
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+}
 
-    .footer-links i {
-        font-size: 1.5rem;
-        color: white;
-        transition: 0.3s;
-    }
+.footer-links i {
+    font-size: 1.5rem;
+    color: white;
+    transition: 0.3s;
+}
 
-    .footer-links i:hover {
-        color: #f7d39b;
-    }
+.footer-links i:hover {
+    color: #f7d39b;
+}
