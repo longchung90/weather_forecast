@@ -46,21 +46,31 @@ const cityBG = {
 // WEATHER MAP (Corrected for 7timer API codes)
 // ===============================================================
 
-const WEATHER_MAP = {
-    clearsky: { label: "Clear" },
-    pcloudy: { label: "Partly Cloudy" },
-    mcloudy: { label: "Mostly Cloudy" },
-    cloudy: { label: "Cloudy" },
-    rain: { label: "Rain" },
-    lightrain: { label: "Light Rain" },
-    oshower: { label: "Occasional Showers" },
-    ishower: { label: "Isolated Showers" },
-    snow: { label: "Snow" },
-    lightsnow: { label: "Light Snow" },
-    heavysnow: { label: "Heavy Snow" },
-    ts: { label: "Thunderstorm" },
-    default: { label: "Weather" }
+const WEATHER_DETAILS = {
+    clearsky: { label: "Clear Sky", icon: "☀️" },
+    pclear: { label: "Partly Clear", icon: "🌤️" },
+    pcloudy: { label: "Partly Cloudy", icon: "⛅" },
+    mcloudy: { label: "Mostly Cloudy", icon: "🌥️" },
+    cloudy: { label: "Cloudy", icon: "☁️" },
+    fog: { label: "Fog", icon: "🌫️" },
+
+    // ☔ Rain
+    lightrain: { label: "Light Rain", icon: "🌦️" },
+    rain: { label: "Rain", icon: "🌧️" },
+
+    // ❄ Snow
+    lightsnow: { label: "Light Snow", icon: "🌨️" },
+    snow: { label: "Snow", icon: "❄️" },
+    rainsnow: { label: "Rain & Snow Mix", icon: "🌨️🌧️" },
+    frzrainsnow: { label: "Freezing Rain & Snow", icon: "🧊❄️🌧️" },
+
+    // ⚡ Storm
+    ts: { label: "Thunderstorm", icon: "⛈️" },
+    tsrain: { label: "Thunderstorm with Rain", icon: "⛈️🌧️" },
+
+    default: { label: "Unknown Weather", icon: "❔" }
 };
+
 // ===========================================================
 // WEATHER ICONS
 // ===========================================================

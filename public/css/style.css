@@ -302,26 +302,32 @@ main {
     opacity: 0.95;
 }
 
-.w-temp {
-    color: #ffe8c7;
-    /* warm gold-white */
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
-}
-
-.w-temp {
-    font-size: 4.6rem;
+..w-temp {
+    font-size: 3rem;
     font-weight: 700;
-    line-height: 1;
-    position: relative;
-    display: inline-block;
+    color: #fff7e6;
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.55);
+    margin: 6px 0;
 }
-
 
 .w-temp sup {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    margin-left: 2px;
     opacity: 0.85;
 }
 
+.w-hilo {
+    margin-top: 4px;
+    font-size: 0.95rem;
+    /* smaller */
+    font-weight: 500;
+    color: #ffe8bd;
+    /* warmer but softer */
+}
+
+.w-hilo span {
+    margin: 0 2px;
+}
 
 /* Condition (Cloudy, Rain, etc.) */
 .w-cond {
@@ -331,18 +337,6 @@ main {
     margin-bottom: 6px;
 }
 
-.w-icon {
-    font-size: 2.6rem;
-    margin-bottom: 4px;
-}
-
-/* High / Low */
-.w-hilo {
-    font-size: 1.1rem;
-    display: flex;
-    gap: 16px;
-    font-weight: 600;
-}
 
 /* Extra details */
 .w-extra {
