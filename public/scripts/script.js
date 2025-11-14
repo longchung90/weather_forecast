@@ -4,13 +4,14 @@
 const elements = {
     btn: document.getElementById("getForecastBtn"),
     select: document.getElementById("citySelect"),
-    hero: document.getElementById("hero"),
+    hero: document.querySelector(".hero"),  // ✔ matches HTML + CSS
     section: document.getElementById("forecastSection"),
     grid: document.getElementById("weatherGrid"),
     cityName: document.getElementById("forecastCityName"),
     cityIcon: document.getElementById("forecastCityIcon"),
     overlay: document.getElementById("loadingOverlay"),
 };
+
 
 const CONFIG = { TRANSITION: 900 };
 
@@ -98,12 +99,12 @@ const WIND_DIRECTION = {
 };
 
 const WIND_SPEED = { 1: 5, 2: 10, 3: 15, 4: 25, 5: 35, 6: 50, 7: 65 };
+// ===============================================================
+// Background change
+// ===============================================================
 
-// ===============================================================
-// BACKGROUND TRANSITION (Corrected path)
-// ===============================================================
 function changeBackground(newBg) {
-    const fullPath = "/" + newBg; // always points to /images/... correctly
+    const fullPath = newBg.startsWith("/") ? newBg : "/" + newBg;
 
     const layer = document.createElement("div");
     layer.style.cssText = `
@@ -113,51 +114,41 @@ function changeBackground(newBg) {
         opacity: 0;
         transition: opacity ${CONFIG.TRANSITION}ms ease;
         z-index: -2;
+        pointer-events: none;
     `;
     document.body.appendChild(layer);
 
+    // Trigger fade-in
     requestAnimationFrame(() => {
         layer.style.opacity = 1;
     });
 
+    // When animation finishes:
     setTimeout(() => {
-        document.documentElement.style.setProperty("--hero-img", `url('${fullPath}')`);
+        elements.hero.style.setProperty("--hero-img", `url('${fullPath}')`);
         layer.remove();
     }, CONFIG.TRANSITION);
 }
-elements.btn.addEventListener("click", async () => {
-
-    // ================================
-    // ⭐ UPDATE BACKGROUND IMAGE HERE
-    // ================================
-    const selectedOption = elements.select.options[elements.select.selectedIndex];
-    const cityName = selectedOption.text.toLowerCase();
-
-    const bg = cityBG[cityName];
-
-    if (bg) {
-        document.documentElement.style.setProperty("--hero-img", `url(${bg})`);
-        console.log("Background updated:", bg);
-    }
-
-    // ================================
-    // The rest of your forecast code
-    // (API call, map update, grid update...)
-    // ================================
-
-});
 
 
 
-// ===============================================================
-// UPDATE CITY
-// ===============================================================
+// Background + city text changes ONLY when selecting a city
 function updateCity() {
     const opt = elements.select.options[elements.select.selectedIndex];
     if (!opt) return;
+
+    // Update UI text
     elements.cityIcon.textContent = opt.dataset.flag;
     elements.cityName.textContent = opt.dataset.name;
+
+    // Update background
+    const bgPath = cityBG[opt.dataset.bg];
+    if (bgPath) changeBackground(bgPath);
 }
+
+
+
+
 
 // ===============================================================
 // MAP
@@ -239,31 +230,27 @@ async function handleGet() {
     if (!val) return alert("Please select a destination!");
 
     const [lat, lon] = val.split(",").map(Number);
-    const opt = elements.select.options[elements.select.selectedIndex];
 
-    elements.cityName.textContent = opt.dataset.name;
-    elements.cityIcon.textContent = opt.dataset.flag;
-
+    // Show forecast section
     elements.section.classList.remove("hidden");
-    elements.overlay.classList.remove("hidden");
 
-    // Fix background
-    const newBg = cityBG[opt.dataset.bg];
-    if (newBg) changeBackground(newBg);
+    // ⭐ Fade in overlay (ONLY here)
+    elements.overlay.classList.add("active");
 
+    // Load map + weather
     initLeafletMap(lat, lon);
     await loadWeather(lat, lon);
 
-    elements.overlay.classList.add("hidden");
-    elements.hero.classList.add("fade-out");
+    // ⭐ Fade out overlay
+    elements.overlay.classList.remove("active");
 
+    // Scroll to forecast
     elements.section.scrollIntoView({ behavior: "smooth" });
 }
 
-// ===============================================================
-// INIT
-// ===============================================================
+
 window.addEventListener("load", () => {
     elements.select.addEventListener("change", updateCity);
     elements.btn.addEventListener("click", handleGet);
 });
+
