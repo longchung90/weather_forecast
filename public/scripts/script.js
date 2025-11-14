@@ -38,29 +38,49 @@ const cityBG = {
 };
 
 const WEATHER_MAP = {
-    clearday: { icon: "☀️", label: "Clear" },
+    clearday: { icon: "☀️", label: "Clear (Day)" },
     clearnight: { icon: "🌙", label: "Clear (Night)" },
 
-    pcloudyday: { icon: "⛅", label: "Partly Cloudy" },
-    pcloudynight: { icon: "🌙", label: "Partly Cloudy (Night)" },
+    pcloudyday: { icon: "⛅", label: "Partly Cloudy (Day)" },
+    pcloudynight: { icon: "🌙☁️", label: "Partly Cloudy (Night)" },
 
-    mcloudyday: { icon: "🌥️", label: "Mostly Cloudy" },
+    mcloudyday: { icon: "🌥️", label: "Mostly Cloudy (Day)" },
     mcloudynight: { icon: "☁️", label: "Mostly Cloudy (Night)" },
 
-    cloudyday: { icon: "☁️", label: "Cloudy" },
+    cloudyday: { icon: "☁️", label: "Cloudy (Day)" },
     cloudynight: { icon: "☁️", label: "Cloudy (Night)" },
 
-    lightrainday: { icon: "🌦️", label: "Light Rain" },
+    humidday: { icon: "💧", label: "Humid (Day)" },
+    humidnight: { icon: "💧", label: "Humid (Night)" },
+
+    lightrainday: { icon: "🌦️", label: "Light Rain (Day)" },
     lightrainnight: { icon: "🌧️", label: "Light Rain (Night)" },
 
-    lightsnowday: { icon: "🌨️", label: "Light Snow" },
-    lightsnownight: { icon: "🌨️", label: "Light Snow (Night)" },
+    oshowerday: { icon: "🌦️", label: "Occasional Showers (Day)" },
+    oshowernight: { icon: "🌧️", label: "Occasional Showers (Night)" },
 
-    rainday: { icon: "🌧️", label: "Rain" },
+    ishowerday: { icon: "🌦️", label: "Isolated Showers (Day)" },
+    ishowernight: { icon: "🌧️", label: "Isolated Showers (Night)" },
+
+    rainday: { icon: "🌧️", label: "Rain (Day)" },
     rainnight: { icon: "🌧️", label: "Rain (Night)" },
 
-    snowday: { icon: "❄️", label: "Snow" },
-    snownight: { icon: "❄️", label: "Snow (Night)" }
+    lightsnowday: { icon: "🌨️", label: "Light Snow (Day)" },
+    lightsnownight: { icon: "🌨️", label: "Light Snow (Night)" },
+
+    snowday: { icon: "❄️", label: "Snow (Day)" },
+    snownight: { icon: "❄️", label: "Snow (Night)" },
+
+    rainsnowday: { icon: "🌧️❄️", label: "Rain + Snow (Day)" },
+    rainsnownight: { icon: "🌧️❄️", label: "Rain + Snow (Night)" },
+
+    tsday: { icon: "⛈️", label: "Thunderstorm Possible (Day)" },
+    tsnight: { icon: "⛈️", label: "Thunderstorm Possible (Night)" },
+
+    tsrainday: { icon: "🌩️", label: "Thunderstorm with Rain (Day)" },
+    tsrainnight: { icon: "🌩️", label: "Thunderstorm with Rain (Night)" },
+
+    undefined: { icon: "❓", label: "Unknown" }
 };
 
 const WIND_DIRECTION = {
@@ -127,26 +147,35 @@ async function loadWeather(lat, lon) {
 
     data.dataseries.slice(0, 7).forEach((day, index) => {
 
-        let key = day.weather.toLowerCase();
-        if (!WEATHER_MAP[key]) {
-            if (!key.includes("day") && !key.includes("night")) {
-                key = key + "day";
-            }
-        }
-        const weather = WEATHER_MAP[key] || { icon: "❓", label: day.weather };
+        // Real weather key from API
+        const key = day.weather.toLowerCase();
+
+        // Safe fallback
+        const weather = WEATHER_MAP[key] || WEATHER_MAP["cloudy"] || {
+            icon: "🌤️",
+            label: key
+        };
 
         const temp = day.temp2m;
+
+        // Rain estimation
         const cloud = day.cloudcover || 0;
         const rainChance = Math.round((cloud / 10) * 100);
 
-        const dir = WIND_DIRECTION[day.wind10m.direction] || "N";
-        const speed = WIND_SPEED[day.wind10m.speed] || 5;
-        const angle = WIND_ANGLE[day.wind10m.direction] || 0;
+        // Wind
+        const rawDir = day.wind10m.direction;
+        const rawSpeed = day.wind10m.speed;
 
+        const dir = WIND_DIRECTION[rawDir] || "N";
+        const speed = WIND_SPEED[rawSpeed] || 5;
+        const angle = WIND_ANGLE[rawDir] || 0;
+
+        // Day name
         const date = new Date();
         date.setDate(date.getDate() + index);
         const dayName = date.toLocaleString("en-US", { weekday: "short" });
 
+        // Build card
         const card = document.createElement("div");
         card.className = "weather-card";
 
@@ -177,6 +206,7 @@ async function loadWeather(lat, lon) {
     });
 }
 
+
 async function handleGet() {
     const val = elements.select.value;
     if (!val) return alert("Please select a destination!");
@@ -197,7 +227,7 @@ async function handleGet() {
     await loadWeather(lat, lon);
 
     elements.overlay.classList.add("hidden");
-    elements.hero.classList.add("fade-out");
+    document.querySelector(".hero-inner-fade").classList.add("fade-out");
     elements.section.scrollIntoView({ behavior: "smooth" });
 }
 

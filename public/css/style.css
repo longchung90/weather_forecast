@@ -99,6 +99,14 @@ body {
     text-shadow: 0 3px 20px rgba(0, 0, 0, 0.7);
 }
 
+.hero-inner-fade {
+    transition: opacity 1.4s ease;
+}
+
+.hero-inner-fade.fade-out {
+    opacity: 0;
+}
+
 /* ============================================================
    CONTROLS
 ============================================================ */
@@ -168,26 +176,38 @@ body {
    WEATHER GRID
 ============================================================ */
 .forecast-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 22px;
-    justify-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    gap: 18px;
+
+    overflow-x: auto;
+    /* allows scroll if needed */
+    padding: 20px;
+    width: 100%;
 }
 
 /* ============================================================
    WEATHER CARD — POLISHED
 ============================================================ */
 .weather-card {
-    width: 170px;
-    background: rgba(255, 255, 255, 0.14);
-    backdrop-filter: blur(20px);
-    border-radius: 18px;
-    padding: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px);
+    border-radius: 16px;
+    padding: 14px;
+
+    width: 130px;
+    /* perfect width for 7 tiles in a row */
+    min-width: 130px;
+    /* prevents shrinking */
     text-align: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+
     display: grid;
-    gap: 10px;
+    gap: 8px;
 }
 
 .weather-day {
