@@ -267,9 +267,11 @@ async function loadWeather(lat, lon) {
         const dateString = `${month} ${d.getDate()}`;
 
         /* WEATHER CODE */
+        /* WEATHER CODE */
         const code = day.weather;
+
         const iconSVG = ICONS_IOS[code] || ICONS_IOS.default;
-        const label = WEATHER_DETAILS[code] || "Unknown";
+        const label = WEATHER_DETAILS[code] || WEATHER_DETAILS.default;
 
         /* TEMPERATURE */
         const temp = Number(day.temp2m);
