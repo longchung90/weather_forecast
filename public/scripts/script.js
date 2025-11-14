@@ -309,54 +309,54 @@ function initLeafletMap(lat, lon) {
 // 7TIMER WEATHER LOADER (iOS Style SVG)
 // ===============================================================
 
-// ===============================================================
-// WEATHER LOADER (FINAL WORKING VERSION)
-// ===============================================================
+/* ============================================================
+   WEATHER LOADER (civil product)
+============================================================ */
 async function loadWeather(lat, lon) {
 
+    // 👉 CIVIL PRODUCT (simple structure that your UI expects)
     const res = await fetch(
-        `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civillight&output=json`
+        `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`
     );
 
     const data = await res.json();
 
     elements.grid.innerHTML = "";
 
-    const unknown = new Set();
-
     data.dataseries.slice(0, 7).forEach((day, index) => {
 
-        const date = new Date();
-        date.setDate(date.getDate() + index);
+        /* DATE */
+        const d = new Date();
+        d.setDate(d.getDate() + index);
 
-        const weekday = date.toLocaleString("en-US", { weekday: "short" });
-        const month = date.toLocaleString("en-US", { month: "short" });
-        const dayNum = date.getDate();
-        const dateString = `${month} ${dayNum}`;
+        const weekday = d.toLocaleString("en-US", { weekday: "short" });
+        const month = d.toLocaleString("en-US", { month: "short" });
+        const dateString = `${month} ${d.getDate()}`;
 
+        /* WEATHER CODE */
         const code = day.weather;
-
-        if (!ICONS_IOS[code]) unknown.add(code);
-
         const iconSVG = ICONS_IOS[code] || ICON_SUN;
         const label = WEATHER_DETAILS[code] || "Unknown";
 
-        const rainChance = Math.round((day.cloudcover / 10) * 100);
-
-        const snowChance =
-            ["snow", "lightsnow", "rainsnow", "sleet", "frain", "blizzard"].includes(code)
-                ? rainChance
-                : 0;
-
-        const temp = day.temp2m;
+        /* TEMPERATURE */
+        const temp = Number(day.temp2m);
         const high = temp + 2;
         const low = temp - 2;
 
-        const windSpeed = day.wind10m?.speed || 0;
+        /* WIND */
+        const windSpeed = Number(day.wind10m?.speed || 0);
         const windDir = day.wind10m?.direction || "N";
 
+        /* RAIN % (based on cloudcover) */
+        const rainChance = Math.round((day.cloudcover / 10) * 100);
+
+        /* SNOW detection */
+        const snowyCodes = ["snow", "lightsnow", "frain", "rainsnow", "sleet", "blizzard"];
+        const snowChance = snowyCodes.includes(code) ? rainChance : 0;
+
+        /* CARD */
         const card = document.createElement("div");
-        card.classList.add("weather-card");
+        card.className = "weather-card";
 
         card.innerHTML = `
       <div class="w-day">${weekday}</div>
@@ -365,6 +365,7 @@ async function loadWeather(lat, lon) {
       <div class="w-icon">${iconSVG}</div>
 
       <div class="w-temp">${temp}<sup>°C</sup></div>
+
       <div class="w-cond">${label}</div>
 
       <div class="w-hilo">
@@ -381,9 +382,6 @@ async function loadWeather(lat, lon) {
         elements.grid.appendChild(card);
     });
 
-    if (unknown.size > 0) {
-        console.warn("Unknown weather codes:", [...unknown]);
-    }
 }
 // ===============================================================
 // HANDLE GET FORECAST
