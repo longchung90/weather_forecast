@@ -49,6 +49,14 @@ const ICONS_IOS = {
     rainsnowday: "🌧️❄️",
     rainsnownight: "🌧️❄️",
 
+    //// Add these near the top
+    humidday: "🌫️",      // or "💧" or any emoji you prefer for humid
+    humidnight: "🌫️",
+
+    // Humidity
+    humidday: "🌫️",      // or "💧" or any emoji you prefer for humid
+    humidnight: "🌫️",
+
     // Fallback
     default: "❓"
 };
@@ -94,6 +102,9 @@ const WEATHER_DETAILS = {
 
     rainsnowday: "Rain & Snow",
     rainsnownight: "Rain & Snow",
+
+    humidday: "Humid",
+    humidnight: "Humid",
 
     default: "Unknown"
 };
