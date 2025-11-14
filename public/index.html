@@ -9,7 +9,7 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png">
 
-    <!-- Initial hero background -->
+    <!-- Hero Default Background -->
     <style>
         :root {
             --hero-img: url('/images/eu.jpg');
@@ -19,7 +19,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- Leaflet (Map) -->
+    <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
     <!-- Icons -->
@@ -32,25 +32,17 @@
 
 <body>
 
+    <!-- ⬤ GLOBAL FULLSCREEN LOADING OVERLAY -->
+    <div id="loadingOverlay" class="hidden">
+        <div class="loading-text">Loading map and forecast...</div>
+    </div>
 
-
-
-    <!-- =========================================================
-         HERO SECTION
-    ========================================================= -->
+    <!-- HERO -->
     <header class="hero" id="hero">
-        <!-- =========================================================
-                     FULLSCREEN LOADING OVERLAY (CORRECT POSITION)
-                ========================================================= -->
-        <div id="loadingOverlay">
-            <div class="loading-text">Loading map and forecast...</div>
-        </div>
         <div class="hero-content">
-
             <h1 class="hero-title">European Weather Explorer</h1>
             <p class="hero-sub">Get the weather you need for the cities you love.</p>
 
-            <!-- Controls -->
             <div class="controls">
                 <select id="citySelect">
                     <option value="" disabled selected>Choose your European destination</option>
@@ -87,57 +79,40 @@
 
                 <button id="getForecastBtn" class="btn btn-gold">Get Forecast</button>
             </div>
-
         </div>
     </header>
 
-
-
-    <!-- =========================================================
-         MAIN CONTENT — FORECAST SECTION
-    ========================================================= -->
+    <!-- FORECAST SECTION -->
     <main>
         <section id="forecastSection" class="forecast-section hidden">
+
             <h2 id="forecastHeading" class="forecast-heading">
                 <span id="forecastCityIcon">🌍</span>
-                <span id="forecastCityName" class="forecast-city-name">Select a City</span>
+                <span id="forecastCityName">Select a City</span>
             </h2>
 
-            <!-- Weather Cards -->
             <div id="weatherGrid" class="forecast-grid"></div>
 
-            <!-- Leaflet Map -->
             <div id="map" class="map-container"></div>
 
         </section>
     </main>
 
-
-
-    <!-- =========================================================
-         FOOTER
-    ========================================================= -->
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-inner">
             <p class="footer-text">© 2025 Long Hoa Chung | European Weather Explorer</p>
 
             <div class="footer-links">
-                <a href="https://github.com/longchung90" target="_blank" aria-label="GitHub">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/long-hoa-chung/" target="_blank" aria-label="LinkedIn">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a href="https://www.coursera.org/learner/longchung/" target="_blank" aria-label="Coursera">
-                    <i class="fas fa-graduation-cap"></i>
-                </a>
-                <a href="https://lcportfolio.org" target="_blank" aria-label="Portfolio">
-                    <i class="fas fa-globe"></i>
-                </a>
+                <a href="https://github.com/longchung90" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/long-hoa-chung/" target="_blank"><i
+                        class="fab fa-linkedin"></i></a>
+                <a href="https://www.coursera.org/learner/longchung/" target="_blank"><i
+                        class="fas fa-graduation-cap"></i></a>
+                <a href="https://lcportfolio.org" target="_blank"><i class="fas fa-globe"></i></a>
             </div>
         </div>
     </footer>
-
 
     <!-- Scripts -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
