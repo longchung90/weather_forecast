@@ -7,7 +7,7 @@
     --text-soft: #fff7e6;
     --text-warm: #f5f1e8;
 
-    --day-color: #ffeac9;
+    --day-color: #e69b0e;
     --date-color: #ffddb0;
 
     --gold-light: #ffedc9;
@@ -16,7 +16,7 @@
 
     --glass-bg: rgba(255, 255, 255, 0.12);
     --glass-border: rgba(255, 255, 255, 0.28);
-    --glass-dark-bg: rgba(10, 12, 18, 0.55);
+    --glass-dark-bg: rgba(31, 32, 35, 0.252);
 
     /* Shadows */
     --shadow-strong: 0 8px 30px rgba(0, 0, 0, 0.35);
@@ -27,7 +27,7 @@
     --slide-distance: 25px;
 
     /* Map */
-    --map-blur: 6px;
+    --map-blur: 4px;
 
     /* Layout */
     --card-width: 165px;
