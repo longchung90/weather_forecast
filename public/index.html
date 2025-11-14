@@ -36,11 +36,17 @@
          HERO SECTION
 ========================= -->
     <header class="hero" id="hero">
+        <!-- =========================
+                                 LOADING OVERLAY
+                    ========================= -->
+
+
+        <div id="loadingOverlay">
+            <div class="loading-text">Loading map and forecast...</div>
+        </div>
         <div class="hero-content">
             <h1 class="hero-title">European Weather Explorer</h1>
             <p class="hero-sub">Get the weather you need for the cities you love.</p>
-
-
             <div class="controls">
                 <select id="citySelect">
                     <option value="" disabled selected>Choose your European destination</option>
@@ -75,6 +81,7 @@
                     <option value="53.35,-6.26" data-bg="dublin" data-name="Dublin" data-flag="🇮🇪">Dublin</option>
                 </select>
                 <button id="getForecastBtn" class="btn btn-gold">Get Forecast</button>
+
             </div>
         </div>
 
@@ -83,14 +90,7 @@
     </header>
 
 
-    <!-- =========================
-     LOADING OVERLAY
-========================= -->
 
-
-    <div id="loadingOverlay">
-        <div class="loading-text">Loading map and forecast...</div>
-    </div>
 
     <!-- =========================
      MAIN CONTENT
