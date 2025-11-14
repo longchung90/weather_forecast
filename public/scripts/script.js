@@ -4,13 +4,14 @@
 const elements = {
     btn: document.getElementById("getForecastBtn"),
     select: document.getElementById("citySelect"),
-    hero: document.querySelector(".hero"),  // ✔ matches HTML + CSS
+    hero: document.querySelector(".hero"),
     section: document.getElementById("forecastSection"),
     grid: document.getElementById("weatherGrid"),
     cityName: document.getElementById("forecastCityName"),
     cityIcon: document.getElementById("forecastCityIcon"),
     overlay: document.getElementById("loadingOverlay"),
 };
+
 
 
 const CONFIG = { TRANSITION: 900 };
@@ -106,12 +107,10 @@ const WIND_SPEED = { 1: 5, 2: 10, 3: 15, 4: 25, 5: 35, 6: 50, 7: 65 };
 function changeBackground(newBg) {
     const fullPath = newBg.startsWith("/") ? newBg : "/" + newBg;
 
-    // PRELOAD IMAGE FIRST
     const img = new Image();
     img.src = fullPath;
 
     img.onload = () => {
-        // Create fade layer
         const layer = document.createElement("div");
         layer.style.cssText = `
             position: fixed;
@@ -124,18 +123,18 @@ function changeBackground(newBg) {
         `;
         document.body.appendChild(layer);
 
-        // Fade-in
         requestAnimationFrame(() => {
             layer.style.opacity = 1;
         });
 
-        // After fade completes
         setTimeout(() => {
-            elements.hero.style.setProperty("--hero-img", `url('${fullPath}')`);
+            // ⭐ IMPORTANT FIX HERE ⭐
+            document.documentElement.style.setProperty("--hero-img", `url('${fullPath}')`);
             layer.remove();
         }, CONFIG.TRANSITION);
     };
 }
+
 
 
 // Background + city text changes ONLY when selecting a city

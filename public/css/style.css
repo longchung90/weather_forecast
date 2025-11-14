@@ -46,6 +46,17 @@ body {
     pointer-events: auto;
 }
 
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: var(--hero-img);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -10;
+}
+
 /* ============================================================
    HERO SECTION (BACKGROUND KEEPS SHOWING)
 ============================================================ */
@@ -62,10 +73,7 @@ body {
     content: "";
     position: absolute;
     inset: 0;
-    background-image: var(--hero-img);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: none;
     z-index: -3;
 }
 
@@ -112,6 +120,12 @@ body {
 
 .hero-inner-fade.fade-out {
     opacity: 0;
+}
+
+main {
+    background: transparent;
+    position: relative;
+    z-index: 5;
 }
 
 /* ============================================================
@@ -167,6 +181,8 @@ body {
     padding: 60px 20px;
     max-width: 1200px;
     margin: auto;
+    background: transparent;
+
 }
 
 .forecast-heading {
