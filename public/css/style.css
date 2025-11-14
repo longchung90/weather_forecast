@@ -199,11 +199,31 @@ main {
 /* ============================================================
    FORECAST SECTION
 ============================================================ */
+/* ============================================================
+   FIX FORECAST SECTION VISIBILITY
+============================================================ */
 .forecast-section {
-    padding: 60px 20px 80px;
-    max-width: 1200px;
-    margin: auto;
-    background: transparent;
+    position: relative !important;
+    z-index: 50 !important;
+    padding-top: 40px !important;
+}
+
+.forecast-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    gap: 18px !important;
+
+    padding: 20px !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    position: relative !important;
+    z-index: 51 !important;
+}
+
+.weather-card {
+    flex: 0 0 auto !important;
 }
 
 .forecast-heading {
@@ -219,20 +239,7 @@ main {
     color: #fff4da;
 
     /* Gradient overlay on
-/* ============================================================
-   WEATHER GRID
-============================================================ */
-    .forecast-grid {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: stretch;
-        gap: 18px;
 
-        overflow-x: auto;
-        padding: 20px;
-        width: 100%;
-    }
 
     /* ============================================================
    WEATHER CARD — POLISHED
