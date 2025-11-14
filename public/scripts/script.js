@@ -1,3 +1,6 @@
+// =========================
+// Weather label and Icons
+// =======================
 const ICONS_IOS = {
     // Clear
     clearday: "☀️",
@@ -60,6 +63,7 @@ const ICONS_IOS = {
     // Fallback
     default: "❓"
 };
+
 // ===============================================================
 // LABEL MAP
 // ===============================================================
@@ -108,8 +112,9 @@ const WEATHER_DETAILS = {
 
     default: "Unknown"
 };
+
 // ===============================================================
-// ELEMENTS
+// ELEMENTS that are found on HTML as IDs
 // ===============================================================
 const elements = {
     btn: document.getElementById("getForecastBtn"),
@@ -123,11 +128,24 @@ const elements = {
 };
 
 
+// ===============================================================
+// WIND DATA
+// ===============================================================
+const WIND_DIRECTION = {
+    N: "North", NE: "Northeast", E: "East", SE: "Southeast",
+    S: "South", SW: "Southwest", W: "West", NW: "Northwest"
+};
+
+const WIND_SPEED = { 1: 5, 2: 10, 3: 15, 4: 25, 5: 35, 6: 50, 7: 65 };
+
+// =======================
+// Transition
+// ========================
 
 const CONFIG = { TRANSITION: 900 };
 
 // ===============================================================
-// CITY BACKGROUNDS
+// CITY BACKGROUNDS of each city
 // ===============================================================
 const cityBG = {
     paris: "images/paris.jpg",
@@ -153,17 +171,6 @@ const cityBG = {
 };
 
 
-
-
-// ===============================================================
-// WIND DATA
-// ===============================================================
-const WIND_DIRECTION = {
-    N: "North", NE: "Northeast", E: "East", SE: "Southeast",
-    S: "South", SW: "Southwest", W: "West", NW: "Northwest"
-};
-
-const WIND_SPEED = { 1: 5, 2: 10, 3: 15, 4: 25, 5: 35, 6: 50, 7: 65 };
 // ===============================================================
 // Background change
 // ===============================================================
@@ -223,34 +230,6 @@ document.getElementById("changeCityBtn").addEventListener("click", () => {
     elements.section.classList.add("hidden");
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
-
-
-
-
-
-// ===============================================================
-// MAP
-// ===============================================================
-let map, marker;
-
-function initLeafletMap(lat, lon) {
-    if (!map) {
-        map = L.map("map").setView([lat, lon], 7);
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            maxZoom: 18
-        }).addTo(map);
-
-        marker = L.marker([lat, lon]).addTo(map);
-    } else {
-        map.setView([lat, lon], 7);
-        marker.setLatLng([lat, lon]);
-    }
-}
-
-
-// ===============================================================
-// 7TIMER WEATHER LOADER (iOS Style SVG)
-// ===============================================================
 
 /* ============================================================
    WEATHER LOADER (civil product)
@@ -327,6 +306,24 @@ async function loadWeather(lat, lon) {
 
         elements.grid.appendChild(card);
     });
+    // ===============================================================
+    // MAP
+    // ===============================================================
+    let map, marker;
+
+    function initLeafletMap(lat, lon) {
+        if (!map) {
+            map = L.map("map").setView([lat, lon], 7);
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 18
+            }).addTo(map);
+
+            marker = L.marker([lat, lon]).addTo(map);
+        } else {
+            map.setView([lat, lon], 7);
+            marker.setLatLng([lat, lon]);
+        }
+    }
 
 }
 // ===============================================================
@@ -351,7 +348,9 @@ async function handleGet() {
 }
 
 
-
+//=============
+// App initislisation
+// ===============
 
 window.addEventListener("load", () => {
     elements.select.addEventListener("change", updateCity);
