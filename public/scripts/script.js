@@ -187,7 +187,7 @@ async function handleGet() {
     initLeafletMap(lat, lon);
     await loadWeather(lat, lon);
 
-    elements.overlay.classList.add("hidden");
+
     elements.section.scrollIntoView({ behavior: "smooth" });
 }
 
@@ -196,7 +196,6 @@ async function handleGet() {
 // ---------------------------------------------------------------
 window.addEventListener("load", () => {
     elements.overlay.classList.add("hidden");
-    elements.select.addEventListener("change", updateCity);
     elements.btn.addEventListener("click", handleGet);
 });
 
