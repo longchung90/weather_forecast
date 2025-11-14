@@ -91,7 +91,7 @@ function changeBackground(newBg) {
     requestAnimationFrame(() => (layer.style.opacity = 1));
 
     setTimeout(() => {
-        document.documentElement.style.setProperty("--hero-img", `url('${newBg}')`);
+        document.documentElement.style.setProperty("--hero-img", `url('../${newBg}')`);
         layer.remove();
     }, CONFIG.TRANSITION);
 }
