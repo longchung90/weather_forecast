@@ -149,8 +149,8 @@ function initializeApp() {
     elements.select.addEventListener("change", updateCity);
     elements.btn.addEventListener("click", handleGetForecast);
 
-    // Set default hero background
-    document.documentElement.style.setProperty("--hero-img", "url('/images/eu.jpg')");
+    document.documentElement.style.setProperty("--hero-img", "url('./images/eu.jpg')");
+
 
     // Start map
     initLeafletMap(CONFIG.DEFAULT_LAT, CONFIG.DEFAULT_LON);

@@ -17,7 +17,7 @@
     position: absolute;
     inset: 0;
 
-    background: var(--hero-img, url('/images/eu.jpg')) center/cover no-repeat;
+    background: var(--hero-img, url('../images/eu.jpg')) center/cover no-repeat;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
