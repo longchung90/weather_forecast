@@ -262,16 +262,22 @@ main {
 ============================================================ */
 /* WEATHER TILE UPGRADE */
 .weather-card {
-    background: rgba(255, 255, 255, 0.22);
+    width: 165px;
+    /* slightly wider */
+    padding: 22px 18px;
+
+    background: rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(16px);
+
     border-radius: 22px;
-    padding: 20px 18px;
-    width: 200px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    gap: 12px;
+
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
 }
 
 .weather-card {
@@ -281,14 +287,21 @@ main {
 
 /* Day */
 .w-day {
-    font-size: 1.6rem;
-    font-weight: 700;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #ffebc4;
 }
 
-/* Date */
 .w-date {
-    font-size: 1.1rem;
-    opacity: 0.85;
+    font-size: 0.95rem;
+    opacity: 0.9;
+    color: #ffe8c7;
+}
+
+.w-temp {
+    color: #ffe8c7;
+    /* warm gold-white */
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 
 .w-temp {
@@ -297,6 +310,18 @@ main {
     line-height: 1;
     position: relative;
     display: inline-block;
+}
+
+.w-temp {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #ffe8c7;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.w-temp sup {
+    font-size: 1.2rem;
+    font-weight: 500;
 }
 
 .w-temp::after {
@@ -317,9 +342,8 @@ main {
 }
 
 .w-icon {
-    font-size: 3rem;
-    /* bigger icon */
-    margin-bottom: 8px;
+    font-size: 2.6rem;
+    margin-bottom: 4px;
 }
 
 /* High / Low */
