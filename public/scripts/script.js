@@ -238,46 +238,48 @@ async function loadWeather(lat, lon) {
         // Create card
         const card = document.createElement("div");
         card.classList.add("weather-card", "weather-animate");
-        card.style.setProperty("--delay", `${index * 120}ms`);
 
-        // Call icons
-        const key = day.weather.toLowerCase();
-        const icon = ICONS[key] || ICONS.default;
+        // stagger animation
+        card.style.setProperty("--delay", `${index * 120}ms`);
 
         // Build card HTML
         card.innerHTML = `
-    <div class="w-icon">${icon}</div>
+            <div class="w-icon">${icon}</div>
 
-    <div class="w-day">
-        ${date.toLocaleString("en-US", { weekday: "short" })}
-    </div>
+            <div class="w-day">
+                ${date.toLocaleString("en-US", { weekday: "short" })}
+            </div>
 
-    <div class="w-date">
-        ${dateString}
-    </div>
+            <div class="w-date">
+                ${dateString}
+            </div>
 
-    <div class="w-temp">
-        ${day.temp2m}°C
-    </div>
+            <div class="w-temp">
+                ${day.temp2m}°C
+            </div>
 
-    <div class="w-cond">
-        ${weather.label}
-    </div>
+            <div class="w-cond">
+                ${weather.label}
+            </div>
 
-    <div class="w-hilo">
-        <span>H: ${day.temp2m + 2}°C</span>
-        <span>L: ${day.temp2m - 2}°C</span>
-    </div>
+            <div class="w-hilo">
+                <span>H: ${day.temp2m + 2}°C</span>
+                <span>L: ${day.temp2m - 2}°C</span>
+            </div>
 
-    <div class="w-extra">
-        <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>
-        <div><strong>Rain:</strong> ${rainChance}%</div>
-    </div>
-`;
+            <div class="w-extra">
+                <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>
+                <div><strong>Rain:</strong> ${rainChance}%</div>
+            </div>
+        `;
 
-
-        // Insert card
         elements.grid.appendChild(card);
+    });
+}
+
+
+// Insert card
+elements.grid.appendChild(card);
     });
 }
 
