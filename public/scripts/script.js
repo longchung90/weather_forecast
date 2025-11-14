@@ -130,38 +130,37 @@ async function loadWeather(lat, lon) {
 // ---------------------------------------------------------------
 // 8. BUTTON CLICK
 // ---------------------------------------------------------------
-function handleGetForecast() {
+async function handleGetForecast() {
     const val = elements.select.value;
     if (!val) return alert("Please select a destination!");
 
     const [lat, lon] = val.split(",").map(Number);
 
     elements.section.classList.remove("hidden");
-    elements.hero.classList.add("fade-out");
-
     elements.section.scrollIntoView({ behavior: "smooth" });
 
     initLeafletMap(lat, lon);
-    loadWeather(lat, lon);
+    await loadWeather(lat, lon);
 
-    document.getElementById("loadingOverlay").style.display = "none";
-
-}
-
-// ---------------------------------------------------------------
-// 9. INITIALIZE APP
-// ---------------------------------------------------------------
-function initializeApp() {
-    elements.select.addEventListener("change", updateCity);
-    elements.btn.addEventListener("click", handleGetForecast);
+    window.onload = () => {
+        document.getElementById("loadingOverlay").style.display = "none";
+    };
 
 
+    // ---------------------------------------------------------------
+    // 9. INITIALIZE APP
+    // ---------------------------------------------------------------
+    function initializeApp() {
+        elements.select.addEventListener("change", updateCity);
+        elements.btn.addEventListener("click", handleGetForecast);
 
-    // Start map
-    initLeafletMap(CONFIG.DEFAULT_LAT, CONFIG.DEFAULT_LON);
 
-    console.log("🌍 App initialized with Leaflet");
-}
 
-// Start App
-initializeApp();
+        // Start map
+        initLeafletMap(CONFIG.DEFAULT_LAT, CONFIG.DEFAULT_LON);
+
+        console.log("🌍 App initialized with Leaflet");
+    }
+
+    // Start App
+    initializeApp();

@@ -262,10 +262,10 @@
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.55);
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 999;
     color: white;
     font-size: 1.4rem;
     backdrop-filter: blur(6px);
