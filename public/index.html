@@ -77,20 +77,15 @@
 
                     <button id="getForecastBtn" class="btn btn-gold">Get Forecast</button>
                 </div>
-
             </div>
         </div>
     </header>
 
-
-
-    <!-- FORECAST SECTION -->
     <main>
-        <section id="forecastSection" class="forecast-section hidden">
-
-            <h2 id="forecastHeading" class="forecast-heading">
-                <span id="forecastCityIcon">🌍</span>
-                <span id="forecastCityName">Select a City</span>
+        <section id="'forecastSelection" class="hidden>
+            <h2 id=" forecastHeading" class="forecast-heading">
+            <span id="forecastCityIcon">🌍</span>
+            <span id="forecastCityName">Select a City</span>
             </h2>
 
             <div id="weatherGrid" class="forecast-grid"></div>
@@ -100,25 +95,29 @@
         </section>
     </main>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="footer-inner">
-            <p class="footer-text">© 2025 Long Hoa Chung | European Weather Explorer</p>
+    <!-- ⭐ Overlay should be HERE -->
+    <div id="loadingOverlay">Loading...</div>
 
-            <div class="footer-links">
-                <a href="https://github.com/longchung90" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://www.linkedin.com/in/long-hoa-chung/" target="_blank"><i
-                        class="fab fa-linkedin"></i></a>
-                <a href="https://www.coursera.org/learner/longchung/" target="_blank"><i
-                        class="fas fa-graduation-cap"></i></a>
-                <a href="https://lcportfolio.org" target="_blank"><i class="fas fa-globe"></i></a>
-            </div>
+</body>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-inner">
+        <p class="footer-text">© 2025 Long Hoa Chung | European Weather Explorer</p>
+
+        <div class="footer-links">
+            <a href="https://github.com/longchung90" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/long-hoa-chung/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.coursera.org/learner/longchung/" target="_blank"><i
+                    class="fas fa-graduation-cap"></i></a>
+            <a href="https://lcportfolio.org" target="_blank"><i class="fas fa-globe"></i></a>
         </div>
-    </footer>
+    </div>
+</footer>
 
-    <!-- Scripts -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="./scripts/script.js"></script>
+<!-- Scripts -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="./scripts/script.js"></script>
 
 </body>
 
