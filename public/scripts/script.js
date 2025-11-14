@@ -268,7 +268,7 @@ async function loadWeather(lat, lon) {
 
         /* WEATHER CODE */
         const code = day.weather;
-        const iconSVG = ICONS_IOS[code] || ICON_SUN;
+        const iconSVG = ICONS_IOS[code] || ICONS_IOS.default;
         const label = WEATHER_DETAILS[code] || "Unknown";
 
         /* TEMPERATURE */
