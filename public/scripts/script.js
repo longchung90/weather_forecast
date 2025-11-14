@@ -133,95 +133,98 @@ async function loadWeather(lat, lon) {
 
     data.dataseries.slice(0, 7).forEach((day, index) => {
 
+        // SAFETY GUARDS — prevent crashes
+        if (!day || !day.weather) return;
+        if (!day.temp2m) day.temp2m = 0;
+        if (!day.wind10m) day.wind10m = { direction: "N", speed: 1 };
+
+        // Day label
         const date = new Date();
         date.setDate(date.getDate() + index);
         const dayName = date.toLocaleString("en-US", { weekday: "short" });
 
-        const w = WEATHER_MAP[day.weather] || { label: day.weather, icon: "❓" };
-
-        const temp = day.temp2m;
+        // Weather info
+        const w = WEATHER_MAP[day.weather] || { icon: "❓", label: day.weather };
         const icon = w.icon;
         const cond = w.label;
+        const temp = day.temp2m;
 
-        const speedLevel = day.wind10m.speed;
-        const windSpeed = WIND_SPEED[speedLevel] || 0;
+        // Wind info
+        const rawDir = day.wind10m.direction || "N";
+        const rawSpeed = day.wind10m.speed || 1;
 
-        const dir = day.wind10m.direction;
-        const windDir = WIND_DIRECTION[dir] || dir;
+        const windDir = WIND_DIRECTION[rawDir] || rawDir;
+        const windSpeed = WIND_SPEED[rawSpeed] || 0;
+        const angle = WIND_ANGLE[rawDir] || 0;
 
-        const angle = WIND_ANGLE[dir] || 0; // for arrow rotation
-
-
+        // Create tile
         const div = document.createElement("div");
         div.className = "weather-card";
 
         div.innerHTML = `
-    <div class="weather-day">${dayName}</div>
-    <div class="weather-icon">${icon}</div>
-    <div class="weather-temp">${temp}°C</div>
-    <div class="weather-cond">${cond}</div>
+        <div class="weather-day">${dayName}</div>
+        <div class="weather-icon">${icon}</div>
+        <div class="weather-temp">${temp}°C</div>
+        <div class="weather-cond">${cond}</div>
 
-    <div class="wind-box">
-        <div class="wind-title">Wind</div>
+        <div class="wind-box">
+            <div class="wind-title">Wind</div>
 
-        <div class="wind-compass">
-            <div class="compass-circle">
-                <div class="compass-arrow" style="transform: rotate(${angle}deg)"></div>
-                <div class="compass-center">${windSpeed}<span class="unit">km/h</span></div>
+            <div class="wind-compass">
+                <div class="compass-circle">
+                    <div class="compass-arrow" style="transform: rotate(${angle}deg)"></div>
+                    <div class="compass-center">${windSpeed}<span class="unit">km/h</span></div>
 
-                <span class="compass-dir n">N</span>
-                <span class="compass-dir e">E</span>
-                <span class="compass-dir s">S</span>
-                <span class="compass-dir w">W</span>
+                    <span class="compass-dir n">N</span>
+                    <span class="compass-dir e">E</span>
+                    <span class="compass-dir s">S</span>
+                    <span class="compass-dir w">W</span>
+                </div>
             </div>
+
+            <div class="wind-direction-text">${windDir}</div>
         </div>
-
-        <div class="wind-direction-text">${windDir}</div>
-    </div>
-`;
-
+    `;
 
         elements.grid.appendChild(div);
     });
 
 
-}
+    // ---------------------------------------------------------------
+    // 8. BUTTON CLICK → SHOW FORECAST + CHANGE BACKGROUND
+    // ---------------------------------------------------------------
+    async function handleGet() {
+        const val = elements.select.value;
+        if (!val) return alert("Pick a destination!");
 
-// ---------------------------------------------------------------
-// 8. BUTTON CLICK → SHOW FORECAST + CHANGE BACKGROUND
-// ---------------------------------------------------------------
-async function handleGet() {
-    const val = elements.select.value;
-    if (!val) return alert("Pick a destination!");
+        const [lat, lon] = val.split(",").map(Number);
+        const opt = elements.select.options[elements.select.selectedIndex];
 
-    const [lat, lon] = val.split(",").map(Number);
-    const opt = elements.select.options[elements.select.selectedIndex];
+        // heading
+        elements.heading.innerHTML = `Here is your 7-day forecast for <strong>${opt.dataset.name}</strong>`;
 
-    // heading
-    elements.heading.innerHTML = `Here is your 7-day forecast for <strong>${opt.dataset.name}</strong>`;
+        // fade hero
+        elements.hero.classList.add("fade-out");
 
-    // fade hero
-    elements.hero.classList.add("fade-out");
+        // change background now
+        const newBg = cityBG[opt.dataset.bg];
+        if (newBg) changeBackground(newBg);
 
-    // change background now
-    const newBg = cityBG[opt.dataset.bg];
-    if (newBg) changeBackground(newBg);
+        // show forecast section
+        elements.section.classList.remove("hidden");
 
-    // show forecast section
-    elements.section.classList.remove("hidden");
+        initLeafletMap(lat, lon);
+        await loadWeather(lat, lon);
 
-    initLeafletMap(lat, lon);
-    await loadWeather(lat, lon);
+        elements.overlay.classList.add("hidden");
+        elements.section.scrollIntoView({ behavior: "smooth" });
+    }
 
-    elements.overlay.classList.add("hidden");
-    elements.section.scrollIntoView({ behavior: "smooth" });
-}
-
-// ---------------------------------------------------------------
-// 9. INIT
-// ---------------------------------------------------------------
-window.addEventListener("load", () => {
-    elements.overlay.classList.add("hidden");
-    elements.select.addEventListener("change", updateCity);
-    elements.btn.addEventListener("click", handleGet);
-});
+    // ---------------------------------------------------------------
+    // 9. INIT
+    // ---------------------------------------------------------------
+    window.addEventListener("load", () => {
+        elements.overlay.classList.add("hidden");
+        elements.select.addEventListener("change", updateCity);
+        elements.btn.addEventListener("click", handleGet);
+    });
