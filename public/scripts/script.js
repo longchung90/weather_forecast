@@ -45,6 +45,28 @@ const cityBG = {
     bratislava: "images/bratislava.jpg",
     dublin: "images/dublin.jpg"
 };
+const WEATHER_MAP = {
+    clearday: { label: "Clear", icon: "☀️" },
+    clearnight: { label: "Clear Night", icon: "🌙" },
+    cloudyday: { label: "Cloudy", icon: "☁️" },
+    cloudynight: { label: "Cloudy Night", icon: "☁️" },
+    lightrainday: { label: "Light Rain", icon: "🌦️" },
+    lightrainnight: { label: "Light Rain", icon: "🌧️" },
+    rain: { label: "Rain", icon: "🌧️" },
+    snow: { label: "Snow", icon: "❄️" },
+    ts: { label: "Thunderstorm", icon: "⛈️" },
+    fog: { label: "Fog", icon: "🌫️" }
+};
+const WIND_ANGLE = {
+    N: 0,
+    NE: 45,
+    E: 90,
+    SE: 135,
+    S: 180,
+    SW: 225,
+    W: 270,
+    NW: 315
+};
 
 // ---------------------------------------------------------------
 // 4. SELECTING A CITY (NO BACKGROUND CHANGE)
@@ -109,15 +131,60 @@ async function loadWeather(lat, lon) {
 
     elements.grid.innerHTML = "";
 
-    data.dataseries.slice(0, 7).forEach(day => {
-        const item = document.createElement("div");
-        item.className = "weather-card";
-        item.innerHTML = `
-            <div class="icon">🌤️</div>
-            <div class="condition">${day.weather}</div>
-        `;
-        elements.grid.appendChild(item);
+    data.dataseries.slice(0, 7).forEach((day, index) => {
+
+        const date = new Date();
+        date.setDate(date.getDate() + index);
+        const dayName = date.toLocaleString("en-US", { weekday: "short" });
+
+        const w = WEATHER_MAP[day.weather] || { label: day.weather, icon: "❓" };
+
+        const temp = day.temp2m;
+        const icon = w.icon;
+        const cond = w.label;
+
+        const speedLevel = day.wind10m.speed;
+        const windSpeed = WIND_SPEED[speedLevel] || 0;
+
+        const dir = day.wind10m.direction;
+        const windDir = WIND_DIRECTION[dir] || dir;
+
+        const angle = WIND_ANGLE[dir] || 0; // for arrow rotation
+
+
+        const div = document.createElement("div");
+        div.className = "weather-card";
+
+        div.innerHTML = `
+    <div class="weather-day">${dayName}</div>
+    <div class="weather-icon">${icon}</div>
+    <div class="weather-temp">${temp}°C</div>
+    <div class="weather-cond">${cond}</div>
+
+    <div class="wind-box">
+        <div class="wind-title">Wind</div>
+
+        <div class="wind-compass">
+            <div class="compass-circle">
+                <div class="compass-arrow" style="transform: rotate(${angle}deg)"></div>
+                <div class="compass-center">${windSpeed}<span class="unit">km/h</span></div>
+
+                <span class="compass-dir n">N</span>
+                <span class="compass-dir e">E</span>
+                <span class="compass-dir s">S</span>
+                <span class="compass-dir w">W</span>
+            </div>
+        </div>
+
+        <div class="wind-direction-text">${windDir}</div>
+    </div>
+`;
+
+
+        elements.grid.appendChild(div);
     });
+
+
 }
 
 // ---------------------------------------------------------------

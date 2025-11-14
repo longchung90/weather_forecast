@@ -207,6 +207,97 @@
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
 }
 
+
+.wind-box {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.wind-title {
+    font-size: 0.85rem;
+    opacity: 0.75;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.wind-compass {
+    display: flex;
+    justify-content: center;
+}
+
+.compass-circle {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(6px);
+}
+
+.compass-arrow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 2px;
+    height: 38px;
+    background: #fff;
+    transform-origin: bottom center;
+}
+
+.compass-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.compass-center .unit {
+    font-size: 0.7rem;
+    opacity: 0.75;
+    display: block;
+}
+
+.compass-dir {
+    position: absolute;
+    font-size: 0.65rem;
+    opacity: 0.6;
+}
+
+.compass-dir.n {
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.compass-dir.e {
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.compass-dir.s {
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.compass-dir.w {
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.wind-direction-text {
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 8px;
+    opacity: 0.85;
+}
+
 /* =========================
    LOADING OVERLAY
    ========================= */
