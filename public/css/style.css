@@ -316,28 +316,12 @@ main {
     display: inline-block;
 }
 
-.w-temp {
-    font-size: 3rem;
-    font-weight: 700;
-    color: #fff7e6;
-    /* bright warm white-gold */
-    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.55);
-    margin: 6px 0;
-}
 
 .w-temp sup {
     font-size: 1.4rem;
     opacity: 0.85;
 }
 
-.w-temp::after {
-    content: "°C";
-    font-size: 1.7rem;
-    font-weight: 400;
-    margin-left: 6px;
-    position: absolute;
-    top: 12px;
-}
 
 /* Condition (Cloudy, Rain, etc.) */
 .w-cond {
@@ -386,6 +370,19 @@ main {
 .wind-dir {
     font-size: 0.9rem;
     opacity: 0.8;
+}
+
+.snow-icon {
+    width: 34px;
+    height: 34px;
+    position: relative;
+}
+
+.snow-icon::before {
+    content: "❄";
+    font-size: 2.2rem;
+    color: #cfe8ff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
 }
 
 /* ============================================================

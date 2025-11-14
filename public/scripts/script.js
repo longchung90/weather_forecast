@@ -45,6 +45,22 @@ const cityBG = {
 // ===============================================================
 // WEATHER MAP (Corrected for 7timer API codes)
 // ===============================================================
+
+const WEATHER_MAP = {
+    clearsky: { label: "Clear" },
+    pcloudy: { label: "Partly Cloudy" },
+    mcloudy: { label: "Mostly Cloudy" },
+    cloudy: { label: "Cloudy" },
+    rain: { label: "Rain" },
+    lightrain: { label: "Light Rain" },
+    oshower: { label: "Occasional Showers" },
+    ishower: { label: "Isolated Showers" },
+    snow: { label: "Snow" },
+    lightsnow: { label: "Light Snow" },
+    heavysnow: { label: "Heavy Snow" },
+    ts: { label: "Thunderstorm" },
+    default: { label: "Weather" }
+};
 // ===========================================================
 // WEATHER ICONS
 // ===========================================================
@@ -65,21 +81,7 @@ const ICONS = {
 };
 
 
-const WEATHER_MAP = {
-    clearsky: { label: "Clear" },
-    pcloudy: { label: "Partly Cloudy" },
-    mcloudy: { label: "Mostly Cloudy" },
-    cloudy: { label: "Cloudy" },
-    rain: { label: "Rain" },
-    lightrain: { label: "Light Rain" },
-    oshower: { label: "Occasional Showers" },
-    ishower: { label: "Isolated Showers" },
-    snow: { label: "Snow" },
-    lightsnow: { label: "Light Snow" },
-    heavysnow: { label: "Heavy Snow" },
-    ts: { label: "Thunderstorm" },
-    default: { label: "Weather" }
-};
+
 
 
 // ===============================================================
@@ -187,6 +189,8 @@ async function loadWeather(lat, lon) {
 
     data.dataseries.slice(0, 7).forEach((day, index) => {
 
+        console.log("Weather key:", key, "→ label:", weather.label, "icon:", icon);
+
         // --- DATE ---
         const date = new Date();
         date.setDate(date.getDate() + index);
@@ -232,6 +236,9 @@ async function loadWeather(lat, lon) {
 
             <div class="w-cond">
                 ${weather.label}
+            </div>
+            
+            <div class="snow-icon">
             </div>
 
             <div class="w-hilo">
