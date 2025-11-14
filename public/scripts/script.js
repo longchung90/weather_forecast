@@ -411,7 +411,7 @@ async function loadWeather(lat, lon) {
 
         elements.grid.appendChild(card);
 
-        elements.grid.innerHTML = ICON_SUN;
+
     });
 
     // -------------------------------------------------------------
