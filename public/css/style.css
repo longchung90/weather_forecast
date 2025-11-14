@@ -210,30 +210,34 @@ main {
    FORECAST TITLE
 ============================================================ */
 .forecast-heading {
-    margin-top: 40px;
-    margin-bottom: 25px;
+    margin-top: 20px;
+    margin-bottom: 10px;
 
-    font-size: 3.5rem;
+    font-size: 2.8rem;
+    /* smaller & elegant */
     font-family: "Playfair Display", serif;
     font-weight: 700;
     text-align: center;
 
-    background: linear-gradient(180deg, #ffedc9, #e2b46f 55%);
+    background: linear-gradient(180deg, #ffeed6, #e3b980 60%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 
-    background-clip: text;
-    color: transparent;
-
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
+    line-height: 1.2;
+    /* tighter spacing */
+    display: flex;
+    align-items: center;
+    /* centers flag vertically */
+    justify-content: center;
+    gap: 12px;
+    /* spacing between text + flag */
 }
 
-.forecast-subtitle {
-    font-size: 3rem;
-    font-weight: 500;
-    color: #ffe8c7;
-    font-family: "Playfair Display", serif;
-    text-align: center;
+.forecast-heading span {
+    display: inline-block;
+    font-size: 2.1rem;
+    transform: translateY(2px);
 }
 
 .hidden {
@@ -345,13 +349,7 @@ main {
     opacity: 0.8;
 }
 
-/* Condition text */
-.w-cond {
-    font-size: 1.3rem;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    opacity: 0.92;
-}
+
 
 /* High/Low */
 .w-hilo {
@@ -367,6 +365,18 @@ main {
     margin-top: 8px;
     line-height: 1.5rem;
     opacity: 0.95;
+}
+
+.w-extra div {
+    white-space: nowrap;
+    /* forces one line */
+}
+
+.w-extra {
+    font-size: 0.95rem;
+    /* smaller */
+    line-height: 1.2rem;
+    /* cleaner spacing */
 }
 
 .w-extra {
