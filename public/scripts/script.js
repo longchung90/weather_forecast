@@ -49,15 +49,31 @@ const cityBG = {
 // 3. WEATHER & WIND MAPS
 // ===============================================================
 const WEATHER_MAP = {
-    clear: { icon: "☀️", label: "Clear" },
-    cloudy: { icon: "☁️", label: "Cloudy" },
-    pcloudy: { icon: "⛅", label: "Partly Cloudy" },
-    mcloudy: { icon: "🌥️", label: "Mostly Cloudy" },
-    rain: { icon: "🌧️", label: "Rain" },
-    lightrain: { icon: "🌦️", label: "Light Rain" },
-    ishower: { icon: "🌦️", label: "Rain Showers" },
-    snow: { icon: "❄️", label: "Snow" },
+    clearday: { icon: "☀️", label: "Clear (Day)" },
+    clearnight: { icon: "🌙", label: "Clear (Night)" },
+
+    pcloudyday: { icon: "⛅", label: "Partly Cloudy (Day)" },
+    pcloudynight: { icon: "🌙", label: "Partly Cloudy (Night)" },
+
+    mcloudyday: { icon: "🌥️", label: "Mostly Cloudy (Day)" },
+    mcloudynight: { icon: "☁️", label: "Mostly Cloudy (Night)" },
+
+    cloudyday: { icon: "☁️", label: "Cloudy" },
+    cloudynight: { icon: "☁️", label: "Cloudy (Night)" },
+
+    lightrainday: { icon: "🌦️", label: "Light Rain (Day)" },
+    lightrainnight: { icon: "🌧️", label: "Light Rain (Night)" },
+
+    rainday: { icon: "🌧️", label: "Rain (Day)" },
+    rainnight: { icon: "🌧️", label: "Rain (Night)" },
+
+    lightsnowday: { icon: "🌨️", label: "Light Snow (Day)" },
+    lightsnownight: { icon: "🌨️", label: "Light Snow (Night)" },
+
+    snowday: { icon: "❄️", label: "Snow (Day)" },
+    snownight: { icon: "❄️", label: "Snow (Night)" },
 };
+
 
 const WIND_DIRECTION = {
     N: "North",
@@ -209,6 +225,8 @@ async function loadWeather(lat, lon) {
         `;
 
         elements.grid.appendChild(card);
+        elements.hero.classList.add("fade-out");
+
     });
 }
 
