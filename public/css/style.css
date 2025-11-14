@@ -156,11 +156,11 @@ main {
     font-family: "Playfair Display", serif;
     font-size: 1.1rem;
     opacity: 0.9;
-    color: #f6e1b2;
+    color: #e8810b;
 }
 
 .acknowledgement a {
-    color: #f1d207;
+    color: #e8810b;
     text-decoration: none;
     font-weight: 500;
 }
