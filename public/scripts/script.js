@@ -1,5 +1,5 @@
-// ===============================================================
-//  iOS SVG ICON SET
+ ===============================================================
+//  iOS SVG ICON SET (INLINE)
 // ===============================================================
 
 // ☀ CLEAR
@@ -35,7 +35,7 @@ const ICON_CLOUD = `
   <ellipse cx="50" cy="55" rx="32" ry="18" stroke="currentColor" stroke-width="8"/>
 </svg>`;
 
-// 🌫 FOG / HAZE
+// 🌫 FOG
 const ICON_FOG = `
 <svg viewBox="0 0 100 100" fill="none">
   <line x1="20" y1="50" x2="80" y2="50" stroke="currentColor" stroke-width="8"/>
@@ -49,7 +49,7 @@ const ICON_WIND = `
   <path d="M20 70 H60 Q75 70 75 60" stroke="currentColor" stroke-width="8" fill="none"/>
 </svg>`;
 
-// 🌦 LIGHT RAIN / SHOWERS
+// 🌦 LIGHT RAIN
 const ICON_LRAIN = `
 <svg viewBox="0 0 100 100" fill="none">
   <ellipse cx="50" cy="40" rx="30" ry="16" stroke="currentColor" stroke-width="8"/>
@@ -83,7 +83,7 @@ const ICON_SNOW = `
   <circle cx="65" cy="75" r="4" fill="currentColor"/>
 </svg>`;
 
-// 🌧❄ RAIN & SNOW MIX
+// 🌧❄ RAIN-SNOW MIX
 const ICON_RSNOW = `
 <svg viewBox="0 0 100 100" fill="none">
   <ellipse cx="50" cy="40" rx="30" ry="18" stroke="currentColor" stroke-width="8"/>
@@ -100,6 +100,70 @@ const ICON_BLIZZ = `
   <circle cx="65" cy="75" r="4" fill="currentColor"/>
   <path d="M20 90 H80" stroke="currentColor" stroke-width="6"/>
 </svg>`;
+
+
+// ===============================================================
+// ICON MAP
+// ===============================================================
+const ICONS_IOS = {
+    clearsky: ICON_SUN,
+    pclear: ICON_PCLEAR,
+    pcloudy: ICON_PCLOUDY,
+    mcloudy: ICON_MCLOUDY,
+    cloudy: ICON_CLOUD,
+
+    fog: ICON_FOG,
+    haze: ICON_FOG,
+    humid: ICON_FOG,
+    windy: ICON_WIND,
+
+    drizzle: ICON_LRAIN,
+    lightrain: ICON_LRAIN,
+    ishower: ICON_LRAIN,
+    oshower: ICON_LRAIN,
+
+    rain: ICON_RAIN,
+
+    ts: ICON_TS,
+    tstorms: ICON_TS,
+
+    lightsnow: ICON_SNOW,
+    snow: ICON_SNOW,
+
+    rainsnow: ICON_RSNOW,
+    sleet: ICON_RSNOW,
+    frain: ICON_RSNOW,
+
+    blizzard: ICON_BLIZZ
+};
+// ===============================================================
+// LABEL MAP
+// ===============================================================
+const WEATHER_DETAILS = {
+    clearsky: "Clear",
+    pclear: "Mostly Clear",
+    pcloudy: "Partly Cloudy",
+    mcloudy: "Mostly Cloudy",
+    cloudy: "Cloudy",
+    fog: "Fog",
+    haze: "Haze",
+    humid: "Humid",
+    windy: "Windy",
+    drizzle: "Drizzle",
+    lightrain: "Light Rain",
+    ishower: "Intermittent Showers",
+    oshower: "Occasional Showers",
+    rain: "Rain",
+    ts: "Thunderstorm",
+    tstorms: "Thunderstorms",
+    lightsnow: "Light Snow",
+    snow: "Snow",
+    rainsnow: "Rain & Snow Mix",
+    sleet: "Sleet",
+    frain: "Freezing Rain",
+    blizzard: "Blizzard"
+};
+
 
 // ===============================================================
 // ELEMENTS
@@ -144,68 +208,7 @@ const cityBG = {
     bratislava: "images/bratislava.jpg",
     dublin: "images/dublin.jpg",
 };
-// ===================================
-// Map weather codes to SVG icons 
-// ==================================
-const ICONS_IOS = {
-    clearsky: ICON_SUN,
-    pclear: ICON_PCLEAR,
-    pcloudy: ICON_PCLOUDY,
-    mcloudy: ICON_MCLOUDY,
-    cloudy: ICON_CLOUD,
 
-    fog: ICON_FOG,
-    haze: ICON_FOG,
-    humid: ICON_FOG,
-    windy: ICON_WIND,
-
-    drizzle: ICON_LRAIN,
-    lightrain: ICON_LRAIN,
-    ishower: ICON_LRAIN,
-    oshower: ICON_LRAIN,
-
-    rain: ICON_RAIN,
-
-    ts: ICON_TS,
-    tstorms: ICON_TS,
-
-    lightsnow: ICON_SNOW,
-    snow: ICON_SNOW,
-
-    rainsnow: ICON_RSNOW,
-    sleet: ICON_RSNOW,
-    frain: ICON_RSNOW,
-
-    blizzard: ICON_BLIZZ
-};
-
-// ===============================================================
-// WEATHER MAP (Corrected for 7timer API codes) label only
-// ===============================================================
-const WEATHER_DETAILS = {
-    clearsky: "Clear",
-    pclear: "Mostly Clear",
-    pcloudy: "Partly Cloudy",
-    mcloudy: "Mostly Cloudy",
-    cloudy: "Cloudy",
-    fog: "Fog",
-    haze: "Haze",
-    humid: "Humid",
-    windy: "Windy",
-    drizzle: "Drizzle",
-    lightrain: "Light Rain",
-    ishower: "Intermittent Showers",
-    oshower: "Occasional Showers",
-    rain: "Rain",
-    ts: "Thunderstorm",
-    tstorms: "Thunderstorms",
-    lightsnow: "Light Snow",
-    snow: "Snow",
-    rainsnow: "Rain & Snow Mix",
-    sleet: "Sleet",
-    frain: "Freezing Rain",
-    blizzard: "Blizzard"
-};
 
 
 
@@ -306,119 +309,80 @@ function initLeafletMap(lat, lon) {
 // 7TIMER WEATHER LOADER (iOS Style SVG)
 // ===============================================================
 
+/ ===============================================================
+// WEATHER LOADER (FINAL WORKING VERSION)
+// ===============================================================
 async function loadWeather(lat, lon) {
 
-    // Fetch forecast
     const res = await fetch(
         `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civillight&output=json`
     );
+
     const data = await res.json();
 
-    elements.grid.innerHTML = ""; // Clear grid
+    elements.grid.innerHTML = "";
 
-    // Detect and log unknown weather codes
     const unknown = new Set();
 
-    // Render first 7 days
     data.dataseries.slice(0, 7).forEach((day, index) => {
 
-        // ---------------------------------------------------------
-        // 📅 DATE HANDLING
-        // ---------------------------------------------------------
         const date = new Date();
         date.setDate(date.getDate() + index);
 
-        const weekday = date.toLocaleString("en-US", { weekday: "short" }); // Mon, Tue
-        const month = date.toLocaleString("en-US", { month: "short" });     // Jan, Feb
+        const weekday = date.toLocaleString("en-US", { weekday: "short" });
+        const month = date.toLocaleString("en-US", { month: "short" });
         const dayNum = date.getDate();
         const dateString = `${month} ${dayNum}`;
 
-        // ---------------------------------------------------------
-        // 🌦 DETERMINE WEATHER DETAILS
-        // ---------------------------------------------------------
         const code = day.weather;
 
         if (!ICONS_IOS[code]) unknown.add(code);
 
-        const iconSVG = ICONS_IOS[code] || ICON_SUN; // fallback = sun
+        const iconSVG = ICONS_IOS[code] || ICON_SUN;
         const label = WEATHER_DETAILS[code] || "Unknown";
 
-        // Console for debugging
-        console.log(
-            "%cWeather:",
-            "color:#00aaff; font-weight:bold;",
-            code,
-            "→",
-            label
-        );
-
-        // ---------------------------------------------------------
-        // 🌧 RAIN CHANCE (based on cloudcover)
-        // ---------------------------------------------------------
         const rainChance = Math.round((day.cloudcover / 10) * 100);
 
-        // ---------------------------------------------------------
-        // ❄ SNOW CHANCE
-        // ---------------------------------------------------------
         const snowChance =
             ["snow", "lightsnow", "rainsnow", "sleet", "frain", "blizzard"].includes(code)
                 ? rainChance
                 : 0;
 
-        // ---------------------------------------------------------
-        // 💨 WIND
-        // ---------------------------------------------------------
+        const temp = day.temp2m;
+        const high = temp + 2;
+        const low = temp - 2;
+
         const windSpeed = day.wind10m?.speed || 0;
         const windDir = day.wind10m?.direction || "N";
 
-        // ---------------------------------------------------------
-        // 🌡 TEMPERATURE
-        // ---------------------------------------------------------
-        const temp = day.temp2m;
-        const high = temp + 2; // simple dynamic high
-        const low = temp - 2;  // simple dynamic low
-
-        // ---------------------------------------------------------
-        // 🎨 CREATE WEATHER CARD
-        // ---------------------------------------------------------
         const card = document.createElement("div");
-        card.classList.add("weather-card", "weather-animate");
-        card.style.setProperty("--delay", `${index * 120}ms`);
+        card.classList.add("weather-card");
 
         card.innerHTML = `
-            <div class="w-day">${weekday}</div>
+      <div class="w-day">${weekday}</div>
+      <div class="w-date">${dateString}</div>
 
-            <div class="w-date">${dateString}</div>
+      <div class="w-icon">${iconSVG}</div>
 
-            <div class="w-icon">${iconSVG}</div>
+      <div class="w-temp">${temp}<sup>°C</sup></div>
+      <div class="w-cond">${label}</div>
 
-            <div class="w-temp">
-                ${temp}<sup>°C</sup>
-            </div>
+      <div class="w-hilo">
+        H: ${high}° • L: ${low}°
+      </div>
 
-            <div class="w-cond">${label}</div>
-
-            <div class="w-hilo">
-                H: ${high}° • L: ${low}°
-            </div>
-
-            <div class="w-extra">
-                <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>
-                <div><strong>Rain:</strong> ${rainChance}%</div>
-                <div><strong>Snow:</strong> ${snowChance}%</div>
-            </div>
-        `;
+      <div class="w-extra">
+        <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>
+        <div><strong>Rain:</strong> ${rainChance}%</div>
+        <div><strong>Snow:</strong> ${snowChance}%</div>
+      </div>
+    `;
 
         elements.grid.appendChild(card);
-
-
     });
 
-    // -------------------------------------------------------------
-    // 🔴 Report unknown codes (debug)
-    // -------------------------------------------------------------
     if (unknown.size > 0) {
-        console.warn("⚠ Unknown weather codes:", [...unknown]);
+        console.warn("Unknown weather codes:", [...unknown]);
     }
 }
 // ===============================================================

@@ -266,28 +266,21 @@ main {
    WEATHER CARD — POLISHED
 ============================================================ */
 /* WEATHER TILE UPGRADE */
+/* ============================================================
+   WEATHER CARD — POLISHED
+============================================================ */
 .weather-card {
     width: 165px;
-    /* slightly wider */
     padding: 22px 18px;
-
     background: rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(16px);
-
     border-radius: 22px;
     border: 1px solid rgba(255, 255, 255, 0.28);
-
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 12px;
-
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-}
-
-.weather-card {
-    padding: 24px 20px;
-    gap: 12px;
 }
 
 /* Day */
@@ -295,7 +288,6 @@ main {
     font-size: 1.6rem;
     font-weight: 700;
     color: #ffeac9;
-    /* soft gold */
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
@@ -303,10 +295,23 @@ main {
     font-size: 1.1rem;
     font-weight: 600;
     color: #ffddb0;
-    /* lighter gold */
-    opacity: 0.95;
 }
 
+/* ICON */
+.w-icon {
+    margin-top: 6px;
+    margin-bottom: 4px;
+}
+
+.w-icon svg {
+    width: 48px;
+    height: 48px;
+    stroke: #ffffff;
+    color: #ffffff;
+    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.6));
+}
+
+/* Temperature */
 .w-temp {
     font-size: 3rem;
     font-weight: 700;
@@ -317,55 +322,28 @@ main {
 
 .w-temp sup {
     font-size: 1.2rem;
-    margin-left: 2px;
     opacity: 0.85;
 }
 
-.w-hilo {
-    margin-top: 4px;
-    font-size: 0.95rem;
-    /* smaller */
-    font-weight: 500;
-    color: #ffe8bd;
-    /* warmer but softer */
-}
-
-.w-hilo span {
-    margin: 0 2px;
-}
-
-/* Condition (Cloudy, Rain, etc.) */
+/* Condition text */
 .w-cond {
     font-size: 1.2rem;
     opacity: 0.9;
-    text-align: center;
-    margin-bottom: 6px;
 }
 
+/* High/Low */
+.w-hilo {
+    font-size: 0.95rem;
+    color: #ffe8bd;
+}
 
-/* Extra details */
+/* Extra section */
 .w-extra {
     font-size: 1rem;
     text-align: left;
     width: 100%;
     margin-top: 8px;
     line-height: 1.4rem;
-}
-
-.w-extra strong {
-    opacity: 1;
-}
-
-.w-icon svg {
-    width: 48px;
-    height: 48px;
-    stroke: #ffffff;
-    color: #ffffff;
-    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.6));
-
-    margin-top: 6px;
-    margin-bottom: 4px;
-
 }
 
 /* ============================================================
