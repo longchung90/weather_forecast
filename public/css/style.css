@@ -12,11 +12,7 @@
     isolation: isolate;
 }
 
-.hero {
-    position: relative;
-    overflow: hidden;
-}
-
+/* Hero background */
 .hero::before {
     content: "";
     position: absolute;
@@ -26,10 +22,11 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: -3;
+
+    z-index: -2;
 }
 
-/* DARKER premium overlay for readability */
+/* DARK overlay */
 .hero::after {
     content: "";
     position: absolute;
@@ -38,7 +35,7 @@
             rgba(0, 0, 0, 0.55) 0%,
             rgba(0, 0, 0, 0.60) 40%,
             rgba(0, 0, 0, 0.75) 100%);
-    z-index: -2;
+    z-index: -1;
 }
 
 .hero.fade-out {
@@ -56,12 +53,6 @@
     gap: 28px;
     justify-items: center;
     animation: fadeFloat 1.2s ease both 300ms;
-}
-
-.hero-sub {
-    text-shadow:
-        0 3px 20px rgba(0, 0, 0, 0.75),
-        0 0 6px rgba(0, 0, 0, 0.35);
 }
 
 /* Title */
@@ -91,7 +82,7 @@
 }
 
 /* =========================
-   PREMIUM CONTROLS BAR (Brighter + Travel Style)
+   CONTROLS BAR
    ========================= */
 
 .controls {
@@ -112,50 +103,29 @@
         inset 0 0 12px rgba(255, 255, 255, 0.06);
 }
 
-/* Select Box */
+/* Select box */
 .controls select {
     background: rgba(255, 255, 255, 0.14);
     border: 1.4px solid rgba(255, 255, 255, 0.35);
     border-radius: 12px;
     padding: 12px 16px;
-
     color: #ffffff;
     font-weight: 500;
     font-size: 1rem;
-
     min-width: 230px;
     backdrop-filter: blur(8px);
-
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
     transition: 0.25s ease;
 }
 
-.controls select:hover {
-    background: rgba(255, 255, 255, 0.22);
-    border-color: rgba(255, 255, 255, 0.55);
-}
-
-.controls select:focus {
-    outline: none;
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(201, 164, 100, 0.35);
-}
-
-/* Force styling of the dropdown panel */
 .controls select option {
     background-color: rgba(20, 20, 20, 0.85) !important;
     color: #fff !important;
     padding: 8px 12px;
 }
 
-/* Hover highlight inside dropdown */
-.controls select option:hover {
-    background-color: rgba(201, 164, 100, 0.35) !important;
-    color: #fff !important;
-}
-
 /* =========================
-   ULTRA PREMIUM BUTTON (Bright Gold)
+   BUTTON (Gold)
    ========================= */
 
 .btn-gold {
@@ -164,14 +134,13 @@
             rgba(255, 184, 77, 0.9) 100%);
     color: #3a290f;
     border: none;
-
     font-size: 1.05rem;
     font-weight: 700;
     padding: 0.85em 2.4em;
     border-radius: 14px;
     letter-spacing: 0.08em;
-
     text-transform: uppercase;
+
     box-shadow:
         0 0 12px rgba(255, 206, 120, 0.45),
         0 6px 22px rgba(0, 0, 0, 0.5);
@@ -180,35 +149,10 @@
     transition: 0.32s ease;
 }
 
-.btn-gold:hover {
-    transform: translateY(-4px) scale(1.045);
-    box-shadow:
-        0 0 26px rgba(255, 198, 115, 0.75),
-        0 8px 24px rgba(0, 0, 0, 0.55);
-    background: linear-gradient(180deg,
-            rgba(255, 235, 180, 1) 0%,
-            rgba(255, 198, 92, 1) 100%);
-}
-
 /* =========================
-   RESPONSIVE — MOBILE
+   MAP FIXES
    ========================= */
 
-@media (max-width: 600px) {
-    .controls {
-        flex-direction: column;
-        width: 92%;
-        gap: 12px;
-        padding: 16px 20px;
-    }
-
-    .controls select,
-    .btn-gold {
-        width: 100%;
-    }
-}
-
-/* LEAFLET MAP FIXES */
 #map {
     width: 100%;
     height: 450px;
@@ -221,6 +165,10 @@
     outline: none;
 }
 
+/* =========================
+   WEATHER GRID
+   ========================= */
+
 .forecast-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -228,6 +176,7 @@
     padding: 20px;
 }
 
+/* Weather card */
 .weather-card {
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.25);
@@ -239,24 +188,9 @@
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
 }
 
-.weather-card .icon {
-    font-size: 2.4rem;
-    margin-bottom: 10px;
-}
-
-.weather-card .temp {
-    font-size: 1.6rem;
-    font-weight: 700;
-}
-
-.weather-card .condition {
-    font-size: 1rem;
-    opacity: 0.8;
-}
-
-.hidden {
-    display: none;
-}
+/* =========================
+   LOADING OVERLAY
+   ========================= */
 
 #loadingOverlay {
     position: fixed;
@@ -269,44 +203,12 @@
     color: white;
     font-size: 1.4rem;
     backdrop-filter: blur(6px);
+    opacity: 1;
+    transition: opacity 0.6s ease;
 }
 
-/* =========================
-   Animations
-   ========================= */
-
-@keyframes fadeFloat {
-    from {
-        opacity: 0;
-        transform: translateY(35px) scale(0.96);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-@keyframes glowPulse {
-    from {
-        text-shadow:
-            0 0 12px rgba(255, 225, 170, 0.35),
-            0 0 40px rgba(255, 200, 140, 0.18);
-    }
-
-    to {
-        text-shadow:
-            0 0 24px rgba(255, 225, 170, 0.6),
-            0 0 65px rgba(255, 205, 150, 0.28);
-    }
-}
-
-@keyframes kenburns {
-    from {
-        transform: scale(1) translate(0);
-    }
-
-    to {
-        transform: scale(1.14) translate(0, -10px);
-    }
+/* Hidden state applied by JS */
+#loadingOverlay.hidden {
+    opacity: 0;
+    pointer-events: none;
 }
