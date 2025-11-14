@@ -6,11 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>7-Day Weather Forecast</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-        integrity="sha512-dU+4k+/vqzKHxvGiq3F6N4Y2ThlHqzTT1o7q1BPbD0D8dXxEb++ZUy1iNBDUXo3BbC2bSxejvBMFxIMExGhFw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/hero.css">
@@ -20,7 +15,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
-
     <!-- ✅ Don't load Google Maps API here - we'll load it dynamically -->
 </head>
 
@@ -72,112 +66,111 @@
 
     <!-- =========================
          BUTTON COMPONENT EXAMPLES
-         
-<
 <button class="btn btn-gold">Get Forecast</button>
 <button class="btn btn-gold loading">Get Forecast</button>
 <button class="btn btn-gold" disabled>Get Forecast</button>
 <button class="btn btn-secondary">Cancel</button>
 <button class="btn btn-gold btn-sm">Save</button>
-=========================
-     LOADING OVERLAY
-     ========================= -->
+========================= -->
+    LOADING OVERLAY
+    ========================= -->
     <div id="loadingOverlay">
         <div class="loading-text">Loading map and forecast...</div>
+    </div>
 
-        <!-- =========================
+    <!-- =========================
      MAIN CONTENT
      ========================= -->
-        <main>
-            <section id="forecastSection" class="forecast-section hidden">
-                <h2 id="forecastHeading" class="forecast-heading">
-                    <span id="forecastCityIcon">🌍</span>
-                    <span id="forecastCityName" class="forecast-city-name">Select a City</span>
-                </h2>
+    <main>
+        <section id="forecastSection" class="forecast-section hidden">
+            <h2 id="forecastHeading" class="forecast-heading">
+                <span id="forecastCityIcon">🌍</span>
+                <span id="forecastCityName" class="forecast-city-name">Select a City</span>
+            </h2>
 
-                <div id="weatherGrid" class="forecast-grid"></div>
+            <div id="weatherGrid" class="forecast-grid"></div>
 
-                <!-- Google Map -->
-                <div id="map" class="map-container">
-                    <gmp-map center="48.85,2.35" zoom="4" map-id="midnight-gold-map">
-                        <gmp-advanced-marker id="marker" position="48.85,2.35"></gmp-advanced-marker>
-                    </gmp-map>
-                </div>
-            </section>
-        </main>
+            <!-- Google Map -->
+            <div id="map" class="map-container">
+                <gmp-map center="48.85,2.35" zoom="4" map-id="midnight-gold-map">
+                    <gmp-advanced-marker id="marker" position="48.85,2.35"></gmp-advanced-marker>
+                </gmp-map>
+            </div>
+        </section>
+    </main>
 
 
 
-        <!-- =========================
+    <!-- =========================
      FOOTER (Midnight + Gold)
      ========================= -->
-        <footer class="footer">
-            <div class="footer-inner">
-                <p class="footer-text">© 2025 Long Hoa Chung | European Weather Explorer</p>
+    <footer class="footer">
+        <div class="footer-inner">
+            <p class="footer-text">© 2025 Long Hoa Chung | European Weather Explorer</p>
 
-                <div class="footer-links">
-                    <a href="https://github.com/longchung90" target="_blank" aria-label="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/long-hoa-chung/" target="_blank" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://www.coursera.org/learner/longchung/" target="_blank" aria-label="Coursera">
-                        <i class="fas fa-graduation-cap"></i>
-                    </a>
-                    <a href="https://lcportfolio.org" target="_blank" aria-label="Portfolio">
-                        <i class="fas fa-globe"></i>
-                    </a>
-                </div>
+            <div class="footer-links">
+                <a href="https://github.com/longchung90" target="_blank" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/long-hoa-chung/" target="_blank" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://www.coursera.org/learner/longchung/" target="_blank" aria-label="Coursera">
+                    <i class="fas fa-graduation-cap"></i>
+                </a>
+                <a href="https://lcportfolio.org" target="_blank" aria-label="Portfolio">
+                    <i class="fas fa-globe"></i>
+                </a>
             </div>
-        </footer>
+        </div>
+    </footer>
 
 
-        -- ✅ Load configuration and Google Maps API dynamically -->
-        <script>
-            window.googleMapsLoaded = false;
-            window.initGoogleMaps = function () {
-                window.googleMapsLoaded = true;
-                console.log('🗺️ Google Maps API loaded successfully');
+    <!-- ✅ Load configuration and Google Maps API dynamically -->
+    <script>
+        window.googleMapsLoaded = false;
+        window.initGoogleMaps = function () {
+            window.googleMapsLoaded = true;
+            console.log('🗺️ Google Maps API loaded successfully');
 
-                const overlay = document.getElementById('loadingOverlay');
-                if (overlay) {
-                    overlay.classList.add('hidden');
-                    setTimeout(() => overlay.remove(), 800);
-                }
-
-                if (typeof initializeApp === 'function') {
-                    initializeApp();
-                }
-            };
-        </script>
-
-        <script>
-            async function loadApp() {
-                try {
-                    const response = await fetch('/api/config');
-                    const config = await response.json();
-
-                    const mapsScript = document.createElement('script');
-                    mapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsApiKey}&libraries=maps,marker&v=beta&callback=initGoogleMaps`;
-                    mapsScript.async = true;
-                    mapsScript.defer = true;
-                    document.head.appendChild(mapsScript);
-
-                    const appScript = document.createElement('script');
-                    appScript.src = 'scripts/script.js';
-                    document.body.appendChild(appScript);
-                } catch (error) {
-                    console.error('Failed to load app:', error);
-                    const appScript = document.createElement('script');
-                    appScript.src = 'scripts/script.js';
-                    document.body.appendChild(appScript);
-                }
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                overlay.classList.add('hidden');
+                setTimeout(() => overlay.remove(), 800);
             }
 
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', loadApp);
-            } else {
-                loadApp();
+            if (typeof initializeApp === 'function') {
+                initializeApp();
             }
-        </script>
+        };
+    </script>
+
+    <script>
+        async function loadApp() {
+            try {
+                const response = await fetch('/api/config');
+                const config = await response.json();
+
+                const mapsScript = document.createElement('script');
+                mapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsApiKey}&libraries=maps,marker&v=beta&callback=initGoogleMaps`;
+                mapsScript.async = true;
+                mapsScript.defer = true;
+                document.head.appendChild(mapsScript);
+
+                const appScript = document.createElement('script');
+                appScript.src = 'scripts/script.js';
+                document.body.appendChild(appScript);
+            } catch (error) {
+                console.error('Failed to load app:', error);
+                const appScript = document.createElement('script');
+                appScript.src = 'scripts/script.js';
+                document.body.appendChild(appScript);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadApp);
+        } else {
+            loadApp();
+        }
+    </script>
