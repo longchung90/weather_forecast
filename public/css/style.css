@@ -193,21 +193,19 @@ body {
 ============================================================ */
 .weather-card {
     background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(14px);
+    backdrop-filter: blur(12px);
     border-radius: 16px;
-    padding: 14px;
-
-    width: 130px;
-    /* perfect width for 7 tiles in a row */
-    min-width: 130px;
-    /* prevents shrinking */
+    padding: 14px 10px;
     text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.25);
 
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
 
-    display: grid;
-    gap: 8px;
+    width: 150px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
 }
 
 .weather-day {
@@ -220,13 +218,23 @@ body {
 }
 
 .weather-temp {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     font-weight: 700;
+}
+
+.weather-temp small {
+    font-size: 0.9rem;
+    opacity: 0.85;
 }
 
 .weather-cond {
     opacity: 0.85;
     font-size: 1rem;
+}
+
+.weather-date {
+    font-size: 0.85rem;
+    opacity: 0.8;
 }
 
 .rain-line {
@@ -237,77 +245,16 @@ body {
 /* ============================================================
    WIND COMPASS
 ============================================================ */
-.wind-box {
+.wind-simple {
     margin-top: 4px;
+    font-size: 0.9rem;
+    opacity: 0.9;
     text-align: center;
 }
 
-.wind-title {
-    font-size: 0.8rem;
+.wind-dir {
+    font-size: 0.9rem;
     opacity: 0.8;
-}
-
-.compass-circle {
-    width: 70px;
-    height: 70px;
-    border: 2px solid rgba(255, 255, 255, 0.38);
-    border-radius: 50%;
-    position: relative;
-    margin: auto;
-}
-
-.compass-arrow {
-    position: absolute;
-    top: 3px;
-    left: 50%;
-    width: 4px;
-    height: 28px;
-    background: #ffd57c;
-    transform-origin: bottom center;
-    border-radius: 4px;
-}
-
-.compass-center {
-    position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.85rem;
-}
-
-.compass-dir {
-    position: absolute;
-    font-size: 0.65rem;
-    opacity: 0.75;
-}
-
-.compass-dir.n {
-    top: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.compass-dir.s {
-    bottom: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.compass-dir.e {
-    right: -12px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.compass-dir.w {
-    left: -12px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.wind-direction-text {
-    font-size: 0.85rem;
-    margin-top: 3px;
 }
 
 /* ============================================================
