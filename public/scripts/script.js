@@ -200,7 +200,6 @@ async function loadWeather(lat, lon) {
 
     data.dataseries.slice(0, 7).forEach((day, index) => {
 
-        // --- DATE ---
         const date = new Date();
         date.setDate(date.getDate() + index);
 
@@ -209,35 +208,32 @@ async function loadWeather(lat, lon) {
         const dayNum = date.getDate();
         const dateString = `${month} ${dayNum}`;
 
-        // --- WEATHER ---
-        const key = day.weather.toLowerCase();   // e.g. "snow", "lightrain"
-        const weather = WEATHER_MAP[key] || WEATHER_MAP.default;
-        const icon = ICONS[key] || ICONS.default;
+        // 🔥 Get exact 7timer key
+        const key = day.weather.toLowerCase();
+        const details = WEATHER_DETAILS[key] || WEATHER_DETAILS.default;
 
-        // --- RAIN ---
+        // 🌧 Rain
         const rainChance = Math.round((day.cloudcover / 10) * 100);
 
-        // --- WIND ---
+        // 💨 Wind
         const windDir = WIND_DIRECTION[day.wind10m.direction] || "N";
         const windSpeed = WIND_SPEED[day.wind10m.speed] || 5;
 
-        // --- CREATE CARD ---
+        // --- Card Element ---
         const card = document.createElement("div");
         card.classList.add("weather-card", "weather-animate");
         card.style.setProperty("--delay", `${index * 120}ms`);
 
-        // --- BUILD HTML ---
+        // --- HTML ---
         card.innerHTML = `
             <div class="w-day">${weekday}</div>
             <div class="w-date">${dateString}</div>
 
-            <div class="w-icon">${icon}</div>
+            <div class="w-icon">${details.icon}</div>
 
-            <div class="w-temp">
-                ${day.temp2m}<sup>°C</sup>
-            </div>
+            <div class="w-temp">${day.temp2m}<sup>°C</sup></div>
 
-            <div class="w-cond">${weather.label}</div>
+            <div class="w-cond">${details.label}</div>
 
             <div class="w-hilo">
                 H: ${day.temp2m + 2}°C • L: ${day.temp2m - 2}°C
@@ -252,9 +248,6 @@ async function loadWeather(lat, lon) {
         elements.grid.appendChild(card);
     });
 }
-
-
-
 
 
 
