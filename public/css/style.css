@@ -150,6 +150,25 @@ main {
     z-index: 5;
 }
 
+.acknowledgement {
+    text-align: center;
+    margin-top: 35px;
+    font-family: "Playfair Display", serif;
+    font-size: 0.95rem;
+    opacity: 0.9;
+    color: #f6e1b2;
+}
+
+.acknowledgement a {
+    color: #ffd68a;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.acknowledgement a:hover {
+    text-decoration: underline;
+}
+
 /* ============================================================
    CONTROLS
 ============================================================ */
