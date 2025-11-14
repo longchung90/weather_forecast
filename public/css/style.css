@@ -256,7 +256,7 @@ main {
     }
 
     /* GLOBAL CARD TEXT IMPROVEMENT */
-    weather-card .weather-card * {
+    .weather-card weather-card * {
         color: #F5F1E8 !important;
         /* warm white */
         text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
