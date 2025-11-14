@@ -291,6 +291,20 @@ main {
     /* stronger readability */
 }
 
+/* CONDITION TEXT (Light Rain, Intermittent Showers, etc.) */
+.w-cond {
+    font-size: 1.15rem;
+    /* smaller, cleaner */
+    font-weight: 500;
+    line-height: 1.3rem;
+    text-align: center;
+    /* FIXES LEFT ALIGN ON 2 LINES */
+    width: 100%;
+    /* ensures proper centering */
+    padding: 0 5px;
+    /* prevents cropping */
+}
+
 /* Day */
 .w-day {
     font-size: 1.6rem;
