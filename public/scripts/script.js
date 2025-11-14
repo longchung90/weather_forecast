@@ -2,8 +2,6 @@
 // 1. CONFIG
 // ---------------------------------------------------------------
 const CONFIG = {
-    DEFAULT_LAT: 48.85,
-    DEFAULT_LON: 2.35,
     TRANSITION_DURATION: 1200
 };
 
@@ -17,12 +15,13 @@ const elements = {
     hero: document.querySelector(".hero"),
     icon: document.getElementById("forecastCityIcon"),
     name: document.getElementById("forecastCityName"),
+    heading: document.getElementById("forecastHeading"),
     grid: document.getElementById("weatherGrid"),
     overlay: document.getElementById("loadingOverlay")
 };
 
 // ---------------------------------------------------------------
-// 3. BACKGROUND IMAGES
+// 3. CITY BACKGROUNDS
 // ---------------------------------------------------------------
 const cityBG = {
     paris: "images/paris.jpg",
@@ -48,7 +47,18 @@ const cityBG = {
 };
 
 // ---------------------------------------------------------------
-// 4. BACKGROUND FADE TRANSITION
+// 4. SELECTING A CITY (NO BACKGROUND CHANGE)
+// ---------------------------------------------------------------
+function updateCity() {
+    const opt = elements.select.options[elements.select.selectedIndex];
+    if (!opt.value) return;
+
+    elements.icon.textContent = opt.dataset.flag;
+    elements.name.textContent = opt.dataset.name;
+}
+
+// ---------------------------------------------------------------
+// 5. BACKGROUND FADE WHEN FORECAST IS REQUESTED
 // ---------------------------------------------------------------
 function changeBackground(newBg) {
     const layer = document.createElement("div");
@@ -58,7 +68,7 @@ function changeBackground(newBg) {
         background: url('${newBg}') center/cover no-repeat;
         opacity: 0;
         z-index: -3;
-        transition: opacity ${CONFIG.TRANSITION_DURATION}ms linear;
+        transition: opacity ${CONFIG.TRANSITION_DURATION}ms ease;
     `;
     document.body.appendChild(layer);
 
@@ -71,37 +81,19 @@ function changeBackground(newBg) {
 }
 
 // ---------------------------------------------------------------
-// 5. UPDATE UI WHEN CITY CHANGES
-// ---------------------------------------------------------------
-function updateCity() {
-    const opt = elements.select.options[elements.select.selectedIndex];
-    if (!opt.dataset.bg) return;
-
-    elements.icon.textContent = opt.dataset.flag;
-    elements.name.textContent = opt.dataset.name;
-
-    const bg = cityBG[opt.dataset.bg];
-    if (bg) changeBackground(bg);
-}
-
-// ---------------------------------------------------------------
 // 6. LEAFLET MAP
 // ---------------------------------------------------------------
 let map;
-let mapMarker;
+let marker;
 
-function initLeafletMap(lat = CONFIG.DEFAULT_LAT, lon = CONFIG.DEFAULT_LON) {
+function initLeafletMap(lat, lon) {
     if (!map) {
         map = L.map('map').setView([lat, lon], 6);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18
-        }).addTo(map);
-
-        mapMarker = L.marker([lat, lon]).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        marker = L.marker([lat, lon]).addTo(map);
     } else {
         map.setView([lat, lon], 6);
-        mapMarker.setLatLng([lat, lon]);
+        marker.setLatLng([lat, lon]);
     }
 }
 
@@ -109,58 +101,57 @@ function initLeafletMap(lat = CONFIG.DEFAULT_LAT, lon = CONFIG.DEFAULT_LON) {
 // 7. WEATHER FETCH
 // ---------------------------------------------------------------
 async function loadWeather(lat, lon) {
-    const url = `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
-
-    const res = await fetch(url);
+    const res = await fetch(`https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`);
     const data = await res.json();
 
     elements.grid.innerHTML = "";
 
     data.dataseries.slice(0, 7).forEach(day => {
-        const div = document.createElement("div");
-        div.className = "weather-card";
-        div.innerHTML = `
-            <div class="weather-icon">🌤️</div>
-            <div>${day.weather}</div>
+        const item = document.createElement("div");
+        item.className = "weather-card";
+        item.innerHTML = `
+            <div class="icon">🌤️</div>
+            <div class="condition">${day.weather}</div>
         `;
-        elements.grid.appendChild(div);
+        elements.grid.appendChild(item);
     });
 }
 
 // ---------------------------------------------------------------
-// 8. BUTTON CLICK → LOAD FORECAST
+// 8. BUTTON CLICK → SHOW FORECAST + CHANGE BACKGROUND
 // ---------------------------------------------------------------
-async function handleGetForecast() {
+async function handleGet() {
     const val = elements.select.value;
-    if (!val) return alert("Please select a destination!");
+    if (!val) return alert("Pick a destination!");
 
     const [lat, lon] = val.split(",").map(Number);
+    const opt = elements.select.options[elements.select.selectedIndex];
 
+    // heading
+    elements.heading.innerHTML = `Here is your 7-day forecast for <strong>${opt.dataset.name}</strong>`;
+
+    // fade hero
+    elements.hero.classList.add("fade-out");
+
+    // change background now
+    const newBg = cityBG[opt.dataset.bg];
+    if (newBg) changeBackground(newBg);
+
+    // show forecast section
     elements.section.classList.remove("hidden");
-    elements.section.scrollIntoView({ behavior: "smooth" });
 
     initLeafletMap(lat, lon);
     await loadWeather(lat, lon);
 
-    // hide overlay AFTER everything loads
-    elements.overlay.style.display = "none";
+    elements.overlay.classList.add("hidden");
+    elements.section.scrollIntoView({ behavior: "smooth" });
 }
 
 // ---------------------------------------------------------------
-// 9. INITIALIZE ON PAGE LOAD
+// 9. INIT
 // ---------------------------------------------------------------
-function initializeApp() {
-    // hide overlay on load
-    elements.overlay.style.display = "none";
-
+window.addEventListener("load", () => {
+    elements.overlay.classList.add("hidden");
     elements.select.addEventListener("change", updateCity);
-    elements.btn.addEventListener("click", handleGetForecast);
-
-    // initialize map at default city
-    initLeafletMap(CONFIG.DEFAULT_LAT, CONFIG.DEFAULT_LON);
-
-    console.log("🌍 App initialized with Leaflet");
-}
-
-// Start App
-window.addEventListener("load", initializeApp);
+    elements.btn.addEventListener("click", handleGet);
+});
