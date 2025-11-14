@@ -106,30 +106,36 @@ const WIND_SPEED = { 1: 5, 2: 10, 3: 15, 4: 25, 5: 35, 6: 50, 7: 65 };
 function changeBackground(newBg) {
     const fullPath = newBg.startsWith("/") ? newBg : "/" + newBg;
 
-    const layer = document.createElement("div");
-    layer.style.cssText = `
-        position: fixed;
-        inset: 0;
-        background: url('${fullPath}') center/cover no-repeat;
-        opacity: 0;
-        transition: opacity ${CONFIG.TRANSITION}ms ease;
-        z-index: -2;
-        pointer-events: none;
-    `;
-    document.body.appendChild(layer);
+    // PRELOAD IMAGE FIRST
+    const img = new Image();
+    img.src = fullPath;
 
-    // Trigger fade-in
-    requestAnimationFrame(() => {
-        layer.style.opacity = 1;
-    });
+    img.onload = () => {
+        // Create fade layer
+        const layer = document.createElement("div");
+        layer.style.cssText = `
+            position: fixed;
+            inset: 0;
+            background: url('${fullPath}') center/cover no-repeat;
+            opacity: 0;
+            transition: opacity ${CONFIG.TRANSITION}ms ease;
+            z-index: -2;
+            pointer-events: none;
+        `;
+        document.body.appendChild(layer);
 
-    // When animation finishes:
-    setTimeout(() => {
-        elements.hero.style.setProperty("--hero-img", `url('${fullPath}')`);
-        layer.remove();
-    }, CONFIG.TRANSITION);
+        // Fade-in
+        requestAnimationFrame(() => {
+            layer.style.opacity = 1;
+        });
+
+        // After fade completes
+        setTimeout(() => {
+            elements.hero.style.setProperty("--hero-img", `url('${fullPath}')`);
+            layer.remove();
+        }, CONFIG.TRANSITION);
+    };
 }
-
 
 
 // Background + city text changes ONLY when selecting a city
@@ -137,14 +143,13 @@ function updateCity() {
     const opt = elements.select.options[elements.select.selectedIndex];
     if (!opt) return;
 
-    // Update UI text
     elements.cityIcon.textContent = opt.dataset.flag;
     elements.cityName.textContent = opt.dataset.name;
 
-    // Update background
     const bgPath = cityBG[opt.dataset.bg];
     if (bgPath) changeBackground(bgPath);
 }
+
 
 
 
@@ -231,22 +236,19 @@ async function handleGet() {
 
     const [lat, lon] = val.split(",").map(Number);
 
-    // Show forecast section
     elements.section.classList.remove("hidden");
 
-    // ⭐ Fade in overlay (ONLY here)
     elements.overlay.classList.add("active");
 
-    // Load map + weather
     initLeafletMap(lat, lon);
     await loadWeather(lat, lon);
 
-    // ⭐ Fade out overlay
     elements.overlay.classList.remove("active");
 
-    // Scroll to forecast
     elements.section.scrollIntoView({ behavior: "smooth" });
 }
+
+
 
 
 window.addEventListener("load", () => {
