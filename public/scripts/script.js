@@ -231,6 +231,25 @@ document.getElementById("changeCityBtn").addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
+// ===============================================================
+// MAP
+// ===============================================================
+let map, marker;
+
+function initLeafletMap(lat, lon) {
+    if (!map) {
+        map = L.map("map").setView([lat, lon], 7);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 18
+        }).addTo(map);
+
+        marker = L.marker([lat, lon]).addTo(map);
+    } else {
+        map.setView([lat, lon], 7);
+        marker.setLatLng([lat, lon]);
+    }
+}
+
 /* ============================================================
    WEATHER LOADER (civil product)
 ============================================================ */
@@ -306,24 +325,7 @@ async function loadWeather(lat, lon) {
 
         elements.grid.appendChild(card);
     });
-    // ===============================================================
-    // MAP
-    // ===============================================================
-    let map, marker;
 
-    function initLeafletMap(lat, lon) {
-        if (!map) {
-            map = L.map("map").setView([lat, lon], 7);
-            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                maxZoom: 18
-            }).addTo(map);
-
-            marker = L.marker([lat, lon]).addTo(map);
-        } else {
-            map.setView([lat, lon], 7);
-            marker.setLatLng([lat, lon]);
-        }
-    }
 
 }
 // ===============================================================
