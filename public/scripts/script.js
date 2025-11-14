@@ -1,197 +1,102 @@
-// ===============================================================
-//  iOS SVG ICON SET (INLINE)
-// ===============================================================
-
-// ☀ CLEAR
-const ICON_SUN = `
-<svg viewBox="0 0 100 100" fill="none">
-  <circle cx="50" cy="50" r="20" stroke="currentColor" stroke-width="8"/>
-</svg>`;
-
-// 🌤 MOSTLY CLEAR
-const ICON_PCLEAR = `
-<svg viewBox="0 0 100 100" fill="none">
-  <circle cx="40" cy="45" r="15" stroke="currentColor" stroke-width="8"/>
-  <ellipse cx="62" cy="62" rx="22" ry="15" stroke="currentColor" stroke-width="8"/>
-</svg>`;
-
-// ⛅ PARTLY CLOUDY
-const ICON_PCLOUDY = `
-<svg viewBox="0 0 100 100" fill="none">
-  <ellipse cx="40" cy="55" rx="22" ry="15" stroke="currentColor" stroke-width="8"/>
-  <ellipse cx="65" cy="55" rx="22" ry="15" stroke="currentColor" stroke-width="8"/>
-</svg>`;
-
-// 🌥 MOSTLY CLOUDY
-const ICON_MCLOUDY = `
-<svg viewBox="0 0 100 100" fill="none">
-  <ellipse cx="45" cy="55" rx="25" ry="16" stroke="currentColor" stroke-width="8"/>
-  <ellipse cx="65" cy="55" rx="28" ry="18" stroke="currentColor" stroke-width="8"/>
-</svg>`;
-
-// ☁ CLOUDY
-const ICON_CLOUD = `
-<svg viewBox="0 0 100 100" fill="none">
-  <ellipse cx="50" cy="55" rx="32" ry="18" stroke="currentColor" stroke-width="8"/>
-</svg>`;
-
-// 🌫 FOG
-const ICON_FOG = `
-<svg viewBox="0 0 100 100" fill="none">
-  <line x1="20" y1="50" x2="80" y2="50" stroke="currentColor" stroke-width="8"/>
-  <line x1="20" y1="65" x2="80" y2="65" stroke="currentColor" stroke-width="8"/>
-</svg>`;
-
-// 🌬 WIND
-const ICON_WIND = `
-<svg viewBox="0 0 100 100" fill="none">
-  <path d="M20 55 H70 Q85 55 85 45" stroke="currentColor" stroke-width="8" fill="none"/>
-  <path d="M20 70 H60 Q75 70 75 60" stroke="currentColor" stroke-width="8" fill="none"/>
-</svg>`;
-
-// 🌦 LIGHT RAIN
-const ICON_LRAIN = `
-<svg viewBox="0 0 100 100" fill="none">
-  <ellipse cx="50" cy="40" rx="30" ry="16" stroke="currentColor" stroke-width="8"/>
-  <line x1="40" y1="65" x2="40" y2="88" stroke="currentColor" stroke-width="8"/>
-  <line x1="60" y1="65" x2="60" y2="88" stroke="currentColor" stroke-width="8"/>
-</svg>`;
-
-// 🌧 RAIN
-const ICON_RAIN = `
-<svg viewBox="0 0 100 100" fill="none">
-  <ellipse cx="50" cy="40" rx="30" ry="18" stroke="currentColor" stroke-width="8"/>
-  <line x1="35" y1="65" x2="35" y2="88" stroke="currentColor" stroke-width="8"/>
-  <line x1="50" y1="65" x2="50" y2="88" stroke="currentColor" stroke-width="8"/>
-  <line x1="65" y1="65" x2="65" y2="88" stroke="currentColor" stroke-width="8"/>
-</svg>`;
-
-// ⛈ THUNDERSTORM
-const ICON_TS = `
-<svg viewBox="0 0 100 100" fill="none">
-  <ellipse cx="50" cy="40" rx="30" ry="18" stroke="currentColor" stroke-width="8"/>
-  <polygon points="45,65 58,65 50,90" fill="currentColor"/>
-  <polygon points="50,70 65,70 56,95" fill="currentColor"/>
-</svg>`;
-
-// 🌨 SNOW
-const ICON_SNOW = `
-<svg viewBox="0 0 100 100" fill="none">
-  <ellipse cx="50" cy="40" rx="30" ry="18" stroke="currentColor" stroke-width="8"/>
-  <circle cx="35" cy="75" r="4" fill="currentColor"/>
-  <circle cx="50" cy="75" r="4" fill="currentColor"/>
-  <circle cx="65" cy="75" r="4" fill="currentColor"/>
-</svg>`;
-
-// 🌧❄ RAIN-SNOW MIX
-const ICON_RSNOW = `
-<svg viewBox="0 0 100 100" fill="none">
-  <ellipse cx="50" cy="40" rx="30" ry="18" stroke="currentColor" stroke-width="8"/>
-  <line x1="40" y1="65" x2="40" y2="88" stroke="currentColor" stroke-width="8"/>
-  <circle cx="60" cy="80" r="4" fill="currentColor"/>
-</svg>`;
-
-// 🌨💨 BLIZZARD
-const ICON_BLIZZ = `
-<svg viewBox="0 0 100 100" fill="none">
-  <ellipse cx="50" cy="40" rx="30" ry="18" stroke="currentColor" stroke-width="8"/>
-  <circle cx="35" cy="75" r="4" fill="currentColor"/>
-  <circle cx="50" cy="75" r="4" fill="currentColor"/>
-  <circle cx="65" cy="75" r="4" fill="currentColor"/>
-  <path d="M20 90 H80" stroke="currentColor" stroke-width="6"/>
-</svg>`;
-
-
 const ICONS_IOS = {
-    clearday: ICON_SUN,
-    clearnight: ICON_SUN,
+    // Clear
+    clearday: "☀️",
+    clearnight: "🌕",  // or "🌙"
 
-    pcloudyday: ICON_PCLOUDY,
-    pcloudynight: ICON_PCLOUDY,
+    // Partly clear / sunny intervals
+    pclear: "🌤️",
+    pclearday: "🌤️",
+    pclearnight: "🌙",
 
-    mcloudyday: ICON_MCLOUDY,
-    mcloudynight: ICON_MCLOUDY,
+    // Partly cloudy
+    pcloudyday: "⛅",
+    pcloudynight: "🌥️",
 
-    cloudyday: ICON_CLOUD,
-    cloudynight: ICON_CLOUD,
+    // Mostly cloudy
+    mcloudyday: "🌥️",
+    mcloudynight: "☁️",
 
-    lightrainday: ICON_LRAIN,
-    lightrainnight: ICON_LRAIN,
+    // Cloudy
+    cloudyday: "☁️",
+    cloudynight: "☁️",
 
-    oshowerday: ICON_LRAIN,
-    oshowernight: ICON_LRAIN,
+    // Light rain / showers
+    lightrainday: "🌦️",
+    lightrainnight: "🌧️",
 
-    ishowerday: ICON_LRAIN,
-    ishowernight: ICON_LRAIN,
+    ishowerday: "🌦️",
+    ishowernight: "🌧️",
 
-    rainday: ICON_RAIN,
-    rainnight: ICON_RAIN,
+    oshowerday: "🌦️",
+    oshowernight: "🌧️",
 
-    tsday: ICON_TS,
-    tsnight: ICON_TS,
+    // Rain
+    rainday: "🌧️",
+    rainnight: "🌧️",
 
-    lightsnowday: ICON_SNOW,
-    lightsnownight: ICON_SNOW,
-    snowday: ICON_SNOW,
-    snownight: ICON_SNOW,
+    // Thunderstorms
+    tsday: "⛈️",
+    tsnight: "⛈️",
 
-    rainsnowday: ICON_RSNOW,
-    rainsnownight: ICON_RSNOW
+    // Snow
+    lightsnowday: "🌨️",
+    lightsnownight: "🌨️",
+
+    snowday: "❄️",
+    snownight: "❄️",
+
+    // Rain & snow mix
+    rainsnowday: "🌧️❄️",
+    rainsnownight: "🌧️❄️",
+
+    // Fallback
+    default: "❓"
 };
 // ===============================================================
 // LABEL MAP
 // ===============================================================
 const WEATHER_DETAILS = {
-    // Clear / sunny
     clearday: "Clear",
     clearnight: "Clear",
 
-    // Partly cloudy
+    pclearday: "Mostly Clear",
+    pclearnight: "Mostly Clear",
+
     pcloudyday: "Partly Cloudy",
     pcloudynight: "Partly Cloudy",
 
-    // Mostly cloudy
     mcloudyday: "Mostly Cloudy",
     mcloudynight: "Mostly Cloudy",
 
-    // Fully cloudy
     cloudyday: "Cloudy",
     cloudynight: "Cloudy",
 
-    // Light rain
     lightrainday: "Light Rain",
     lightrainnight: "Light Rain",
-
-    // Showers
-    oshowerday: "Occasional Showers",
-    oshowernight: "Occasional Showers",
 
     ishowerday: "Intermittent Showers",
     ishowernight: "Intermittent Showers",
 
-    // Rain
+    oshowerday: "Occasional Showers",
+    oshowernight: "Occasional Showers",
+
     rainday: "Rain",
     rainnight: "Rain",
 
-    // Thunderstorm
     tsday: "Thunderstorm",
     tsnight: "Thunderstorm",
 
-    // Snow
     lightsnowday: "Light Snow",
     lightsnownight: "Light Snow",
+
     snowday: "Snow",
     snownight: "Snow",
 
-    // Rain & Snow Mix
     rainsnowday: "Rain & Snow",
     rainsnownight: "Rain & Snow",
 
-    // Default fallback
     default: "Unknown"
 };
-
-
 // ===============================================================
 // ELEMENTS
 // ===============================================================
