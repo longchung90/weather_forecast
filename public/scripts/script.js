@@ -196,7 +196,7 @@ async function loadWeather(lat, lon) {
 
     data.dataseries.slice(0, 7).forEach((day, index) => {
 
-        // Fix: date MUST be defined first
+        // Date
         const date = new Date();
         date.setDate(date.getDate() + index);
 
@@ -207,6 +207,7 @@ async function loadWeather(lat, lon) {
         // Weather mapping
         const key = day.weather.toLowerCase();
         const weather = WEATHER_MAP[key] || WEATHER_MAP.default;
+        const icon = ICONS[key] || ICONS.default;
 
         // Rain
         const rainChance = Math.round((day.cloudcover / 10) * 100);
@@ -215,19 +216,42 @@ async function loadWeather(lat, lon) {
         const windDir = WIND_DIRECTION[day.wind10m.direction] || "N";
         const windSpeed = WIND_SPEED[day.wind10m.speed] || 5;
 
+        // Create card
         const card = document.createElement("div");
-        card.className = "weather-card";
+        card.className = "weather-card weather-animate";
 
-        card.innerHTML =
-            <><div class="w-day">${date.toLocaleString("en-US", { weekday: "short" })}</div><div class="w-date">${dateString}</div><div class="w-temp">${day.temp2m}°C</div><div class="w-cond">${weather.label}</div><div class="w-hilo">
+        // Build card HTML
+        card.innerHTML = `
+            <div class="w-icon">${icon}</div>
+
+            <div class="w-day">
+                ${date.toLocaleString("en-US", { weekday: "short" })}
+            </div>
+
+            <div class="w-date">
+                ${dateString}
+            </div>
+
+            <div class="w-temp">
+                ${day.temp2m}°C
+            </div>
+
+            <div class="w-cond">
+                ${weather.label}
+            </div>
+
+            <div class="w-hilo">
                 <span>H: ${day.temp2m + 2}°C</span>
                 <span>L: ${day.temp2m - 2}°C</span>
-            </div><div class="w-extra">
-                    <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>
-                    <div><strong>Rain:</strong> ${rainChance}%</div>
-                </div></>
+            </div>
+
+            <div class="w-extra">
+                <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>
+                <div><strong>Rain:</strong> ${rainChance}%</div>
+            </div>
         `;
 
+        // Insert card
         elements.grid.appendChild(card);
     });
 }
