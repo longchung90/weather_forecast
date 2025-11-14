@@ -6,9 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>7-Day Weather Forecast</title>
 
-    <!-- Favicon -- -->
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png">
-
 
     <!-- Initial hero background -->
     <style>
@@ -17,9 +16,10 @@
         }
     </style>
 
-
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Leaflet (Map) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
     <!-- Icons -->
@@ -30,23 +30,26 @@
         rel="stylesheet">
 </head>
 
-
 <body>
-    <!-- =========================
+
+    <!-- =========================================================
+         FULLSCREEN LOADING OVERLAY (CORRECT POSITION)
+    ========================================================= -->
+    <div id="loadingOverlay">
+        <div class="loading-text">Loading map and forecast...</div>
+    </div>
+
+
+    <!-- =========================================================
          HERO SECTION
-========================= -->
+    ========================================================= -->
     <header class="hero" id="hero">
-        <!-- =========================
-                                 LOADING OVERLAY
-                    ========================= -->
-
-
-        <div id="loadingOverlay">
-            <div class="loading-text">Loading map and forecast...</div>
-        </div>
         <div class="hero-content">
+
             <h1 class="hero-title">European Weather Explorer</h1>
             <p class="hero-sub">Get the weather you need for the cities you love.</p>
+
+            <!-- Controls -->
             <div class="controls">
                 <select id="citySelect">
                     <option value="" disabled selected>Choose your European destination</option>
@@ -80,46 +83,40 @@
                     </option>
                     <option value="53.35,-6.26" data-bg="dublin" data-name="Dublin" data-flag="🇮🇪">Dublin</option>
                 </select>
+
                 <button id="getForecastBtn" class="btn btn-gold">Get Forecast</button>
-
             </div>
+
         </div>
-
-
-
     </header>
 
 
 
-
-    <!-- =========================
-     MAIN CONTENT
-     ========================= -->
+    <!-- =========================================================
+         MAIN CONTENT — FORECAST SECTION
+    ========================================================= -->
     <main>
         <section id="forecastSection" class="forecast-section hidden">
+
             <h2 id="forecastHeading" class="forecast-heading">
                 <span id="forecastCityIcon">🌍</span>
                 <span id="forecastCityName" class="forecast-city-name">Select a City</span>
             </h2>
 
-
+            <!-- Weather Cards -->
             <div id="weatherGrid" class="forecast-grid"></div>
 
-            <!-- =========================
-             MAP SECTION (Leaflet)
-        ========================= -->
+            <!-- Leaflet Map -->
             <div id="map" class="map-container"></div>
-
-
 
         </section>
     </main>
 
 
 
-    <!-- =========================
-     FOOTER (Midnight + Gold)
-     ========================= -->
+    <!-- =========================================================
+         FOOTER
+    ========================================================= -->
     <footer class="footer">
         <div class="footer-inner">
             <p class="footer-text">© 2025 Long Hoa Chung | European Weather Explorer</p>
@@ -142,9 +139,10 @@
     </footer>
 
 
-    <!-- Leaflet CSS + JS -->
-
+    <!-- Scripts -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-    <!-- Main weather app script -->
     <script src="./scripts/script.js"></script>
+
+</body>
+
+</html>
