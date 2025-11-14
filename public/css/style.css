@@ -393,7 +393,7 @@ body::before {
 
 .footer-links i {
     font-size: 1.5rem;
-    color: white;
+    color: rgb(231, 169, 14);
     transition: 0.3s;
 }
 
