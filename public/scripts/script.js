@@ -143,6 +143,9 @@ function handleGetForecast() {
 
     initLeafletMap(lat, lon);
     loadWeather(lat, lon);
+
+    document.getElementById("loadingOverlay").style.display = "none";
+
 }
 
 // ---------------------------------------------------------------

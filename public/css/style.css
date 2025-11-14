@@ -22,18 +22,12 @@
     position: absolute;
     inset: 0;
 
-    background: var(--hero-img) center/cover no-repeat;
-
+    background-image: var(--hero-img);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-
-    filter: brightness(1.18) contrast(1.1) saturate(1.15);
-    animation: kenburns 18s ease-out forwards;
-    transition: background-image 1.2s ease;
-    z-index: -1;
+    z-index: -3;
 }
-
 
 /* DARKER premium overlay for readability */
 .hero::after {
@@ -44,21 +38,18 @@
             rgba(0, 0, 0, 0.55) 0%,
             rgba(0, 0, 0, 0.60) 40%,
             rgba(0, 0, 0, 0.75) 100%);
-    z-index: 1;
+    z-index: -2;
 }
 
 .hero.fade-out {
     opacity: 0;
-    pointer-events: none;
     transition: opacity 1s ease;
-    height: 0;
-    overflow: hidden;
 }
 
 /* HERO CONTENT */
 .hero-content {
     position: relative;
-    z-index: 2;
+    z-index: 10;
     max-width: 900px;
     padding: 0 20px;
     display: grid;
@@ -220,10 +211,9 @@
 /* LEAFLET MAP FIXES */
 #map {
     width: 100%;
-    height: 500px;
+    height: 450px;
     border-radius: 18px;
-    z-index: 5;
-    margin-top: 30px;
+    overflow: hidden;
 }
 
 .leaflet-container {
@@ -266,6 +256,19 @@
 
 .hidden {
     display: none;
+}
+
+#loadingOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    color: white;
+    font-size: 1.4rem;
+    backdrop-filter: blur(6px);
 }
 
 /* =========================
