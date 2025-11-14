@@ -1,26 +1,9 @@
 // ---------------------------------------------------------------
-// 0. WAIT FOR GOOGLE MAPS
-// ---------------------------------------------------------------
-window.initGoogleMaps = function () {
-    window.googleMapsLoaded = true;
-};
-
-function waitForGoogleMaps() {
-    return new Promise(resolve => {
-        if (window.googleMapsLoaded) return resolve();
-        const check = setInterval(() => {
-            if (window.googleMapsLoaded) {
-                clearInterval(check);
-                resolve();
-            }
-        }, 100);
-    });
-}
-
-// ---------------------------------------------------------------
 // 1. CONFIG
 // ---------------------------------------------------------------
 const CONFIG = {
+    DEFAULT_LAT: 48.85,
+    DEFAULT_LON: 2.35,
     TRANSITION_DURATION: 1200
 };
 
@@ -41,24 +24,24 @@ const elements = {
 // 3. BACKGROUND IMAGES
 // ---------------------------------------------------------------
 const cityBG = {
-    paris: "images/paris.jpg",
-    london: "images/london.jpg",
-    brussels: "images/brussels.jpg",
-    amsterdam: "images/amsterdam.jpg",
-    geneva: "images/geneva.jpg",
-    berlin: "images/berlin.jpg",
-    vienna: "images/vienna.jpg",
-    prague: "images/prague.jpg",
-    budapest: "images/budapest.jpg",
-    warsaw: "images/warsaw.jpg",
-    athens: "images/athens.jpg",
-    lisbon: "images/lisbon.jpg",
-    bucharest: "images/bucharest.jpg",
-    stockholm: "images/stockholm.jpg",
-    helsinki: "images/helsinki.jpg",
-    copenhagen: "images/copenhagen.jpg",
-    bratislava: "images/bratislava.jpg",
-    dublin: "images/dublin.jpg"
+    paris: "/images/paris.jpg",
+    london: "/images/london.jpg",
+    brussels: "/images/brussels.jpg",
+    amsterdam: "/images/amsterdam.jpg",
+    geneva: "/images/geneva.jpg",
+    berlin: "/images/berlin.jpg",
+    vienna: "/images/vienna.jpg",
+    prague: "/images/prague.jpg",
+    budapest: "/images/budapest.jpg",
+    warsaw: "/images/warsaw.jpg",
+    athens: "/images/athens.jpg",
+    lisbon: "/images/lisbon.jpg",
+    bucharest: "/images/bucharest.jpg",
+    stockholm: "/images/stockholm.jpg",
+    helsinki: "/images/helsinki.jpg",
+    copenhagen: "/images/copenhagen.jpg",
+    bratislava: "/images/bratislava.jpg",
+    dublin: "/images/dublin.jpg"
 };
 
 // ---------------------------------------------------------------
@@ -85,11 +68,11 @@ function changeBackground(newBg) {
 }
 
 // ---------------------------------------------------------------
-// 5. UPDATE CITY (background + label)
+// 5. UPDATE UI WHEN CHOOSING A CITY
 // ---------------------------------------------------------------
 function updateCity() {
     const opt = elements.select.options[elements.select.selectedIndex];
-    if (!opt) return;
+    if (!opt || !opt.dataset.bg) return;
 
     elements.icon.textContent = opt.dataset.flag;
     elements.name.textContent = opt.dataset.name;
@@ -99,23 +82,24 @@ function updateCity() {
 }
 
 // ---------------------------------------------------------------
-// 6. MAP
+// 6. LEAFLET MAP
 // ---------------------------------------------------------------
-function updateMap(lat, lon) {
-    const map = document.querySelector("gmp-map");
+let map;
+let mapMarker;
 
-    if (!map) return;
+function initLeafletMap(lat = CONFIG.DEFAULT_LAT, lon = CONFIG.DEFAULT_LON) {
+    if (!map) {
+        map = L.map('map').setView([lat, lon], 6);
 
-    map.setAttribute("center", `${lat},${lon}`);
-    map.setAttribute("zoom", 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18
+        }).addTo(map);
 
-    let marker = document.getElementById("marker");
-    if (!marker) {
-        marker = document.createElement("gmp-advanced-marker");
-        marker.id = "marker";
-        map.appendChild(marker);
+        mapMarker = L.marker([lat, lon]).addTo(map);
+    } else {
+        map.setView([lat, lon], 6);
+        mapMarker.setLatLng([lat, lon]);
     }
-    marker.setAttribute("position", `${lat},${lon}`);
 }
 
 // ---------------------------------------------------------------
@@ -123,6 +107,7 @@ function updateMap(lat, lon) {
 // ---------------------------------------------------------------
 async function loadWeather(lat, lon) {
     const url = `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
+
     const res = await fetch(url);
     const data = await res.json();
 
@@ -142,33 +127,36 @@ async function loadWeather(lat, lon) {
 // ---------------------------------------------------------------
 // 8. BUTTON CLICK
 // ---------------------------------------------------------------
-async function handleClick() {
+function handleGetForecast() {
     const val = elements.select.value;
-    if (!val) return alert("Select a city first!");
+    if (!val) return alert("Please select a destination!");
 
-    const [lat, lon] = val.split(",");
+    const [lat, lon] = val.split(",").map(Number);
 
     elements.section.classList.remove("hidden");
     elements.hero.classList.add("fade-out");
 
     elements.section.scrollIntoView({ behavior: "smooth" });
 
-    updateMap(parseFloat(lat), parseFloat(lon));
-    loadWeather(parseFloat(lat), parseFloat(lon));
+    initLeafletMap(lat, lon);
+    loadWeather(lat, lon);
 }
 
 // ---------------------------------------------------------------
-// 9. INIT
+// 9. INITIALIZE APP
 // ---------------------------------------------------------------
-async function init() {
-    await waitForGoogleMaps();
-
+function initializeApp() {
     elements.select.addEventListener("change", updateCity);
-    elements.btn.addEventListener("click", handleClick);
+    elements.btn.addEventListener("click", handleGetForecast);
 
-    updateMap(48.85, 2.35);
+    // Set default hero background
+    document.documentElement.style.setProperty("--hero-img", "url('/images/eu.jpg')");
 
-    console.log("✅ Weather app initialized");
+    // Start map
+    initLeafletMap(CONFIG.DEFAULT_LAT, CONFIG.DEFAULT_LON);
+
+    console.log("🌍 App initialized with Leaflet");
 }
 
-document.addEventListener("DOMContentLoaded", init);
+// Start App
+initializeApp();

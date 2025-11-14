@@ -6,12 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>7-Day Weather Forecast</title>
 
+    <!-- Favicon -- -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+
+
+    <!-- Initial hero background -->
+    <style>
+        :root {
+            --hero-img: url('/images/eu.jpg');
+        }
+    </style>
+
+
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&display=swap"
         rel="stylesheet">
 </head>
+
 
 <body>
     <!-- =========================
@@ -86,12 +104,13 @@
 
             <div id="weatherGrid" class="forecast-grid"></div>
 
-            <!-- Google Map -->
-            <div id="map" class="map-container">
-                <gmp-map center="48.85,2.35" zoom="4" map-id="midnight-gold-map">
-                    <gmp-advanced-marker id="marker" position="48.85,2.35"></gmp-advanced-marker>
-                </gmp-map>
-            </div>
+            <!-- =========================
+             MAP SECTION (Leaflet)
+        ========================= -->
+            <div id="map" class="map-container"></div>
+
+
+
         </section>
     </main>
 
@@ -122,51 +141,9 @@
     </footer>
 
 
-    <!-- ✅ Load configuration and Google Maps API dynamically -->
-    <script>
-        window.googleMapsLoaded = false;
-        window.initGoogleMaps = function () {
-            window.googleMapsLoaded = true;
-            console.log('🗺️ Google Maps API loaded successfully');
+    <!-- Leaflet CSS + JS -->
 
-            const overlay = document.getElementById('loadingOverlay');
-            if (overlay) {
-                overlay.classList.add('hidden');
-                setTimeout(() => overlay.remove(), 800);
-            }
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-            if (typeof initializeApp === 'function') {
-                initializeApp();
-            }
-        };
-    </script>
-
-    <script>
-        async function loadApp() {
-            try {
-                const response = await fetch('/api/config');
-                const config = await response.json();
-
-                const mapsScript = document.createElement('script');
-                mapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsApiKey}&libraries=maps,marker&v=beta&callback=initGoogleMaps`;
-                mapsScript.async = true;
-                mapsScript.defer = true;
-                document.head.appendChild(mapsScript);
-
-                const appScript = document.createElement('script');
-                appScript.src = 'scripts/script.js';
-                document.body.appendChild(appScript);
-            } catch (error) {
-                console.error('Failed to load app:', error);
-                const appScript = document.createElement('script');
-                appScript.src = '/scripts/script.js';
-                document.body.appendChild(appScript);
-            }
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', loadApp);
-        } else {
-            loadApp();
-        }
-    </script>
+    <!-- Main weather app script -->
+    <script src="./scripts/script.js"></script>
