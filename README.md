@@ -1,4 +1,4 @@
-# 🌤️ European Weather Explorer [Weather-forecast for European cities](https://weather-forecast-d6l3.onrender.com/)
+# 🌤️ [Weather-forecast for European cities](https://weather-forecast-d6l3.onrender.com/)
 
 
 A beautiful, fully responsive vanilla JavaScript web app that delivers 7-day weather forecasts for major European cities.  
