@@ -402,5 +402,60 @@ body::before {
 }
 
 /* ========================================================================
+   iPHONE / SAFARI FIXES (does not override your design)
+   ======================================================================== */
+
+/* 1. Fix background image not showing on iOS */
+@supports (-webkit-touch-callout: none) {
+    body::before {
+        position: fixed;
+        background-attachment: scroll !important;
+        /* iOS cannot do fixed backgrounds */
+    }
+}
+
+/* 2. Fix Safari breaking blur glass background */
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+
+    .controls,
+    .weather-card,
+    .map-container::before {
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
+    }
+}
+
+/* 3. Fix forecast grid horizontal scroll on iPhone */
+@media (max-width: 768px) {
+    .forecast-grid {
+        display: flex;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 18px;
+    }
+
+    .weather-card {
+        min-width: 175px;
+        /* prevent tiny squished cards */
+        flex-shrink: 0;
+    }
+}
+
+/* 4. Fix pinch-zoom increasing font sizes on iPhone */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    html {
+        -webkit-text-size-adjust: 100%;
+    }
+}
+
+/* 5. Fix map overflow on small iPhone screens */
+@media (max-width: 480px) {
+    .map-container {
+        height: 260px;
+        border-radius: 16px;
+    }
+}
+
+/* ========================================================================
    END OF FILE
    ======================================================================== */
