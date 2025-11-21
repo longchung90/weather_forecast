@@ -8,12 +8,6 @@ const PORT = process.env.PORT || 10000;
 // Serve static files from public directory
 app.use(express.static('public'));
 
-// API endpoint to provide Google Maps API key
-app.get('/api/config', (req, res) => {
-    res.json({
-        googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY
-    });
-});
 
 // Serve main page
 app.get('/', (req, res) => {
