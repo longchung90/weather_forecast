@@ -285,9 +285,8 @@ async function loadWeather(lat, lon) {
 
         /* TEMPERATURE */
         /* TEMPERATURE */
-        const temp = Number(day.temp2m?.temp || 0);
-        const high = temp + 2;
-        const low = temp - 2;
+        const temp = Number(day.temp2m ?? 0);
+
 
         /* WIND */
         const windSpeed = Number(day.wind10m?.speed || 0);
