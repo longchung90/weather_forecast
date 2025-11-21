@@ -343,7 +343,7 @@ async function handleGet() {
     elements.overlay.classList.add("active");
 
     initLeafletMap(lat, lon);
-    await loadWeather(lat, lon);
+
 
     elements.overlay.classList.remove("active");
 
