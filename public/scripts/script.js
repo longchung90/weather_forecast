@@ -259,14 +259,14 @@ async function loadWeather(lat, lon) {
     const res = await fetch(
         `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`
     );
-
+    console.log(">>> RAW WEATHER CODE =", day.weather);
     const raw = await res.text();
 
 
     elements.grid.innerHTML = "";
 
     data.dataseries.slice(0, 7).forEach((day, index) => {
-        console.log(">>> RAW WEATHER CODE =", day.weather);
+
 
         /* DATE */
         const d = new Date();
