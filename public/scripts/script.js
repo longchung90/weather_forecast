@@ -283,7 +283,7 @@ async function loadWeather(lat, lon) {
         const label = WEATHER_DETAILS[code] || WEATHER_DETAILS.default;
 
         /* TEMPERATURE */
-        const temp = Number(day.temp2m);
+        const temp = Number(day.temp2m ?? 0);
         const high = temp + 2;
         const low = temp - 2;
 
