@@ -260,7 +260,16 @@ async function loadWeather(lat, lon) {
         `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`
     );
 
-    const data = await res.json();
+    const raw = await res.text();
+    let data;
+
+    try {
+        data = JSON.parse(raw);
+    } catch (err) {
+        console.error("❌ INVALID JSON FROM API:", raw);
+        alert("7Timer API returned broken data. Try again in 5 seconds.");
+        return;
+    }
 
     elements.grid.innerHTML = "";
 
