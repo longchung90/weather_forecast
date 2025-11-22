@@ -239,7 +239,32 @@ document.getElementById("changeCityBtn").addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
+// ===============================================================
+// HANDLE GET FORECAST
+// ==============================================================
 
+async function handleGet() {
+    const val = elements.select.value;
+    if (!val) return alert("Please select a destination!");
+
+    const [lat, lon] = val.split(",").map(Number);
+
+    // Show forecast section
+    elements.section.classList.remove("hidden");
+
+    // Show overlay
+    elements.overlay.classList.add("active");
+
+    // Load map + weather
+    initLeafletMap(lat, lon);
+    await loadWeather(lat, lon);
+
+    // Hide overlay
+    elements.overlay.classList.remove("active");
+
+    // Scroll to forecast
+    elements.section.scrollIntoView({ behavior: "smooth" });
+}
 
 /* ============================================================
    WEATHER LOADER (civil product)
@@ -363,32 +388,7 @@ function initLeafletMap(lat, lon) {
     }
 }
 
-// ===============================================================
-// HANDLE GET FORECAST
-// ==============================================================
 
-async function handleGet() {
-    const val = elements.select.value;
-    if (!val) return alert("Please select a destination!");
-
-    const [lat, lon] = val.split(",").map(Number);
-
-    // Show forecast section
-    elements.section.classList.remove("hidden");
-
-    // Show overlay
-    elements.overlay.classList.add("active");
-
-    // Load map + weather
-    initLeafletMap(lat, lon);
-    await loadWeather(lat, lon);
-
-    // Hide overlay
-    elements.overlay.classList.remove("active");
-
-    // Scroll to forecast
-    elements.section.scrollIntoView({ behavior: "smooth" });
-}
 
 //==============
 // App Initialization
