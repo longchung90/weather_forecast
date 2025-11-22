@@ -247,15 +247,6 @@ document.getElementById("changeCityBtn").addEventListener("click", () => {
 async function loadWeather(lat, lon) {
     const url = `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=meteo&output=json`;
 
-    let text;
-    try {
-        const res = await fetch(url);
-        text = await res.text();
-    } catch (e) {
-        console.error("❌ Network error:", e);
-        elements.grid.innerHTML = `<div class="error-box">Network error</div>`;
-        return;
-    }
 
     // Try to parse JSON – many 7Timer endpoints return invalid JSON!
     let data;
