@@ -234,10 +234,15 @@ function updateCity() {
     if (bgPath) changeBackground(bgPath);
 }
 
-document.getElementById("changeCityBtn").addEventListener("click", () => {
-    elements.section.classList.add("hidden");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-});
+// Load map + weather
+initLeafletMap(lat, lon);
+await loadWeather(lat, lon);
+
+// Hide overlay
+elements.overlay.classList.remove("active");
+
+// Scroll to forecast
+elements.section.scrollIntoView({ behavior: "smooth" });
 
 // ===============================================================
 // HANDLE GET FORECAST
@@ -252,18 +257,10 @@ async function handleGet() {
     // Show forecast section
     elements.section.classList.remove("hidden");
 
-    // Show overlay
-    elements.overlay.classList.add("active");
-
-    // Load map + weather
-    initLeafletMap(lat, lon);
-    await loadWeather(lat, lon);
-
-    // Hide overlay
-    elements.overlay.classList.remove("active");
-
-    // Scroll to forecast
-    elements.section.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("changeCityBtn").addEventListener("click", () => {
+        elements.section.classList.add("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 }
 
 /* ============================================================
@@ -387,6 +384,7 @@ function initLeafletMap(lat, lon) {
         marker.setLatLng([lat, lon]);
     }
 }
+
 
 
 
