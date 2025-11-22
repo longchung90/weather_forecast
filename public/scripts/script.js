@@ -254,19 +254,50 @@ function initLeafletMap(lat, lon) {
    WEATHER LOADER (civil product)
 ============================================================ */
 async function loadWeather(lat, lon) {
+    const url = `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
 
-    // 👉 CIVIL PRODUCT (simple structure that your UI expects)
-    const res = await fetch(
-        `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`
-    );
-    console.log(">>> RAW WEATHER CODE =", day.weather);
-    const raw = await res.text();
+    let text;
+    try {
+        const res = await fetch(url);
+        text = await res.text();
+    } catch (e) {
+        console.error("❌ Network error:", e);
+        elements.grid.innerHTML = `<div class="error-box">Network error</div>`;
+        return;
+    }
 
+    // Try to parse JSON – many 7Timer endpoints return invalid JSON!
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch (err) {
+        console.error("❌ JSON Parse Error:", err);
+        console.log("RAW RESPONSE:", text);
+        elements.grid.innerHTML = `
+            <div class="error-box">
+                Weather data not available for this location.
+            </div>
+        `;
+        return;
+    }
 
     elements.grid.innerHTML = "";
 
-    data.dataseries.slice(0, 7).forEach((day, index) => {
+    // Make sure dataseries exists
+    if (!data.dataseries || !Array.isArray(data.dataseries)) {
+        elements.grid.innerHTML = `
+            <div class="error-box">No forecast data available.</div>
+        `;
+        return;
+    }
 
+    // Loop through days safely
+    data.dataseries.slice(0, 7).forEach((day, index) => {
+        // Skip broken entries
+        if (day.temp2m == null) {
+            console.warn("⚠️ Skipping day with missing temp2m:", day);
+            return;
+        }
 
         /* DATE */
         const d = new Date();
@@ -277,25 +308,23 @@ async function loadWeather(lat, lon) {
         const dateString = `${month} ${d.getDate()}`;
 
         /* WEATHER CODE */
-        /* WEATHER CODE */
-        const code = day.weather;
-
+        const code = day.weather ?? "default";
         const iconSVG = ICONS_IOS[code] || ICONS_IOS.default;
         const label = WEATHER_DETAILS[code] || WEATHER_DETAILS.default;
 
-        /* TEMPERATURE */
-        /* TEMPERATURE */
+        /* TEMPERATURE (SAFE) */
         const temp = Number(day.temp2m ?? 0);
+        const high = temp + 2;
+        const low = temp - 2;
 
+        /* WIND (SAFE) */
+        const windSpeed = Number(day.wind10m?.speed ?? 0);
+        const windDir = day.wind10m?.direction ?? "N";
 
-        /* WIND */
-        const windSpeed = Number(day.wind10m?.speed || 0);
-        const windDir = day.wind10m?.direction || "N";
+        /* CLOUDCOVER (SAFE) */
+        const rainChance = Math.round(((day.cloudcover ?? 0) / 10) * 100);
 
-        /* RAIN % (based on cloudcover) */
-        const rainChance = Math.round((day.cloudcover / 10) * 100);
-
-        /* SNOW detection */
+        /* SNOW (based on weather code) */
         const snowyCodes = ["snow", "lightsnow", "frain", "rainsnow", "sleet", "blizzard"];
         const snowChance = snowyCodes.includes(code) ? rainChance : 0;
 
@@ -304,31 +333,23 @@ async function loadWeather(lat, lon) {
         card.className = "weather-card";
 
         card.innerHTML = `
-      <div class="w-day">${weekday}</div>
-      <div class="w-date">${dateString}</div>
-
-      <div class="w-icon">${iconSVG}</div>
-
-      <div class="w-temp">${temp}<sup>°C</sup></div>
-
-      <div class="w-cond">${label}</div>
-
-      <div class="w-hilo">
-        H: ${high}° • L: ${low}°
-      </div>
-
-      <div class="w-extra">
-        <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>
-        <div><strong>Rain:</strong> ${rainChance}%</div>
-        <div><strong>Snow:</strong> ${snowChance}%</div>
-      </div>
-    `;
+            <div class="w-day">${weekday}</div>
+            <div class="w-date">${dateString}</div>
+            <div class="w-icon">${iconSVG}</div>
+            <div class="w-temp">${temp}<sup>°C</sup></div>
+            <div class="w-cond">${label}</div>
+            <div class="w-hilo">H: ${high}° • L: ${low}°</div>
+            <div class="w-extra">
+                <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>
+                <div><strong>Rain:</strong> ${rainChance}%</div>
+                <div><strong>Snow:</strong> ${snowChance}%</div>
+            </div>
+        `;
 
         elements.grid.appendChild(card);
     });
-
-
 }
+
 // ===============================================================
 // HANDLE GET FORECAST
 // ===============================================================
@@ -343,6 +364,7 @@ async function handleGet() {
     elements.overlay.classList.add("active");
 
     initLeafletMap(lat, lon);
+    await loadWeather(lat, lon);
 
 
     elements.overlay.classList.remove("active");
