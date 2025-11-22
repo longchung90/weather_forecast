@@ -355,6 +355,20 @@ body::before {
     white-space: nowrap;
 }
 
+/* Humidity styling inside weather cards */
+/* Humidity row */
+.w-extra .w-humidity {
+    color: #4da6ff;
+    /* soft blue */
+    font-weight: 600;
+}
+
+.w-extra .w-humidity strong {
+    color: #1a8cff;
+    /* stronger blue */
+    font-weight: 700;
+}
+
 /* ========================================================================
    MAP STYLING
    ======================================================================== */
