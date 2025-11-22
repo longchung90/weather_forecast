@@ -234,9 +234,7 @@ function updateCity() {
     if (bgPath) changeBackground(bgPath);
 }
 
-// Load map + weather
-initLeafletMap(lat, lon);
-await loadWeather(lat, lon);
+
 
 // Hide overlay
 elements.overlay.classList.remove("active");
@@ -251,8 +249,15 @@ elements.section.scrollIntoView({ behavior: "smooth" });
 async function handleGet() {
     const val = elements.select.value;
     if (!val) return alert("Please select a destination!");
-
     const [lat, lon] = val.split(",").map(Number);
+
+    elements.section.classList.remove("hidden");
+
+    initLeafletMap(lat, lon);
+    await loadWeather(lat, lon);
+
+
+
 
     // Show forecast section
     elements.section.classList.remove("hidden");
@@ -263,27 +268,33 @@ async function handleGet() {
     });
 }
 
+
 /* ============================================================
    WEATHER LOADER (civil product)
 ============================================================ */
 async function loadWeather(lat, lon) {
     const url = `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=meteo&output=json`;
 
+    let text;
+    try {
+        const res = await fetch(url);
+        text = await res.text();   // must read raw text
+    } catch (err) {
+        console.error("❌ Network Error:", err);
+        elements.grid.innerHTML = `<div class="error-box">Unable to fetch weather data.</div>`;
+        return;
+    }
 
-    // Try to parse JSON – many 7Timer endpoints return invalid JSON!
     let data;
     try {
         data = JSON.parse(text);
     } catch (err) {
         console.error("❌ JSON Parse Error:", err);
         console.log("RAW RESPONSE:", text);
-        elements.grid.innerHTML = `
-            <div class="error-box">
-                Weather data not available for this location.
-            </div>
-        `;
+        elements.grid.innerHTML = `<div class="error-box">Weather data not available for this location.</div>`;
         return;
     }
+
 
     elements.grid.innerHTML = "";
 
