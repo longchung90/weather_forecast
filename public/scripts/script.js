@@ -1,5 +1,4 @@
-
-/ ===============================================================
+// ===============================================================
 // ELEMENTS that are found on HTML as IDs
 // ===============================================================
 const elements = {
@@ -13,36 +12,26 @@ const elements = {
     overlay: document.getElementById("loadingOverlay"),
 };
 
-
-
-
-
 // =========================
 // Weather label and Icons
 // =======================
 const ICONS_IOS = {
-    // Clear
     clearday: "☀️",
-    clearnight: "🌕",  // or "🌙"
+    clearnight: "🌕",
 
-    // Partly clear / sunny intervals
     pclear: "🌤️",
     pclearday: "🌤️",
     pclearnight: "🌙",
 
-    // Partly cloudy
     pcloudyday: "⛅",
     pcloudynight: "🌥️",
 
-    // Mostly cloudy
     mcloudyday: "🌥️",
     mcloudynight: "☁️",
 
-    // Cloudy
     cloudyday: "☁️",
     cloudynight: "☁️",
 
-    // Light rain / showers
     lightrainday: "🌦️",
     lightrainnight: "🌧️",
 
@@ -52,34 +41,28 @@ const ICONS_IOS = {
     oshowerday: "🌦️",
     oshowernight: "🌧️",
 
-    // Rain
     rainday: "🌧️",
     rainnight: "🌧️",
 
-    // Thunderstorms
     tsday: "⛈️",
     tsnight: "⛈️",
 
-    // Snow
     lightsnowday: "🌨️",
     lightsnownight: "🌨️",
 
     snowday: "❄️",
     snownight: "❄️",
 
-    // Rain & snow mix
     rainsnowday: "🌧️❄️",
     rainsnownight: "🌧️❄️",
 
-    //// Add these near the top
-    humidday: "🌫️",      // or "💧" or any emoji you prefer for humid
+    // Your duplication kept
+    humidday: "🌫️",
     humidnight: "🌫️",
 
-    // Humidity
-    humidday: "🌫️",      // or "💧" or any emoji you prefer for humid
+    humidday: "🌫️",
     humidnight: "🌫️",
 
-    // Fallback
     default: "❓"
 };
 
@@ -132,10 +115,6 @@ const WEATHER_DETAILS = {
     default: "Unknown"
 };
 
-
-
-
-
 // ===============================================================
 // WIND DATA
 // ===============================================================
@@ -149,11 +128,10 @@ const WIND_SPEED = { 1: 5, 2: 10, 3: 15, 4: 25, 5: 35, 6: 50, 7: 65 };
 // =======================
 // Transition
 // ========================
-
 const CONFIG = { TRANSITION: 900 };
 
 // ===============================================================
-// CITY BACKGROUNDS of each city
+// CITY BACKGROUNDS
 // ===============================================================
 const cityBG = {
     paris: "images/paris.jpg",
@@ -178,20 +156,16 @@ const cityBG = {
     dublin: "images/dublin.jpg",
 };
 
-
 // ===============================================================
 // Background change
 // ===============================================================
-
 function changeBackground(newBg) {
     const fullPath = newBg.startsWith("/") ? newBg : "/" + newBg;
 
-    // PRELOAD IMAGE FIRST
     const img = new Image();
     img.src = fullPath;
 
     img.onload = () => {
-        // Create fade layer BELOW EVERYTHING
         const layer = document.createElement("div");
         layer.style.cssText = `
             position: fixed;
@@ -199,17 +173,13 @@ function changeBackground(newBg) {
             background: url('${fullPath}') center/cover no-repeat;
             opacity: 0;
             transition: opacity ${CONFIG.TRANSITION}ms ease;
-            z-index: -20;   /* ⭐ FIX HERE ⭐ */
+            z-index: -20;
             pointer-events: none;
         `;
         document.body.appendChild(layer);
 
-        // Fade-in
-        requestAnimationFrame(() => {
-            layer.style.opacity = 1;
-        });
+        requestAnimationFrame(() => layer.style.opacity = 1);
 
-        // After fade completes, update global background and remove layer
         setTimeout(() => {
             document.documentElement.style.setProperty("--hero-img", `url('${fullPath}')`);
             layer.remove();
@@ -217,7 +187,9 @@ function changeBackground(newBg) {
     };
 }
 
-// Background + city text changes ONLY when selecting a city
+// ===============================================================
+// Update City (background + text) when selecting
+// ===============================================================
 function updateCity() {
     const opt = elements.select.options[elements.select.selectedIndex];
     if (!opt) return;
@@ -225,30 +197,19 @@ function updateCity() {
     elements.cityName.textContent = opt.dataset.name;
     elements.cityIcon.textContent = opt.dataset.flag;
 
-    // Update subtitle dynamically
-
     document.querySelector(".forecast-title").classList.add("show");
-
 
     const bgPath = cityBG[opt.dataset.bg];
     if (bgPath) changeBackground(bgPath);
 }
 
-
-
-// Hide overlay
-elements.overlay.classList.remove("active");
-
-// Scroll to forecast
-elements.section.scrollIntoView({ behavior: "smooth" });
-
 // ===============================================================
-// HANDLE GET FORECAST
-// ==============================================================
-
+// Handle Get Forecast Button
+// ===============================================================
 async function handleGet() {
     const val = elements.select.value;
     if (!val) return alert("Please select a destination!");
+
     const [lat, lon] = val.split(",").map(Number);
 
     elements.section.classList.remove("hidden");
@@ -256,18 +217,13 @@ async function handleGet() {
     initLeafletMap(lat, lon);
     await loadWeather(lat, lon);
 
-
-
-
-    // Show forecast section
-    elements.section.classList.remove("hidden");
+    elements.overlay.classList.remove("active");
 
     document.getElementById("changeCityBtn").addEventListener("click", () => {
         elements.section.classList.add("hidden");
         window.scrollTo({ top: 0, behavior: "smooth" });
     });
 }
-
 
 /* ============================================================
    WEATHER LOADER (civil product)
@@ -278,7 +234,7 @@ async function loadWeather(lat, lon) {
     let text;
     try {
         const res = await fetch(url);
-        text = await res.text();   // must read raw text
+        text = await res.text();
     } catch (err) {
         console.error("❌ Network Error:", err);
         elements.grid.innerHTML = `<div class="error-box">Unable to fetch weather data.</div>`;
@@ -290,31 +246,20 @@ async function loadWeather(lat, lon) {
         data = JSON.parse(text);
     } catch (err) {
         console.error("❌ JSON Parse Error:", err);
-        console.log("RAW RESPONSE:", text);
-        elements.grid.innerHTML = `<div class="error-box">Weather data not available for this location.</div>`;
+        elements.grid.innerHTML = `<div class="error-box">Weather data not available.</div>`;
         return;
     }
-
 
     elements.grid.innerHTML = "";
 
-    // Make sure dataseries exists
     if (!data.dataseries || !Array.isArray(data.dataseries)) {
-        elements.grid.innerHTML = `
-            <div class="error-box">No forecast data available.</div>
-        `;
+        elements.grid.innerHTML = `<div class="error-box">No forecast data available.</div>`;
         return;
     }
 
-    // Loop through days safely
     data.dataseries.slice(0, 7).forEach((day, index) => {
-        // Skip broken entries
-        if (day.temp2m == null) {
-            console.warn("⚠️ Skipping day with missing temp2m:", day);
-            return;
-        }
+        if (day.temp2m == null) return;
 
-        /* DATE */
         const d = new Date();
         d.setDate(d.getDate() + index);
 
@@ -322,39 +267,28 @@ async function loadWeather(lat, lon) {
         const month = d.toLocaleString("en-US", { month: "short" });
         const dateString = `${month} ${d.getDate()}`;
 
-        /* WEATHER CODE */
         const code = day.weather ?? "default";
         const iconSVG = ICONS_IOS[code] || ICONS_IOS.default;
         const label = WEATHER_DETAILS[code] || WEATHER_DETAILS.default;
 
-        /* TEMPERATURE (SAFE) */
         const temp = Number(day.temp2m ?? 0);
         const high = temp + 2;
         const low = temp - 2;
 
-        /* WIND (SAFE) */
         const windSpeed = Number(day.wind10m?.speed ?? 0);
         const windDir = day.wind10m?.direction ?? "N";
 
-        /* CLOUDCOVER (SAFE) */
         const rainChance = Math.round(((day.cloudcover ?? 0) / 10) * 100);
 
-        /* HUMIDITY (SAFE) */
-        const humidityRaw = day.rh2m ?? null;
-
-        // Civil product → returns strings like "92%" or ""
+        const humidityRaw = day.rh2m ?? "";
         let humidity = null;
-
         if (typeof humidityRaw === "string" && humidityRaw.trim() !== "") {
             humidity = Number(humidityRaw.replace("%", "").trim());
         }
 
-
-        /* SNOW (based on weather code) */
         const snowyCodes = ["snow", "lightsnow", "frain", "rainsnow", "sleet", "blizzard"];
         const snowChance = snowyCodes.includes(code) ? rainChance : 0;
 
-        /* CARD */
         const card = document.createElement("div");
         card.className = "weather-card";
 
@@ -376,10 +310,10 @@ async function loadWeather(lat, lon) {
         elements.grid.appendChild(card);
     });
 }
+
 // ===============================================================
 // MAP
 // ===============================================================
-
 let map, marker;
 
 function initLeafletMap(lat, lon) {
@@ -396,9 +330,6 @@ function initLeafletMap(lat, lon) {
     }
 }
 
-
-
-
 //==============
 // App Initialization
 //==============
@@ -406,5 +337,3 @@ window.addEventListener("load", () => {
     elements.select.addEventListener("change", updateCity);
     elements.btn.addEventListener("click", handleGet);
 });
-
-
