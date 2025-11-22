@@ -306,6 +306,17 @@ async function loadWeather(lat, lon) {
         /* CLOUDCOVER (SAFE) */
         const rainChance = Math.round(((day.cloudcover ?? 0) / 10) * 100);
 
+        /* HUMIDITY (SAFE) */
+        const humidityRaw = day.rh2m ?? null;
+
+        // Civil product → returns strings like "92%" or ""
+        let humidity = null;
+
+        if (typeof humidityRaw === "string" && humidityRaw.trim() !== "") {
+            humidity = Number(humidityRaw.replace("%", "").trim());
+        }
+
+
         /* SNOW (based on weather code) */
         const snowyCodes = ["snow", "lightsnow", "frain", "rainsnow", "sleet", "blizzard"];
         const snowChance = snowyCodes.includes(code) ? rainChance : 0;
@@ -322,6 +333,7 @@ async function loadWeather(lat, lon) {
             <div class="w-cond">${label}</div>
             <div class="w-hilo">H: ${high}° • L: ${low}°</div>
             <div class="w-extra">
+                <div><strong>Humidity:</strong> ${humidity !== null ? humidity + "%" : "—"}</div>
                 <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>
                 <div><strong>Rain:</strong> ${rainChance}%</div>
                 <div><strong>Snow:</strong> ${snowChance}%</div>
