@@ -77,6 +77,8 @@
         </div>
     </header>
 
+
+
     <main>
         <section id="forecastSection" class="hidden">
             <h2 id="forecastHeading" class="forecast-heading">
@@ -90,42 +92,42 @@
             <button id="changeCityBtn" class="btn btn-gold small-btn">Change City</button>
 
             <div id="weatherGrid" class="forecast-grid"></div>
+        </section>
 
-            <body>
-                <main>
-                    <section>
-                        <div id="map" class="map-container"></div>
-                    </section>
-                </main>
+        <section>
+            <div id="map" class="map-container"></div>
+        </section>
+    </main>
 
-                <!-- ⭐ Overlay should be HERE -->
-                <div id="loadingOverlay">Loading...</div>
+    <!-- ⭐ Overlay SHOULD BE HERE (direct child of body) -->
+    <div id="loadingOverlay">Loading...</div>
 
-                <!-- Scripts -->
-                <script src="https://unpkg.com/leaflet/dist/leaflet.js" defer></script>
-                <script src="./scripts/script.js" defer></script>
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js" defer></script>
+    <script src="./scripts/script.js" defer></script>
 
-                <!-- FOOTER -->
-                <footer class="footer">
-                    <div class="footer-inner">
-                        <p class="footer-text">© 2025 Long Hoa Chung | European Weather Explorer</p>
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <p class="footer-text">© 2025 Long Hoa Chung | European Weather Explorer</p>
 
-                        <div class="footer-links">
-                            <a href="https://github.com/longchung90" target="_blank"><i class="fab fa-github"></i></a>
-                            <a href="https://www.linkedin.com/in/long-hoa-chung/" target="_blank"><i
-                                    class="fab fa-linkedin"></i></a>
-                            <a href="https://www.coursera.org/learner/longchung/" target="_blank"><i
-                                    class="fas fa-graduation-cap"></i></a>
-                            <a href="https://lcportfolio.org" target="_blank"><i class="fas fa-globe"></i></a>
-                        </div>
-                    </div>
+            <div class="footer-links">
+                <a href="https://github.com/longchung90" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/long-hoa-chung/" target="_blank"><i
+                        class="fab fa-linkedin"></i></a>
+                <a href="https://www.coursera.org/learner/longchung/" target="_blank"><i
+                        class="fas fa-graduation-cap"></i></a>
+                <a href="https://lcportfolio.org" target="_blank"><i class="fas fa-globe"></i></a>
+            </div>
+        </div>
 
-                    <div class="acknowledgement">
-                        <p class="acknowledgement">
-                            Weather © 7timer • Maps © OpenStreetMap • Engine © Leaflet
-                        </p>
-                    </div>
-                </footer>
-            </body>
+        <div class="acknowledgement">
+            <p class="acknowledgement">
+                Weather © 7timer • Maps © OpenStreetMap • Engine © Leaflet
+            </p>
+        </div>
+    </footer>
+
+</body>
 
 </html>
