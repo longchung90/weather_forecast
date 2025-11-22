@@ -1,3 +1,22 @@
+
+/ ===============================================================
+// ELEMENTS that are found on HTML as IDs
+// ===============================================================
+const elements = {
+    btn: document.getElementById("getForecastBtn"),
+    select: document.getElementById("citySelect"),
+    hero: document.querySelector(".hero"),
+    section: document.getElementById("forecastSection"),
+    grid: document.getElementById("weatherGrid"),
+    cityName: document.getElementById("forecastCityName"),
+    cityIcon: document.getElementById("forecastCityIcon"),
+    overlay: document.getElementById("loadingOverlay"),
+};
+
+
+
+
+
 // =========================
 // Weather label and Icons
 // =======================
@@ -113,19 +132,8 @@ const WEATHER_DETAILS = {
     default: "Unknown"
 };
 
-// ===============================================================
-// ELEMENTS that are found on HTML as IDs
-// ===============================================================
-const elements = {
-    btn: document.getElementById("getForecastBtn"),
-    select: document.getElementById("citySelect"),
-    hero: document.querySelector(".hero"),
-    section: document.getElementById("forecastSection"),
-    grid: document.getElementById("weatherGrid"),
-    cityName: document.getElementById("forecastCityName"),
-    cityIcon: document.getElementById("forecastCityIcon"),
-    overlay: document.getElementById("loadingOverlay"),
-};
+
+
 
 
 // ===============================================================
@@ -231,30 +239,13 @@ document.getElementById("changeCityBtn").addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-// ===============================================================
-// MAP
-// ===============================================================
-let map, marker;
 
-function initLeafletMap(lat, lon) {
-    if (!map) {
-        map = L.map("map").setView([lat, lon], 7);
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            maxZoom: 18
-        }).addTo(map);
-
-        marker = L.marker([lat, lon]).addTo(map);
-    } else {
-        map.setView([lat, lon], 7);
-        marker.setLatLng([lat, lon]);
-    }
-}
 
 /* ============================================================
    WEATHER LOADER (civil product)
 ============================================================ */
 async function loadWeather(lat, lon) {
-    const url = `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
+    const url = `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=meteo&output=json`;
 
     let text;
     try {
@@ -349,34 +340,56 @@ async function loadWeather(lat, lon) {
         elements.grid.appendChild(card);
     });
 }
+// ===============================================================
+// MAP
+// ===============================================================
+
+let map, marker;
+
+function initLeafletMap(lat, lon) {
+    if (!map) {
+        map = L.map("map").setView([lat, lon], 7);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 18
+        }).addTo(map);
+
+        marker = L.marker([lat, lon]).addTo(map);
+    } else {
+        map.setView([lat, lon], 7);
+        marker.setLatLng([lat, lon]);
+    }
+}
 
 // ===============================================================
 // HANDLE GET FORECAST
-// ===============================================================
+// ==============================================================
+
 async function handleGet() {
     const val = elements.select.value;
     if (!val) return alert("Please select a destination!");
 
     const [lat, lon] = val.split(",").map(Number);
 
+    // Show forecast section
     elements.section.classList.remove("hidden");
 
+    // Show overlay
     elements.overlay.classList.add("active");
 
+    // Load map + weather
     initLeafletMap(lat, lon);
     await loadWeather(lat, lon);
 
-
+    // Hide overlay
     elements.overlay.classList.remove("active");
 
+    // Scroll to forecast
     elements.section.scrollIntoView({ behavior: "smooth" });
 }
 
-
-//=============
-// App initislisation
-// ===============
-
+//==============
+// App Initialization
+//==============
 window.addEventListener("load", () => {
     elements.select.addEventListener("change", updateCity);
     elements.btn.addEventListener("click", handleGet);
