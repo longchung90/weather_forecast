@@ -220,8 +220,26 @@ async function loadWeather(lat, lon) {
         const dateString = `${month} ${d.getDate()}`;
 
         const code = day.weather ?? "default";
-        const icon = ICONS_IOS[code] || ICONS_IOS.default;
-        const label = WEATHER_DETAILS[code] || WEATHER_DETAILS.default;
+
+        // 🔧 NORMALISE (strip day/night for logic)
+        const baseCode = code.replace(/day|night$/, "");
+
+        if (!ICONS_IOS[code] && !ICONS_IOS[baseCode + "day"]) {
+            console.warn("Unknown weather code from API:", code);
+        }
+
+
+        const icon =
+            ICONS_IOS[code] ||
+            ICONS_IOS[baseCode + "day"] ||
+            ICONS_IOS[baseCode] ||
+            ICONS_IOS.default;
+
+        const label =
+            WEATHER_DETAILS[code] ||
+            WEATHER_DETAILS[baseCode + "day"] ||
+            WEATHER_DETAILS[baseCode] ||
+            WEATHER_DETAILS.default;
 
         const temp = Number(day.temp2m);
         const high = temp + 2;
@@ -238,7 +256,8 @@ async function loadWeather(lat, lon) {
             humidity = Number(humidityRaw.replace("%", "").trim());
 
         const snowyCodes = ["snow", "lightsnow", "rainsnow"];
-        const snowChance = snowyCodes.includes(code) ? rain : 0;
+        const snowChance = snowyCodes.includes(baseCode) ? rain : 0;
+
 
         const card = document.createElement("div");
         card.className = "weather-card";
