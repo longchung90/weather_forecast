@@ -187,7 +187,6 @@ function changeBackground(newBg) {
         }, CONFIG.TRANSITION);
     };
 
-    // ✅ FIXED: Error handler is now INSIDE the function
     img.onerror = () => {
         console.error("Failed to load background image:", newBg);
     };
@@ -227,7 +226,7 @@ function initLeafletMap(lat, lon) {
 
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             maxZoom: 18,
-            attribution: '© OpenStreetMap contributors'
+            attribution: "© OpenStreetMap contributors"
         }).addTo(map);
 
         marker = L.marker([lat, lon]).addTo(map);
@@ -236,7 +235,7 @@ function initLeafletMap(lat, lon) {
         marker.setLatLng([lat, lon]);
     }
 
-    // ✅ ADDED: Fix map rendering after container becomes visible
+    // Fix map rendering after container becomes visible
     setTimeout(() => {
         map.invalidateSize();
     }, 300);
@@ -248,7 +247,6 @@ function initLeafletMap(lat, lon) {
 async function loadWeather(lat, lon) {
     const url = `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=${CONFIG.API_PRODUCT}&output=json`;
 
-    // ✅ FIXED: Debug logs are now INSIDE the function where variables exist
     console.log("API URL:", url);
 
     let text;
@@ -256,7 +254,7 @@ async function loadWeather(lat, lon) {
         const res = await fetch(url);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         text = await res.text();
-        console.log("Raw API response:", text.substring(0, 200) + "..."); // Truncated for readability
+        console.log("Raw API response:", text.substring(0, 200) + "...");
     } catch (err) {
         console.error("Fetch error:", err);
         elements.grid.innerHTML = `<div class="error-box">Unable to fetch weather data. Please try again.</div>`;
@@ -350,22 +348,22 @@ async function loadWeather(lat, lon) {
             ? Math.round(((day.cloudcover ?? 5) / 9) * 100)
             : 0;
 
-        // Create weather card with animation
+        // Create weather card with enhanced layout
         const card = document.createElement("div");
         card.className = "weather-card weather-animate";
-        card.style.animationDelay = `${index * 0.1}s`;
+        card.style.animationDelay = `${index * 0.08}s`;
         card.innerHTML = `
             <div class="w-day">${weekday}</div>
             <div class="w-date">${dateString}</div>
             <div class="w-icon">${icon}</div>
             <div class="w-temp">${temp}<sup>°C</sup></div>
             <div class="w-cond">${label}</div>
-            <div class="w-hilo">H: ${high}° • L: ${low}°</div>
+            <div class="w-hilo">H: ${high}° · L: ${low}°</div>
             <div class="w-extra">
-                <div><strong>Humidity:</strong> ${humidity !== null ? humidity + "%" : "—"}</div>
-                <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>
-                <div><strong>Rain:</strong> ${rain}%</div>
-                <div><strong>Snow:</strong> ${snowChance}%</div>
+                <div><strong>Humidity</strong><span>${humidity !== null ? humidity + "%" : "—"}</span></div>
+                <div><strong>Wind</strong><span>${windSpeed} km/h ${windDir}</span></div>
+                <div><strong>Rain</strong><span>${rain}%</span></div>
+                ${snowChance > 0 ? `<div><strong>Snow</strong><span>${snowChance}%</span></div>` : ""}
             </div>
         `;
 
