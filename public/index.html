@@ -125,7 +125,15 @@
 
     <!-- ✅ SCRIPTS AT END - ORDER MATTERS! -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="js/script.js"></script>
+    <!-- Leaflet MUST load first -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- ✅ CORRECT PATH: scripts/script.js (not js/script.js) -->
+    <script src="scripts/script.js"></script>
+
+</body>
+
+</html>
 
 </body>
 
