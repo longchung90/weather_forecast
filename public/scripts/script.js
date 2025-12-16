@@ -148,6 +148,8 @@ const CONFIG = {
 // ===============================================================
 // CHANGE BACKGROUND - Fixed version
 // ===============================================================
+let currentBgLayer = null;
+
 function changeBackground(imagePath) {
     console.log("Changing background to:", imagePath);
 
@@ -156,11 +158,12 @@ function changeBackground(imagePath) {
     img.src = imagePath;
 
     img.onload = () => {
-        console.log("Image loaded successfully:", imagePath);
+        console.log("Image loaded:", imagePath);
 
-        // Create fade layer
-        const fadeLayer = document.createElement("div");
-        fadeLayer.style.cssText = `
+        // Create new background layer
+        const newLayer = document.createElement("div");
+        newLayer.className = "bg-layer";
+        newLayer.style.cssText = `
             position: fixed;
             top: 0;
             left: 0;
@@ -170,24 +173,37 @@ function changeBackground(imagePath) {
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            z-index: -100;
             opacity: 0;
-            transition: opacity ${CONFIG.TRANSITION}ms ease;
-            z-index: -50;
+            transition: opacity 0.8s ease;
             pointer-events: none;
         `;
-        document.body.appendChild(fadeLayer);
+
+        // Add to body
+        document.body.appendChild(newLayer);
 
         // Trigger fade in
         requestAnimationFrame(() => {
-            fadeLayer.style.opacity = "1";
+            requestAnimationFrame(() => {
+                newLayer.style.opacity = "1";
+            });
         });
 
-        // After transition, update CSS variable and remove layer
+        // Remove old layer after transition
         setTimeout(() => {
+            // Update CSS variable for consistency
             document.documentElement.style.setProperty("--hero-img", `url('${imagePath}')`);
-            fadeLayer.remove();
-            console.log("Background updated to:", imagePath);
-        }, CONFIG.TRANSITION);
+
+            // Remove previous layer if exists
+            if (currentBgLayer && currentBgLayer !== newLayer) {
+                currentBgLayer.remove();
+            }
+
+            // Track current layer
+            currentBgLayer = newLayer;
+
+            console.log("Background transition complete");
+        }, 900);
     };
 
     img.onerror = () => {

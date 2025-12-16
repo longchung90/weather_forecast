@@ -59,34 +59,34 @@ body {
 /* ========================================================================
    PERSISTENT BACKGROUND - THIS IS CRITICAL!
    ======================================================================== */
+/* ========================================================================
+   PERSISTENT BACKGROUND
+   ======================================================================== */
 body::before {
     content: "";
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
     width: 100%;
     height: 100%;
     background-image: var(--hero-img);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
     z-index: -100;
+    /* Add transition for smoother updates */
+    transition: background-image 0.5s ease;
 }
 
-/* Dark overlay for text readability - ALWAYS visible */
+/* Dark overlay */
 body::after {
     content: "";
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.35);
     z-index: -99;
     pointer-events: none;
 }
