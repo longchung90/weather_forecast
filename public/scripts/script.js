@@ -1,8 +1,3 @@
-console.log("API URL:", url);
-console.log("Raw API response:", text);
-console.log("Parsed data:", data);
-console.log("First dataseries item:", data.dataseries?.[0]);
-
 // ===============================================================
 // DOM ELEMENTS
 // ===============================================================
@@ -16,8 +11,11 @@ const elements = {
     overlay: document.getElementById("loadingOverlay")
 };
 
+// ===============================================================
+// WEATHER ICONS
+// ===============================================================
 const ICONS_IOS = {
-    // === BASE CODES (what API actually returns) ===
+    // Base codes (what 7timer API returns)
     clear: "☀️",
     pcloudy: "⛅",
     mcloudy: "🌥️",
@@ -31,8 +29,10 @@ const ICONS_IOS = {
     snow: "❄️",
     rainsnow: "🌧️❄️",
     ts: "⛈️",
+    tsrain: "⛈️",
+    windy: "💨",
 
-    // === YOUR EXISTING DAY/NIGHT VARIANTS ===
+    // Day/night variants
     clearday: "☀️",
     clearnight: "🌕",
     pclearday: "🌤️",
@@ -53,6 +53,8 @@ const ICONS_IOS = {
     rainnight: "🌧️",
     tsday: "⛈️",
     tsnight: "⛈️",
+    tsrainday: "⛈️",
+    tsrainnight: "⛈️",
     lightsnowday: "🌨️",
     lightsnownight: "🌨️",
     snowday: "❄️",
@@ -61,11 +63,16 @@ const ICONS_IOS = {
     rainsnownight: "🌧️❄️",
     humidday: "🌫️",
     humidnight: "🌫️",
+    windyday: "💨",
+    windynight: "💨",
     default: "❓"
 };
 
+// ===============================================================
+// WEATHER LABELS
+// ===============================================================
 const WEATHER_DETAILS = {
-    // === BASE CODES ===
+    // Base codes
     clear: "Clear",
     pcloudy: "Partly Cloudy",
     mcloudy: "Mostly Cloudy",
@@ -79,13 +86,45 @@ const WEATHER_DETAILS = {
     snow: "Snow",
     rainsnow: "Rain & Snow",
     ts: "Thunderstorm",
+    tsrain: "Thunderstorm",
+    windy: "Windy",
 
-    // === YOUR EXISTING DAY/NIGHT VARIANTS ===
+    // Day/night variants
     clearday: "Clear",
     clearnight: "Clear",
-    // ... rest of your existing entries
+    pclearday: "Mostly Clear",
+    pclearnight: "Mostly Clear",
+    pcloudyday: "Partly Cloudy",
+    pcloudynight: "Partly Cloudy",
+    mcloudyday: "Mostly Cloudy",
+    mcloudynight: "Mostly Cloudy",
+    cloudyday: "Cloudy",
+    cloudynight: "Cloudy",
+    lightrainday: "Light Rain",
+    lightrainnight: "Light Rain",
+    ishowerday: "Intermittent Showers",
+    ishowernight: "Intermittent Showers",
+    oshowerday: "Occasional Showers",
+    oshowernight: "Occasional Showers",
+    rainday: "Rain",
+    rainnight: "Rain",
+    tsday: "Thunderstorm",
+    tsnight: "Thunderstorm",
+    tsrainday: "Thunderstorm",
+    tsrainnight: "Thunderstorm",
+    lightsnowday: "Light Snow",
+    lightsnownight: "Light Snow",
+    snowday: "Snow",
+    snownight: "Snow",
+    rainsnowday: "Rain & Snow",
+    rainsnownight: "Rain & Snow",
+    humidday: "Humid",
+    humidnight: "Humid",
+    windyday: "Windy",
+    windynight: "Windy",
     default: "Unknown"
 };
+
 // ===============================================================
 // CITY BACKGROUNDS
 // ===============================================================
@@ -113,12 +152,17 @@ const cityBG = {
 };
 
 // ===============================================================
+// CONFIGURATION
+// ===============================================================
+const CONFIG = {
+    TRANSITION: 900,
+    API_PRODUCT: "civil"
+};
+
+// ===============================================================
 // BACKGROUND FADE
 // ===============================================================
-const CONFIG = { TRANSITION: 900 };
-
 function changeBackground(newBg) {
-    // Use the path as-is, don't force leading slash
     const img = new Image();
     img.src = newBg;
 
@@ -142,23 +186,25 @@ function changeBackground(newBg) {
             layer.remove();
         }, CONFIG.TRANSITION);
     };
+
+    // ✅ FIXED: Error handler is now INSIDE the function
+    img.onerror = () => {
+        console.error("Failed to load background image:", newBg);
+    };
 }
-// ✅ ADD ERROR HANDLER to prevent silent failures
-img.onerror = () => {
-    console.error("Failed to load background image:", newBg);
-};
 
 // ===============================================================
 // UPDATE CITY (called on <select> change)
 // ===============================================================
 function updateCity() {
     const opt = elements.select.options[elements.select.selectedIndex];
-    if (!opt) return;
+    if (!opt || !opt.value) return;
 
     elements.cityName.textContent = opt.dataset.name;
     elements.cityIcon.textContent = opt.dataset.flag;
 
-    document.querySelector(".forecast-title").classList.add("show");
+    const titleEl = document.querySelector(".forecast-title");
+    if (titleEl) titleEl.classList.add("show");
 
     const bgPath = cityBG[opt.dataset.bg];
     if (bgPath) changeBackground(bgPath);
@@ -170,78 +216,95 @@ function updateCity() {
 let map, marker;
 
 function initLeafletMap(lat, lon) {
+    const mapContainer = document.getElementById("map");
+    if (!mapContainer) {
+        console.error("Map container #map not found!");
+        return;
+    }
+
     if (!map) {
         map = L.map("map").setView([lat, lon], 7);
 
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            maxZoom: 18
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
         marker = L.marker([lat, lon]).addTo(map);
-
     } else {
         map.setView([lat, lon], 7);
         marker.setLatLng([lat, lon]);
     }
+
+    // ✅ ADDED: Fix map rendering after container becomes visible
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 300);
 }
 
 // ===============================================================
-// LOAD WEATHER
+// LOAD WEATHER FROM 7TIMER API
 // ===============================================================
 async function loadWeather(lat, lon) {
-    // ✅ FIX 1: Use "civil" product instead of "meteo"
-    const url = `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
+    const url = `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=${CONFIG.API_PRODUCT}&output=json`;
+
+    // ✅ FIXED: Debug logs are now INSIDE the function where variables exist
+    console.log("API URL:", url);
 
     let text;
     try {
         const res = await fetch(url);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         text = await res.text();
+        console.log("Raw API response:", text.substring(0, 200) + "..."); // Truncated for readability
     } catch (err) {
         console.error("Fetch error:", err);
-        elements.grid.innerHTML = `<div class="error-box">Unable to fetch weather data.</div>`;
+        elements.grid.innerHTML = `<div class="error-box">Unable to fetch weather data. Please try again.</div>`;
         return;
     }
 
     let data;
     try {
         data = JSON.parse(text);
+        console.log("Parsed data:", data);
+        console.log("First dataseries item:", data.dataseries?.[0]);
     } catch {
+        console.error("JSON parse error");
         elements.grid.innerHTML = `<div class="error-box">Invalid weather data returned.</div>`;
         return;
     }
 
+    // Clear previous cards
     elements.grid.innerHTML = "";
 
     if (!data.dataseries || data.dataseries.length === 0) {
-        elements.grid.innerHTML = `<div class="error-box">No forecast available.</div>`;
+        elements.grid.innerHTML = `<div class="error-box">No forecast available for this location.</div>`;
         return;
     }
 
-    // Determine if it's currently day or night (for icon selection)
+    // Determine day/night for icon selection
     const currentHour = new Date().getHours();
     const isDay = currentHour >= 6 && currentHour < 18;
     const timeSuffix = isDay ? "day" : "night";
 
+    // Process each day in the forecast
     data.dataseries.slice(0, 7).forEach((day, index) => {
         if (day.temp2m == null) return;
 
+        // Calculate date
         const d = new Date();
         d.setDate(d.getDate() + index);
         const weekday = d.toLocaleString("en-US", { weekday: "short" });
         const month = d.toLocaleString("en-US", { month: "short" });
         const dateString = `${month} ${d.getDate()}`;
 
-        // ✅ FIX 2: Handle API weather code properly
+        // Get weather code and normalize it
         const rawCode = day.weather ?? "default";
-
-        // ✅ FIX 3: Correct regex with grouping
         const baseCode = rawCode.replace(/(day|night)$/i, "");
 
-        // Debug logging (remove in production)
         console.log(`Day ${index}: rawCode="${rawCode}", baseCode="${baseCode}"`);
 
-        // ✅ FIX 4: Better fallback chain
+        // Icon lookup with fallback chain
         const icon =
             ICONS_IOS[rawCode] ||
             ICONS_IOS[baseCode + timeSuffix] ||
@@ -249,6 +312,7 @@ async function loadWeather(lat, lon) {
             ICONS_IOS[baseCode] ||
             ICONS_IOS.default;
 
+        // Label lookup with fallback chain
         const label =
             WEATHER_DETAILS[rawCode] ||
             WEATHER_DETAILS[baseCode + timeSuffix] ||
@@ -256,17 +320,22 @@ async function loadWeather(lat, lon) {
             WEATHER_DETAILS[baseCode] ||
             WEATHER_DETAILS.default;
 
+        // Temperature calculations
         const temp = Number(day.temp2m);
         const high = temp + 2;
         const low = temp - 2;
 
+        // Wind data
         const windSpeed = Number(day.wind10m?.speed ?? 0);
         const windDir = day.wind10m?.direction ?? "N";
 
-        // Rain probability based on weather code
-        const rainyConditions = ["rain", "lightrain", "oshower", "ishower", "ts", "rainsnow"];
-        const rain = rainyConditions.includes(baseCode) ? Math.round(((day.cloudcover ?? 5) / 9) * 100) : 0;
+        // Rain probability based on weather type
+        const rainyConditions = ["rain", "lightrain", "oshower", "ishower", "ts", "tsrain", "rainsnow"];
+        const rain = rainyConditions.includes(baseCode)
+            ? Math.round(((day.cloudcover ?? 5) / 9) * 100)
+            : 0;
 
+        // Humidity
         const humidityRaw = day.rh2m ?? "";
         let humidity = null;
         if (typeof humidityRaw === "string" && humidityRaw.trim() !== "") {
@@ -275,11 +344,16 @@ async function loadWeather(lat, lon) {
             humidity = humidityRaw;
         }
 
+        // Snow probability
         const snowyCodes = ["snow", "lightsnow", "rainsnow"];
-        const snowChance = snowyCodes.includes(baseCode) ? Math.round(((day.cloudcover ?? 5) / 9) * 100) : 0;
+        const snowChance = snowyCodes.includes(baseCode)
+            ? Math.round(((day.cloudcover ?? 5) / 9) * 100)
+            : 0;
 
+        // Create weather card with animation
         const card = document.createElement("div");
-        card.className = "weather-card";
+        card.className = "weather-card weather-animate";
+        card.style.animationDelay = `${index * 0.1}s`;
         card.innerHTML = `
             <div class="w-day">${weekday}</div>
             <div class="w-date">${dateString}</div>
@@ -300,32 +374,69 @@ async function loadWeather(lat, lon) {
 }
 
 // ===============================================================
-// HANDLE "GET FORECAST"
+// HANDLE "GET FORECAST" BUTTON CLICK
 // ===============================================================
 async function handleGet() {
     const val = elements.select.value;
-    if (!val) return alert("Please select a destination!");
+    if (!val) {
+        alert("Please select a destination!");
+        return;
+    }
 
     const [lat, lon] = val.split(",").map(Number);
 
+    console.log("Getting forecast for coordinates:", lat, lon);
+
+    // Show loading overlay
     elements.overlay.classList.add("active");
+
+    // Show forecast section
     elements.section.classList.remove("hidden");
 
+    // Scroll to forecast section smoothly
+    setTimeout(() => {
+        elements.section.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+
+    // Initialize map and load weather data
     initLeafletMap(lat, lon);
     await loadWeather(lat, lon);
 
+    // Hide loading overlay
     elements.overlay.classList.remove("active");
 }
 
 // ===============================================================
-// INITIALIZE
+// INITIALIZE APP
 // ===============================================================
-window.addEventListener("load", () => {
-    elements.select.addEventListener("change", updateCity);
-    elements.btn.addEventListener("click", handleGet);
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("🌤️ European Weather Explorer initialized");
 
-    document.getElementById("changeCityBtn").addEventListener("click", () => {
-        elements.section.classList.add("hidden");
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    });
+    // Verify all required elements exist
+    for (const [key, el] of Object.entries(elements)) {
+        if (!el) {
+            console.error(`❌ Required element not found: ${key}`);
+        } else {
+            console.log(`✅ Element found: ${key}`);
+        }
+    }
+
+    // City select change listener
+    if (elements.select) {
+        elements.select.addEventListener("change", updateCity);
+    }
+
+    // Get Forecast button click listener
+    if (elements.btn) {
+        elements.btn.addEventListener("click", handleGet);
+    }
+
+    // Change City button click listener
+    const changeCityBtn = document.getElementById("changeCityBtn");
+    if (changeCityBtn) {
+        changeCityBtn.addEventListener("click", () => {
+            elements.section.classList.add("hidden");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    }
 });
