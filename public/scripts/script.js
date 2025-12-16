@@ -15,7 +15,6 @@ const elements = {
 // WEATHER ICONS
 // ===============================================================
 const ICONS_IOS = {
-    // Base codes (what 7timer API returns)
     clear: "☀️",
     pcloudy: "⛅",
     mcloudy: "🌥️",
@@ -31,40 +30,34 @@ const ICONS_IOS = {
     ts: "⛈️",
     tsrain: "⛈️",
     windy: "💨",
-
-    // Day/night variants
     clearday: "☀️",
     clearnight: "🌕",
-    pclearday: "🌤️",
-    pclearnight: "🌙",
     pcloudyday: "⛅",
     pcloudynight: "🌥️",
     mcloudyday: "🌥️",
     mcloudynight: "☁️",
     cloudyday: "☁️",
     cloudynight: "☁️",
+    humidday: "🌫️",
+    humidnight: "🌫️",
     lightrainday: "🌦️",
     lightrainnight: "🌧️",
-    ishowerday: "🌦️",
-    ishowernight: "🌧️",
     oshowerday: "🌦️",
     oshowernight: "🌧️",
+    ishowerday: "🌦️",
+    ishowernight: "🌧️",
     rainday: "🌧️",
     rainnight: "🌧️",
-    tsday: "⛈️",
-    tsnight: "⛈️",
-    tsrainday: "⛈️",
-    tsrainnight: "⛈️",
     lightsnowday: "🌨️",
     lightsnownight: "🌨️",
     snowday: "❄️",
     snownight: "❄️",
     rainsnowday: "🌧️❄️",
     rainsnownight: "🌧️❄️",
-    humidday: "🌫️",
-    humidnight: "🌫️",
-    windyday: "💨",
-    windynight: "💨",
+    tsday: "⛈️",
+    tsnight: "⛈️",
+    tsrainday: "⛈️",
+    tsrainnight: "⛈️",
     default: "❓"
 };
 
@@ -72,15 +65,14 @@ const ICONS_IOS = {
 // WEATHER LABELS
 // ===============================================================
 const WEATHER_DETAILS = {
-    // Base codes
     clear: "Clear",
     pcloudy: "Partly Cloudy",
     mcloudy: "Mostly Cloudy",
     cloudy: "Cloudy",
     humid: "Humid",
     lightrain: "Light Rain",
-    oshower: "Occasional Showers",
-    ishower: "Intermittent Showers",
+    oshower: "Showers",
+    ishower: "Showers",
     rain: "Rain",
     lightsnow: "Light Snow",
     snow: "Snow",
@@ -88,40 +80,34 @@ const WEATHER_DETAILS = {
     ts: "Thunderstorm",
     tsrain: "Thunderstorm",
     windy: "Windy",
-
-    // Day/night variants
     clearday: "Clear",
     clearnight: "Clear",
-    pclearday: "Mostly Clear",
-    pclearnight: "Mostly Clear",
     pcloudyday: "Partly Cloudy",
     pcloudynight: "Partly Cloudy",
     mcloudyday: "Mostly Cloudy",
     mcloudynight: "Mostly Cloudy",
     cloudyday: "Cloudy",
     cloudynight: "Cloudy",
+    humidday: "Humid",
+    humidnight: "Humid",
     lightrainday: "Light Rain",
     lightrainnight: "Light Rain",
-    ishowerday: "Intermittent Showers",
-    ishowernight: "Intermittent Showers",
-    oshowerday: "Occasional Showers",
-    oshowernight: "Occasional Showers",
+    oshowerday: "Showers",
+    oshowernight: "Showers",
+    ishowerday: "Showers",
+    ishowernight: "Showers",
     rainday: "Rain",
     rainnight: "Rain",
-    tsday: "Thunderstorm",
-    tsnight: "Thunderstorm",
-    tsrainday: "Thunderstorm",
-    tsrainnight: "Thunderstorm",
     lightsnowday: "Light Snow",
     lightsnownight: "Light Snow",
     snowday: "Snow",
     snownight: "Snow",
     rainsnowday: "Rain & Snow",
     rainsnownight: "Rain & Snow",
-    humidday: "Humid",
-    humidnight: "Humid",
-    windyday: "Windy",
-    windynight: "Windy",
+    tsday: "Thunderstorm",
+    tsnight: "Thunderstorm",
+    tsrainday: "Thunderstorm",
+    tsrainnight: "Thunderstorm",
     default: "Unknown"
 };
 
@@ -155,40 +141,57 @@ const cityBG = {
 // CONFIGURATION
 // ===============================================================
 const CONFIG = {
-    TRANSITION: 900,
+    TRANSITION: 800,
     API_PRODUCT: "civil"
 };
 
 // ===============================================================
-// BACKGROUND FADE
+// CHANGE BACKGROUND - Fixed version
 // ===============================================================
-function changeBackground(newBg) {
+function changeBackground(imagePath) {
+    console.log("Changing background to:", imagePath);
+
+    // Preload the image
     const img = new Image();
-    img.src = newBg;
+    img.src = imagePath;
 
     img.onload = () => {
-        const layer = document.createElement("div");
-        layer.style.cssText = `
+        console.log("Image loaded successfully:", imagePath);
+
+        // Create fade layer
+        const fadeLayer = document.createElement("div");
+        fadeLayer.style.cssText = `
             position: fixed;
-            inset: 0;
-            background: url('${newBg}') center/cover no-repeat;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('${imagePath}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             opacity: 0;
             transition: opacity ${CONFIG.TRANSITION}ms ease;
-            z-index: -20;
+            z-index: -50;
             pointer-events: none;
         `;
-        document.body.appendChild(layer);
+        document.body.appendChild(fadeLayer);
 
-        requestAnimationFrame(() => (layer.style.opacity = 1));
+        // Trigger fade in
+        requestAnimationFrame(() => {
+            fadeLayer.style.opacity = "1";
+        });
 
+        // After transition, update CSS variable and remove layer
         setTimeout(() => {
-            document.documentElement.style.setProperty("--hero-img", `url('${newBg}')`);
-            layer.remove();
+            document.documentElement.style.setProperty("--hero-img", `url('${imagePath}')`);
+            fadeLayer.remove();
+            console.log("Background updated to:", imagePath);
         }, CONFIG.TRANSITION);
     };
 
     img.onerror = () => {
-        console.error("Failed to load background image:", newBg);
+        console.error("Failed to load image:", imagePath);
     };
 }
 
@@ -199,25 +202,37 @@ function updateCity() {
     const opt = elements.select.options[elements.select.selectedIndex];
     if (!opt || !opt.value) return;
 
-    elements.cityName.textContent = opt.dataset.name;
-    elements.cityIcon.textContent = opt.dataset.flag;
+    console.log("City selected:", opt.dataset.name);
 
-    const titleEl = document.querySelector(".forecast-title");
-    if (titleEl) titleEl.classList.add("show");
+    // Update city name and flag
+    if (elements.cityName) {
+        elements.cityName.textContent = opt.dataset.name;
+    }
+    if (elements.cityIcon) {
+        elements.cityIcon.textContent = opt.dataset.flag;
+    }
 
-    const bgPath = cityBG[opt.dataset.bg];
-    if (bgPath) changeBackground(bgPath);
+    // Change background
+    const bgKey = opt.dataset.bg;
+    const bgPath = cityBG[bgKey];
+
+    console.log("Background key:", bgKey, "Path:", bgPath);
+
+    if (bgPath) {
+        changeBackground(bgPath);
+    }
 }
 
 // ===============================================================
 // LEAFLET MAP
 // ===============================================================
-let map, marker;
+let map = null;
+let marker = null;
 
 function initLeafletMap(lat, lon) {
     const mapContainer = document.getElementById("map");
     if (!mapContainer) {
-        console.error("Map container #map not found!");
+        console.error("Map container not found!");
         return;
     }
 
@@ -226,7 +241,7 @@ function initLeafletMap(lat, lon) {
 
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             maxZoom: 18,
-            attribution: "© OpenStreetMap contributors"
+            attribution: "© OpenStreetMap"
         }).addTo(map);
 
         marker = L.marker([lat, lon]).addTo(map);
@@ -235,134 +250,107 @@ function initLeafletMap(lat, lon) {
         marker.setLatLng([lat, lon]);
     }
 
-    // Fix map rendering after container becomes visible
+    // Fix map size after section becomes visible
     setTimeout(() => {
         map.invalidateSize();
-    }, 300);
+    }, 400);
 }
 
 // ===============================================================
-// LOAD WEATHER FROM 7TIMER API
+// LOAD WEATHER
 // ===============================================================
 async function loadWeather(lat, lon) {
     const url = `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=${CONFIG.API_PRODUCT}&output=json`;
 
-    console.log("API URL:", url);
+    console.log("Fetching weather:", url);
 
-    let text;
+    let response, text, data;
+
     try {
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        text = await res.text();
-        console.log("Raw API response:", text.substring(0, 200) + "...");
+        response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        text = await response.text();
     } catch (err) {
         console.error("Fetch error:", err);
-        elements.grid.innerHTML = `<div class="error-box">Unable to fetch weather data. Please try again.</div>`;
+        elements.grid.innerHTML = `<div class="error-box">Unable to fetch weather data.</div>`;
         return;
     }
 
-    let data;
     try {
         data = JSON.parse(text);
-        console.log("Parsed data:", data);
-        console.log("First dataseries item:", data.dataseries?.[0]);
+        console.log("Weather data:", data);
     } catch {
-        console.error("JSON parse error");
-        elements.grid.innerHTML = `<div class="error-box">Invalid weather data returned.</div>`;
+        elements.grid.innerHTML = `<div class="error-box">Invalid data received.</div>`;
         return;
     }
 
-    // Clear previous cards
+    // Clear grid
     elements.grid.innerHTML = "";
 
     if (!data.dataseries || data.dataseries.length === 0) {
-        elements.grid.innerHTML = `<div class="error-box">No forecast available for this location.</div>`;
+        elements.grid.innerHTML = `<div class="error-box">No forecast available.</div>`;
         return;
     }
 
-    // Determine day/night for icon selection
-    const currentHour = new Date().getHours();
-    const isDay = currentHour >= 6 && currentHour < 18;
-    const timeSuffix = isDay ? "day" : "night";
+    // Day or night?
+    const hour = new Date().getHours();
+    const suffix = (hour >= 6 && hour < 18) ? "day" : "night";
 
-    // Process each day in the forecast
-    data.dataseries.slice(0, 7).forEach((day, index) => {
+    // Create cards for 7 days
+    data.dataseries.slice(0, 7).forEach((day, i) => {
         if (day.temp2m == null) return;
 
-        // Calculate date
-        const d = new Date();
-        d.setDate(d.getDate() + index);
-        const weekday = d.toLocaleString("en-US", { weekday: "short" });
-        const month = d.toLocaleString("en-US", { month: "short" });
-        const dateString = `${month} ${d.getDate()}`;
+        // Date
+        const date = new Date();
+        date.setDate(date.getDate() + i);
+        const weekday = date.toLocaleString("en-US", { weekday: "short" });
+        const monthDay = date.toLocaleString("en-US", { month: "short", day: "numeric" });
 
-        // Get weather code and normalize it
-        const rawCode = day.weather ?? "default";
+        // Weather code
+        const rawCode = day.weather || "default";
         const baseCode = rawCode.replace(/(day|night)$/i, "");
 
-        console.log(`Day ${index}: rawCode="${rawCode}", baseCode="${baseCode}"`);
+        // Get icon and label
+        const icon = ICONS_IOS[rawCode] || ICONS_IOS[baseCode + suffix] || ICONS_IOS[baseCode] || ICONS_IOS.default;
+        const label = WEATHER_DETAILS[rawCode] || WEATHER_DETAILS[baseCode + suffix] || WEATHER_DETAILS[baseCode] || WEATHER_DETAILS.default;
 
-        // Icon lookup with fallback chain
-        const icon =
-            ICONS_IOS[rawCode] ||
-            ICONS_IOS[baseCode + timeSuffix] ||
-            ICONS_IOS[baseCode + "day"] ||
-            ICONS_IOS[baseCode] ||
-            ICONS_IOS.default;
-
-        // Label lookup with fallback chain
-        const label =
-            WEATHER_DETAILS[rawCode] ||
-            WEATHER_DETAILS[baseCode + timeSuffix] ||
-            WEATHER_DETAILS[baseCode + "day"] ||
-            WEATHER_DETAILS[baseCode] ||
-            WEATHER_DETAILS.default;
-
-        // Temperature calculations
-        const temp = Number(day.temp2m);
+        // Temperature
+        const temp = Math.round(day.temp2m);
         const high = temp + 2;
         const low = temp - 2;
 
-        // Wind data
-        const windSpeed = Number(day.wind10m?.speed ?? 0);
-        const windDir = day.wind10m?.direction ?? "N";
+        // Wind
+        const windSpeed = day.wind10m?.speed || 0;
+        const windDir = day.wind10m?.direction || "N";
 
-        // Rain probability based on weather type
-        const rainyConditions = ["rain", "lightrain", "oshower", "ishower", "ts", "tsrain", "rainsnow"];
-        const rain = rainyConditions.includes(baseCode)
-            ? Math.round(((day.cloudcover ?? 5) / 9) * 100)
-            : 0;
+        // Rain/Snow chances
+        const rainy = ["rain", "lightrain", "oshower", "ishower", "ts", "tsrain", "rainsnow"];
+        const snowy = ["snow", "lightsnow", "rainsnow"];
+        const rainChance = rainy.includes(baseCode) ? Math.round((day.cloudcover || 5) / 9 * 100) : 0;
+        const snowChance = snowy.includes(baseCode) ? Math.round((day.cloudcover || 5) / 9 * 100) : 0;
 
         // Humidity
-        const humidityRaw = day.rh2m ?? "";
-        let humidity = null;
-        if (typeof humidityRaw === "string" && humidityRaw.trim() !== "") {
-            humidity = Number(humidityRaw.replace("%", "").trim());
-        } else if (typeof humidityRaw === "number") {
-            humidity = humidityRaw;
+        let humidity = "—";
+        if (day.rh2m) {
+            humidity = typeof day.rh2m === "number" ? day.rh2m + "%" : day.rh2m;
         }
 
-        // Snow probability
-        const snowyCodes = ["snow", "lightsnow", "rainsnow"];
-        const snowChance = snowyCodes.includes(baseCode)
-            ? Math.round(((day.cloudcover ?? 5) / 9) * 100)
-            : 0;
-
-        // Create weather card with enhanced layout
+        // Create card
         const card = document.createElement("div");
         card.className = "weather-card weather-animate";
-        card.style.animationDelay = `${index * 0.08}s`;
+        card.style.animationDelay = `${i * 0.1}s`;
+
         card.innerHTML = `
             <div class="w-day">${weekday}</div>
-            <div class="w-date">${dateString}</div>
+            <div class="w-date">${monthDay}</div>
             <div class="w-icon">${icon}</div>
             <div class="w-temp">${temp}<sup>°C</sup></div>
             <div class="w-cond">${label}</div>
             <div class="w-hilo">H: ${high}° · L: ${low}°</div>
             <div class="w-extra">
-                <div><strong>Humidity</strong><span>${humidity !== null ? humidity + "%" : "—"}</span></div>
-                <div><strong>Wind</strong><span>${windSpeed} km/h ${windDir}</span></div>
-                <div><strong>Rain</strong><span>${rain}%</span></div>
+                <div><strong>Humidity</strong><span>${humidity}</span></div>
+                <div><strong>Wind</strong><span>${windSpeed} km/h</span></div>
+                <div><strong>Rain</strong><span>${rainChance}%</span></div>
                 ${snowChance > 0 ? `<div><strong>Snow</strong><span>${snowChance}%</span></div>` : ""}
             </div>
         `;
@@ -372,67 +360,66 @@ async function loadWeather(lat, lon) {
 }
 
 // ===============================================================
-// HANDLE "GET FORECAST" BUTTON CLICK
+// HANDLE GET FORECAST CLICK
 // ===============================================================
 async function handleGet() {
     const val = elements.select.value;
     if (!val) {
-        alert("Please select a destination!");
+        alert("Please select a city first!");
         return;
     }
 
     const [lat, lon] = val.split(",").map(Number);
+    console.log("Getting forecast for:", lat, lon);
 
-    console.log("Getting forecast for coordinates:", lat, lon);
-
-    // Show loading overlay
+    // Show loading
     elements.overlay.classList.add("active");
 
     // Show forecast section
     elements.section.classList.remove("hidden");
 
-    // Scroll to forecast section smoothly
+    // Scroll to forecast
     setTimeout(() => {
         elements.section.scrollIntoView({ behavior: "smooth" });
     }, 100);
 
-    // Initialize map and load weather data
+    // Load map and weather
     initLeafletMap(lat, lon);
     await loadWeather(lat, lon);
 
-    // Hide loading overlay
+    // Hide loading
     elements.overlay.classList.remove("active");
 }
 
 // ===============================================================
-// INITIALIZE APP
+// INITIALIZE
 // ===============================================================
 document.addEventListener("DOMContentLoaded", () => {
     console.log("🌤️ European Weather Explorer initialized");
 
-    // Verify all required elements exist
-    for (const [key, el] of Object.entries(elements)) {
-        if (!el) {
-            console.error(`❌ Required element not found: ${key}`);
+    // Check elements
+    Object.entries(elements).forEach(([key, el]) => {
+        if (el) {
+            console.log(`✅ ${key}`);
         } else {
-            console.log(`✅ Element found: ${key}`);
+            console.error(`❌ ${key} not found`);
         }
-    }
+    });
 
-    // City select change listener
+    // Event: City selection changed
     if (elements.select) {
         elements.select.addEventListener("change", updateCity);
     }
 
-    // Get Forecast button click listener
+    // Event: Get Forecast clicked
     if (elements.btn) {
         elements.btn.addEventListener("click", handleGet);
     }
 
-    // Change City button click listener
-    const changeCityBtn = document.getElementById("changeCityBtn");
-    if (changeCityBtn) {
-        changeCityBtn.addEventListener("click", () => {
+    // Event: Change City clicked
+    const changeBtn = document.getElementById("changeCityBtn");
+    if (changeBtn) {
+        changeBtn.addEventListener("click", () => {
             elements.section.classList.add("hidden");
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
