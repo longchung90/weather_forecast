@@ -19,7 +19,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- Leaflet -->
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
     <!-- Icons -->
@@ -77,6 +77,7 @@
     </header>
 
     <main>
+        <!-- ✅ EVERYTHING IN ONE SECTION -->
         <section id="forecastSection" class="hidden">
             <h2 id="forecastHeading" class="forecast-heading">
                 <span class="forecast-subtitle">Here is your 7-day forecast for</span>
@@ -87,24 +88,21 @@
             </h2>
 
             <button id="changeCityBtn" class="btn btn-gold small-btn">Change City</button>
-            <div id="weatherGrid" class="forecast-grid"></div>
-        </section>
 
-        <section>
+            <div id="weatherGrid" class="forecast-grid"></div>
+
+            <!-- ✅ MAP NOW INSIDE FORECAST SECTION -->
             <div id="map" class="map-container"></div>
         </section>
     </main>
 
-    <!-- Overlay -->
-    <div id="loadingOverlay">Loading...</div>
-
-    <!-- Leaflet First -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js" defer></script>
-
-    <!-- ⭐ Your Full Working App Script ⭐ -->
-    <script defer>
-        /* ENTIRE FINAL JS GOES HERE (DUE TO LENGTH I WILL INSERT IT IN THE NEXT MESSAGE) */
-    </script>
+    <!-- ✅ LOADING OVERLAY -->
+    <div id="loadingOverlay">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <span>Loading forecast...</span>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="footer-inner">
@@ -121,11 +119,13 @@
         </div>
 
         <div class="acknowledgement">
-            <p class="acknowledgement">
-                Weather © 7timer • Maps © OpenStreetMap • Engine © Leaflet
-            </p>
+            <p>Weather © 7timer • Maps © OpenStreetMap • Engine © Leaflet</p>
         </div>
     </footer>
+
+    <!-- ✅ SCRIPTS AT END - ORDER MATTERS! -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="js/script.js"></script>
 
 </body>
 

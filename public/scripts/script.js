@@ -147,7 +147,7 @@ function changeBackground(newBg) {
 img.onerror = () => {
     console.error("Failed to load background image:", newBg);
 };
-}
+
 // ===============================================================
 // UPDATE CITY (called on <select> change)
 // ===============================================================
