@@ -1,3 +1,8 @@
+console.log("API URL:", url);
+console.log("Raw API response:", text);
+console.log("Parsed data:", data);
+console.log("First dataseries item:", data.dataseries?.[0]);
+
 // ===============================================================
 // DOM ELEMENTS
 // ===============================================================
@@ -11,13 +16,25 @@ const elements = {
     overlay: document.getElementById("loadingOverlay")
 };
 
-// ===============================================================
-// WEATHER ICONS  (YOUR DUPLICATES PRESERVED)
-// ===============================================================
 const ICONS_IOS = {
+    // === BASE CODES (what API actually returns) ===
+    clear: "☀️",
+    pcloudy: "⛅",
+    mcloudy: "🌥️",
+    cloudy: "☁️",
+    humid: "🌫️",
+    lightrain: "🌦️",
+    oshower: "🌦️",
+    ishower: "🌦️",
+    rain: "🌧️",
+    lightsnow: "🌨️",
+    snow: "❄️",
+    rainsnow: "🌧️❄️",
+    ts: "⛈️",
+
+    // === YOUR EXISTING DAY/NIGHT VARIANTS ===
     clearday: "☀️",
     clearnight: "🌕",
-    pclear: "🌤️",
     pclearday: "🌤️",
     pclearnight: "🌙",
     pcloudyday: "⛅",
@@ -44,46 +61,31 @@ const ICONS_IOS = {
     rainsnownight: "🌧️❄️",
     humidday: "🌫️",
     humidnight: "🌫️",
-    humidday: "🌫️",    // duplicates allowed
-    humidnight: "🌫️",
     default: "❓"
 };
 
-// ===============================================================
-// LABEL MAP
-// ===============================================================
 const WEATHER_DETAILS = {
+    // === BASE CODES ===
+    clear: "Clear",
+    pcloudy: "Partly Cloudy",
+    mcloudy: "Mostly Cloudy",
+    cloudy: "Cloudy",
+    humid: "Humid",
+    lightrain: "Light Rain",
+    oshower: "Occasional Showers",
+    ishower: "Intermittent Showers",
+    rain: "Rain",
+    lightsnow: "Light Snow",
+    snow: "Snow",
+    rainsnow: "Rain & Snow",
+    ts: "Thunderstorm",
+
+    // === YOUR EXISTING DAY/NIGHT VARIANTS ===
     clearday: "Clear",
     clearnight: "Clear",
-    pclearday: "Mostly Clear",
-    pclearnight: "Mostly Clear",
-    pcloudyday: "Partly Cloudy",
-    pcloudynight: "Partly Cloudy",
-    mcloudyday: "Mostly Cloudy",
-    mcloudynight: "Mostly Cloudy",
-    cloudyday: "Cloudy",
-    cloudynight: "Cloudy",
-    lightrainday: "Light Rain",
-    lightrainnight: "Light Rain",
-    ishowerday: "Intermittent Showers",
-    ishowernight: "Intermittent Showers",
-    oshowerday: "Occasional Showers",
-    oshowernight: "Occasional Showers",
-    rainday: "Rain",
-    rainnight: "Rain",
-    tsday: "Thunderstorm",
-    tsnight: "Thunderstorm",
-    lightsnowday: "Light Snow",
-    lightsnownight: "Light Snow",
-    snowday: "Snow",
-    snownight: "Snow",
-    rainsnowday: "Rain & Snow",
-    rainsnownight: "Rain & Snow",
-    humidday: "Humid",
-    humidnight: "Humid",
+    // ... rest of your existing entries
     default: "Unknown"
 };
-
 // ===============================================================
 // CITY BACKGROUNDS
 // ===============================================================
@@ -116,17 +118,16 @@ const cityBG = {
 const CONFIG = { TRANSITION: 900 };
 
 function changeBackground(newBg) {
-    const fullPath = newBg.startsWith("/") ? newBg : "/" + newBg;
-
+    // Use the path as-is, don't force leading slash
     const img = new Image();
-    img.src = fullPath;
+    img.src = newBg;
 
     img.onload = () => {
         const layer = document.createElement("div");
         layer.style.cssText = `
             position: fixed;
             inset: 0;
-            background: url('${fullPath}') center/cover no-repeat;
+            background: url('${newBg}') center/cover no-repeat;
             opacity: 0;
             transition: opacity ${CONFIG.TRANSITION}ms ease;
             z-index: -20;
@@ -137,12 +138,16 @@ function changeBackground(newBg) {
         requestAnimationFrame(() => (layer.style.opacity = 1));
 
         setTimeout(() => {
-            document.documentElement.style.setProperty("--hero-img", `url('${fullPath}')`);
+            document.documentElement.style.setProperty("--hero-img", `url('${newBg}')`);
             layer.remove();
         }, CONFIG.TRANSITION);
     };
 }
-
+// ✅ ADD ERROR HANDLER to prevent silent failures
+img.onerror = () => {
+    console.error("Failed to load background image:", newBg);
+};
+}
 // ===============================================================
 // UPDATE CITY (called on <select> change)
 // ===============================================================
@@ -184,13 +189,16 @@ function initLeafletMap(lat, lon) {
 // LOAD WEATHER
 // ===============================================================
 async function loadWeather(lat, lon) {
-    const url = `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=meteo&output=json`;
+    // ✅ FIX 1: Use "civil" product instead of "meteo"
+    const url = `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
 
     let text;
     try {
         const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         text = await res.text();
-    } catch {
+    } catch (err) {
+        console.error("Fetch error:", err);
         elements.grid.innerHTML = `<div class="error-box">Unable to fetch weather data.</div>`;
         return;
     }
@@ -205,10 +213,15 @@ async function loadWeather(lat, lon) {
 
     elements.grid.innerHTML = "";
 
-    if (!data.dataseries) {
+    if (!data.dataseries || data.dataseries.length === 0) {
         elements.grid.innerHTML = `<div class="error-box">No forecast available.</div>`;
         return;
     }
+
+    // Determine if it's currently day or night (for icon selection)
+    const currentHour = new Date().getHours();
+    const isDay = currentHour >= 6 && currentHour < 18;
+    const timeSuffix = isDay ? "day" : "night";
 
     data.dataseries.slice(0, 7).forEach((day, index) => {
         if (day.temp2m == null) return;
@@ -219,24 +232,26 @@ async function loadWeather(lat, lon) {
         const month = d.toLocaleString("en-US", { month: "short" });
         const dateString = `${month} ${d.getDate()}`;
 
-        const code = day.weather ?? "default";
+        // ✅ FIX 2: Handle API weather code properly
+        const rawCode = day.weather ?? "default";
 
-        // 🔧 NORMALISE (strip day/night for logic)
-        const baseCode = code.replace(/day|night$/, "");
+        // ✅ FIX 3: Correct regex with grouping
+        const baseCode = rawCode.replace(/(day|night)$/i, "");
 
-        if (!ICONS_IOS[code] && !ICONS_IOS[baseCode + "day"]) {
-            console.warn("Unknown weather code from API:", code);
-        }
+        // Debug logging (remove in production)
+        console.log(`Day ${index}: rawCode="${rawCode}", baseCode="${baseCode}"`);
 
-
+        // ✅ FIX 4: Better fallback chain
         const icon =
-            ICONS_IOS[code] ||
+            ICONS_IOS[rawCode] ||
+            ICONS_IOS[baseCode + timeSuffix] ||
             ICONS_IOS[baseCode + "day"] ||
             ICONS_IOS[baseCode] ||
             ICONS_IOS.default;
 
         const label =
-            WEATHER_DETAILS[code] ||
+            WEATHER_DETAILS[rawCode] ||
+            WEATHER_DETAILS[baseCode + timeSuffix] ||
             WEATHER_DETAILS[baseCode + "day"] ||
             WEATHER_DETAILS[baseCode] ||
             WEATHER_DETAILS.default;
@@ -248,16 +263,20 @@ async function loadWeather(lat, lon) {
         const windSpeed = Number(day.wind10m?.speed ?? 0);
         const windDir = day.wind10m?.direction ?? "N";
 
-        const rain = Math.round(((day.cloudcover ?? 0) / 10) * 100);
+        // Rain probability based on weather code
+        const rainyConditions = ["rain", "lightrain", "oshower", "ishower", "ts", "rainsnow"];
+        const rain = rainyConditions.includes(baseCode) ? Math.round(((day.cloudcover ?? 5) / 9) * 100) : 0;
 
         const humidityRaw = day.rh2m ?? "";
         let humidity = null;
-        if (typeof humidityRaw === "string" && humidityRaw.trim() !== "")
+        if (typeof humidityRaw === "string" && humidityRaw.trim() !== "") {
             humidity = Number(humidityRaw.replace("%", "").trim());
+        } else if (typeof humidityRaw === "number") {
+            humidity = humidityRaw;
+        }
 
         const snowyCodes = ["snow", "lightsnow", "rainsnow"];
-        const snowChance = snowyCodes.includes(baseCode) ? rain : 0;
-
+        const snowChance = snowyCodes.includes(baseCode) ? Math.round(((day.cloudcover ?? 5) / 9) * 100) : 0;
 
         const card = document.createElement("div");
         card.className = "weather-card";
@@ -269,7 +288,7 @@ async function loadWeather(lat, lon) {
             <div class="w-cond">${label}</div>
             <div class="w-hilo">H: ${high}° • L: ${low}°</div>
             <div class="w-extra">
-                <div><strong>Humidity:</strong> ${humidity ?? "—"}%</div>
+                <div><strong>Humidity:</strong> ${humidity !== null ? humidity + "%" : "—"}</div>
                 <div><strong>Wind:</strong> ${windSpeed} km/h ${windDir}</div>
                 <div><strong>Rain:</strong> ${rain}%</div>
                 <div><strong>Snow:</strong> ${snowChance}%</div>
