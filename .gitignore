@@ -62,3 +62,4 @@ secrets.json
 # Local Development
 .live-server/
 .http-server/
+.env

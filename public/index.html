@@ -12,7 +12,7 @@
     <!-- Hero Default Background -->
     <style>
         :root {
-            --hero-img: url('../images/eu.jpg');
+            --hero-img: url('images/default.jpg');
         }
     </style>
 
@@ -31,53 +31,52 @@
 </head>
 
 <body>
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- HERO SECTION -->
+    <!-- ═══════════════════════════════════════════════════════ -->
     <header class="hero">
         <div class="hero-inner-fade">
             <div class="hero-content">
-                <h1 class="hero-title">European Weather Explorer</h1>
+                <h1 class="hero-title">Global Weather Explorer</h1>
                 <p class="hero-sub">Get the weather you need for the cities you love.</p>
 
                 <div class="controls">
-                    <select id="citySelect">
-                        <option value="" disabled selected>Choose your European destination</option>
-                        <option value="48.85,2.35" data-bg="paris" data-name="Paris" data-flag="🇫🇷">Paris</option>
-                        <option value="51.51,-0.13" data-bg="london" data-name="London" data-flag="🇬🇧">London</option>
-                        <option value="50.85,4.35" data-bg="brussels" data-name="Brussels" data-flag="🇧🇪">Brussels
-                        </option>
-                        <option value="52.37,4.90" data-bg="amsterdam" data-name="Amsterdam" data-flag="🇳🇱">Amsterdam
-                        </option>
-                        <option value="46.20,6.15" data-bg="geneva" data-name="Geneva" data-flag="🇨🇭">Geneva</option>
-                        <option value="52.52,13.40" data-bg="berlin" data-name="Berlin" data-flag="🇩🇪">Berlin</option>
-                        <option value="48.21,16.37" data-bg="vienna" data-name="Vienna" data-flag="🇦🇹">Vienna</option>
-                        <option value="50.08,14.44" data-bg="prague" data-name="Prague" data-flag="🇨🇿">Prague</option>
-                        <option value="47.50,19.04" data-bg="budapest" data-name="Budapest" data-flag="🇭🇺">Budapest
-                        </option>
-                        <option value="52.23,21.01" data-bg="warsaw" data-name="Warsaw" data-flag="🇵🇱">Warsaw</option>
-                        <option value="41.89,12.49" data-bg="rome" data-name="Rome" data-flag="🇮🇹">Rome</option>
-                        <option value="40.41,-3.70" data-bg="madrid" data-name="Madrid" data-flag="🇪🇸">Madrid</option>
-                        <option value="37.98,23.72" data-bg="athens" data-name="Athens" data-flag="🇬🇷">Athens</option>
-                        <option value="38.72,-9.14" data-bg="lisbon" data-name="Lisbon" data-flag="🇵🇹">Lisbon</option>
-                        <option value="44.43,26.10" data-bg="bucharest" data-name="Bucharest" data-flag="🇷🇴">Bucharest
-                        </option>
-                        <option value="59.33,18.06" data-bg="stockholm" data-name="Stockholm" data-flag="🇸🇪">Stockholm
-                        </option>
-                        <option value="60.17,24.94" data-bg="helsinki" data-name="Helsinki" data-flag="🇫🇮">Helsinki
-                        </option>
-                        <option value="55.68,12.57" data-bg="copenhagen" data-name="Copenhagen" data-flag="🇩🇰">
-                            Copenhagen</option>
-                        <option value="48.15,17.11" data-bg="bratislava" data-name="Bratislava" data-flag="🇸🇰">
-                            Bratislava</option>
-                        <option value="53.35,-6.26" data-bg="dublin" data-name="Dublin" data-flag="🇮🇪">Dublin</option>
-                    </select>
 
+                    <!-- DROPDOWN GROUP -->
+                    <div class="control-group">
+                        <label for="citySelect">Popular Cities:</label>
+                        <select id="citySelect">
+                            <option value="" disabled selected>🌍 Loading cities...</option>
+                        </select>
+                    </div>
+
+                    <!-- DIVIDER -->
+                    <div class="control-divider">
+                        <span>OR</span>
+                    </div>
+
+                    <!-- SEARCH GROUP -->
+                    <div class="control-group">
+                        <label for="citySearch">Search Any City:</label>
+                        <div class="search-wrapper">
+                            <input type="text" id="citySearch" placeholder="Enter city name..." autocomplete="off" />
+                            <button id="searchBtn" class="btn btn-search">🔍</button>
+                        </div>
+                        <ul id="searchResults" class="search-results hidden"></ul>
+                    </div>
+
+                    <!-- GET FORECAST BUTTON -->
                     <button id="getForecastBtn" class="btn btn-gold">Get Forecast</button>
+
                 </div>
             </div>
         </div>
     </header>
 
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- FORECAST SECTION -->
+    <!-- ═══════════════════════════════════════════════════════ -->
     <main>
-        <!-- ✅ EVERYTHING IN ONE SECTION -->
         <section id="forecastSection" class="hidden">
             <h2 id="forecastHeading" class="forecast-heading">
                 <span class="forecast-subtitle">Here is your 7-day forecast for</span>
@@ -89,16 +88,17 @@
 
             <button id="changeCityBtn" class="btn btn-gold small-btn">Change City</button>
 
+            <!-- JS will populate this -->
             <div id="weatherGrid" class="forecast-grid"></div>
 
-            <!-- ✅ MAP NOW INSIDE FORECAST SECTION -->
+            <!-- Leaflet will populate this -->
             <div id="map" class="map-container"></div>
         </section>
     </main>
 
-    </main>
-
-    <!-- ✅ LOADING OVERLAY -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- LOADING OVERLAY -->
+    <!-- ═══════════════════════════════════════════════════════ -->
     <div id="loadingOverlay">
         <div class="loader-content">
             <div class="spinner"></div>
@@ -106,9 +106,12 @@
         </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- FOOTER -->
+    <!-- ═══════════════════════════════════════════════════════ -->
     <footer class="footer">
         <div class="footer-inner">
-            <p class="footer-text">© 2025 Long Hoa Chung | European Weather Explorer</p>
+            <p class="footer-text">© 2025 Long Hoa Chung | Global Weather Explorer</p>
 
             <div class="footer-links">
                 <a href="https://github.com/longchung90" target="_blank">
@@ -131,7 +134,9 @@
         </div>
     </footer>
 
-    <!-- ✅ SCRIPTS - Leaflet first, then your script -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SCRIPTS -->
+    <!-- ═══════════════════════════════════════════════════════ -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="scripts/script.js"></script>
 
