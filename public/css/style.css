@@ -1301,3 +1301,22 @@ main {
 .hidden {
     display: none !important;
 }
+
+.form-status {
+    margin-top: 15px;
+    font-size: 0.95rem;
+    min-height: 24px;
+}
+
+.form-status.success {
+    color: #4ade80;
+}
+
+.form-status.error {
+    color: #f87171;
+}
+
+.city-request-form button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
