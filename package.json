@@ -1,17 +1,13 @@
 {
-  "name": "weather-forecast-top-20-european-cities",
+  "name": "weather-forecast-global-cities",
   "version": "1.0.0",
+  "type": "module",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.1.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.6.1",
     "express": "^4.18.2"
   },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
-  },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "build": "npm install",
