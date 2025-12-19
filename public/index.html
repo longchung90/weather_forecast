@@ -107,6 +107,30 @@
     </div>
 
     <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- Contact form -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <section class="contact-section">
+        <div class="contact-container">
+            <h3>🏙️ Missing a City Background?</h3>
+            <p>Let us know which city you'd like to see featured!</p>
+
+            <form class="city-request-form" id="cityRequestForm">
+                <input type="text" id="cityName" name="cityName" placeholder="City name (e.g., Tokyo, Japan)" required>
+                <input type="email" id="userEmail" name="userEmail" placeholder="Your email (optional)">
+                <textarea id="message" name="message" placeholder="Any additional details..." rows="3"></textarea>
+                <button type="submit" id="submitBtn">
+                    <span class="btn-text">Submit Request</span>
+                    <span class="btn-loading" style="display: none;">Sending...</span>
+                </button>
+            </form>
+
+            <p class="form-status" id="formStatus"></p>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════ -->
     <!-- FOOTER -->
     <!-- ═══════════════════════════════════════════════════════ -->
     <footer class="footer">
