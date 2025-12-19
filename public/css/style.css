@@ -1320,3 +1320,86 @@ main {
     opacity: 0.7;
     cursor: not-allowed;
 }
+
+/* =============================================== */
+/* 📬 Contact Form Styles */
+/* =============================================== */
+/* =============================================== */
+/* 📬 Contact Form Styles */
+/* =============================================== */
+.contact-section {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    padding: 40px 20px;
+    margin: 50px auto;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 500px;
+}
+
+.contact-section h3 {
+    color: #fff;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.contact-section p {
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.city-request-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.city-request-form input,
+.city-request-form textarea {
+    padding: 12px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+}
+
+.city-request-form input:focus,
+.city-request-form textarea:focus {
+    outline: 2px solid #4a90d9;
+}
+
+.city-request-form button {
+    padding: 12px;
+    background: linear-gradient(135deg, #4a90d9, #63b3ed);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.city-request-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(74, 144, 217, 0.4);
+}
+
+.city-request-form button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.form-status {
+    margin-top: 15px;
+    font-size: 0.95rem;
+    min-height: 24px;
+}
+
+.form-status.success {
+    color: #4ade80;
+}
+
+.form-status.error {
+    color: #f87171;
+}
