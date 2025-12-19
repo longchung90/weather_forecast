@@ -841,7 +841,7 @@ document.addEventListener("DOMContentLoaded", () => {
         changeBtn.addEventListener("click", () => {
             elements.section.classList.add("hidden");
             selectedCity = null;
+            changeBackground("images/global.jpg");   // ← ADD THIS LINE
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
     }
-});
