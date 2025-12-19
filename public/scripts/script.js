@@ -560,16 +560,19 @@ function hideSearchResults() {
 function selectSearchedCity(city) {
     console.log("Selected from search:", city);
 
+    // Try to find matching city in CITIES_DATA
+    const matchedKey = findMatchingCityKey(city.name);
+
     // Create city object matching CITIES_DATA structure
     selectedCity = {
-        key: city.name.toLowerCase().replace(/\s+/g, ""),
+        key: matchedKey || city.name.toLowerCase().replace(/\s+/g, ""),
         name: city.name,
         country: city.country,
         lat: city.latitude,
         lon: city.longitude,
         flag: getCountryFlag(city.country_code),
-        region: "Search Result",
-        isSearchResult: true
+        region: matchedKey ? CITIES_DATA[matchedKey].region : "Search Result",
+        isSearchResult: !matchedKey  // false if matched, true if not in database
     };
 
     // Update search input
@@ -591,8 +594,10 @@ function selectSearchedCity(city) {
         elements.cityIcon.textContent = selectedCity.flag;
     }
 
-    // Use default background for searched cities
-    changeBackground("images/default.jpg");
+    // Change background - use city image if in database, otherwise default
+    const bgPath = matchedKey ? `images/${matchedKey}.jpg` : "images/default.jpg";
+    console.log("Background path:", bgPath, matchedKey ? "(matched)" : "(default)");
+    changeBackground(bgPath);
 }
 
 // ===============================================================
@@ -610,6 +615,26 @@ function getCountryFlag(countryCode) {
     return String.fromCodePoint(...codePoints);
 }
 
+// ===============================================================
+// 15.5. FIND MATCHING CITY IN DATABASE - NEW
+// ===============================================================
+function findMatchingCityKey(cityName) {
+    const searchName = cityName.toLowerCase().replace(/\s+/g, "");
+
+    // Direct key match
+    if (CITIES_DATA[searchName]) {
+        return searchName;
+    }
+
+    // Search by city name
+    for (const [key, data] of Object.entries(CITIES_DATA)) {
+        if (data.name.toLowerCase() === cityName.toLowerCase()) {
+            return key;
+        }
+    }
+
+    return null;
+}
 // ===============================================================
 // 16. LEAFLET MAP
 // ===============================================================
@@ -841,7 +866,8 @@ document.addEventListener("DOMContentLoaded", () => {
         changeBtn.addEventListener("click", () => {
             elements.section.classList.add("hidden");
             selectedCity = null;
-            changeBackground("images/global.jpg");   // ← ADD THIS LINE
+            changeBackground("images/global.jpg");
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
     }
+});
