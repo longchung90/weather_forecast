@@ -1,4 +1,3 @@
-cat > README.md << 'EOF'
 <p align="center">
   <img src="public/images/banner.jpg" alt="Global Weather Explorer Banner" width="100%"/>
 </p>
