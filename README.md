@@ -25,7 +25,8 @@
   © 2025 <strong>Long Hoa Chung</strong>
 </p>
 
-# 🌤️ Global Weather Explorer
+# 🌤️ Global Weather Explorer [![Sponsor](https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-ff69b4?logo=github)](https://github.com/sponsors/longchung90)
+
 
 **Explore weather forecasts for 170+ cities worldwide**
 
